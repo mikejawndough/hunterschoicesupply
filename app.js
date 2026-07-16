@@ -552,13 +552,56 @@ class ShopApp {
   }
 
   updateCartUI() {
+    // Extract lines connection dynamically to support both local cart and Shopify Cart API
+    let rawLines = [];
+    if (Array.isArray(this.cart)) {
+      rawLines = this.cart;
+    } else if (this.cart && this.cart.lines) {
+      if (Array.isArray(this.cart.lines)) {
+        rawLines = this.cart.lines;
+      } else if (this.cart.lines.edges && Array.isArray(this.cart.lines.edges)) {
+        rawLines = this.cart.lines.edges.map(edge => edge.node);
+      } else if (this.cart.lines.nodes && Array.isArray(this.cart.lines.nodes)) {
+        rawLines = this.cart.lines.nodes;
+      }
+    }
+
+    const normalizedItems = rawLines.map(item => {
+      // Local cart structure check
+      if (item.product) {
+        return {
+          id: item.product.id,
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+          imageUrl: item.product.imageUrl || null,
+          svgIcon: item.product.svgIcon || null
+        };
+      }
+      
+      // Shopify Cart Line structure check
+      const merch = item.merchandise || {};
+      const prod = merch.product || {};
+      const priceAmount = merch.price ? parseFloat(merch.price.amount) : (item.estimatedCost?.totalAmount?.amount ? parseFloat(item.estimatedCost.totalAmount.amount) : 0);
+      const imgUrl = merch.image?.url || prod.featuredImage?.url || null;
+      
+      return {
+        id: merch.id || item.id,
+        name: prod.title || merch.title || "Shopify Product",
+        price: priceAmount,
+        quantity: item.quantity || 1,
+        imageUrl: imgUrl,
+        svgIcon: null
+      };
+    });
+
     // Count badge
-    const totalCount = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalCount = normalizedItems.reduce((sum, item) => sum + item.quantity, 0);
     this.cartBadge.textContent = totalCount;
     this.cartBadge.style.display = totalCount > 0 ? "flex" : "none";
 
     // Drawer list
-    if (this.cart.length === 0) {
+    if (normalizedItems.length === 0) {
       this.cartItemsContainer.innerHTML = `
         <div class="cart-empty-message">
           <p>Your trunk trunk is currently empty.</p>
@@ -566,28 +609,28 @@ class ShopApp {
         </div>
       `;
     } else {
-      this.cartItemsContainer.innerHTML = this.cart.map(item => `
+      this.cartItemsContainer.innerHTML = normalizedItems.map(item => `
         <div class="cart-item">
-          ${item.product.imageUrl ? 
-            `<img class="cart-item-icon" src="${item.product.imageUrl}" alt="${item.product.name}" style="object-fit:contain; padding: 2px;">` :
-            `<svg class="cart-item-icon" viewBox="0 0 100 100">${item.product.svgIcon}</svg>`
+          ${item.imageUrl ? 
+            `<img class="cart-item-icon" src="${item.imageUrl}" alt="${item.name}">` :
+            (item.svgIcon ? `<svg class="cart-item-icon" viewBox="0 0 100 100">${item.svgIcon}</svg>` : `<div class="cart-item-icon" style="background:var(--bg-secondary);"></div>`)
           }
           <div class="cart-item-details">
-            <h4 class="cart-item-name">${item.product.name}</h4>
-            <span class="cart-item-price">$${item.product.price.toFixed(2)}</span>
+            <h4 class="cart-item-name">${item.name}</h4>
+            <span class="cart-item-price">$${item.price.toFixed(2)}</span>
             <div class="cart-item-quantity">
-              <button class="qty-btn" data-id="${item.product.id}" data-change="-1">-</button>
+              <button class="qty-btn" data-id="${item.id}" data-change="-1">-</button>
               <span class="qty-val">${item.quantity}</span>
-              <button class="qty-btn" data-id="${item.product.id}" data-change="1">+</button>
+              <button class="qty-btn" data-id="${item.id}" data-change="1">+</button>
             </div>
           </div>
-          <button class="cart-item-remove" data-id="${item.product.id}">&times;</button>
+          <button class="cart-item-remove" data-id="${item.id}">&times;</button>
         </div>
       `).join("");
     }
 
     // Calculations
-    const subtotal = this.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const subtotal = normalizedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     let discount = 0;
     
     if (this.appliedPromo) {
