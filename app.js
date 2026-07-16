@@ -8,7 +8,7 @@
 const SHOPIFY_CONFIG = {
   active: false, // Set to true to load catalog live from Shopify!
   shopDomain: "hunterschoicesupply.myshopify.com",
-  storefrontAccessToken: "your-storefront-access-token",
+  storefrontAccessToken: "4c5023ab985c3b05bdf2a3a552fb38c6",
   apiVersion: "2023-10"
 };
 
