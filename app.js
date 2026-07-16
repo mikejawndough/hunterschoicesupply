@@ -300,109 +300,7 @@ class Typewriter {
   }
 }
 
-// 3. Web Audio API EMF Click Synthesizer
-class EMFAudioSynth {
-  constructor() {
-    this.audioCtx = null;
-    this.isPlaying = false;
-    this.clickIntervalId = null;
-    this.intensity = 0; // 0 to 1
-    // Load volume preference; default to true (muted) to comply with browser autoplay blocks
-    const saved = localStorage.getItem("scanner_audio_muted");
-    this.muted = saved !== "false";
-  }
-
-  init() {
-    if (this.muted) return; // Keep AudioContext inactive if explicitly muted
-    if (this.audioCtx) {
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-      return;
-    }
-    try {
-      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    } catch (e) {
-      console.warn("Web Audio API not supported", e);
-    }
-  }
-
-  toggleMute() {
-    this.muted = !this.muted;
-    localStorage.setItem("scanner_audio_muted", this.muted.toString());
-    if (!this.muted) {
-      this.init();
-    }
-    return this.muted;
-  }
-
-  playClick() {
-    if (this.muted) return;
-    if (!this.audioCtx) return;
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
-
-    // Synthesize short static pop/click sound
-    const osc = this.audioCtx.createOscillator();
-    const gainNode = this.audioCtx.createGain();
-    
-    osc.connect(gainNode);
-    gainNode.connect(this.audioCtx.destination);
-    
-    osc.type = 'triangle';
-    // Randomize pitch slightly for organic geiger sound
-    osc.frequency.setValueAtTime(80 + Math.random() * 200, this.audioCtx.currentTime);
-    
-    gainNode.gain.setValueAtTime(0.25 * this.intensity, this.audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.04);
-    
-    osc.start();
-    osc.stop(this.audioCtx.currentTime + 0.05);
-  }
-
-  setIntensity(val) {
-    this.intensity = val; // 0 to 1
-    
-    if (val > 0) {
-      this.init();
-      if (!this.isPlaying) {
-        this.isPlaying = true;
-        this.startLoop();
-      }
-    } else {
-      this.stopLoop();
-    }
-  }
-
-  startLoop() {
-    this.stopLoop();
-    const scheduleNext = () => {
-      if (!this.isPlaying || this.intensity === 0) return;
-      
-      this.playClick();
-      
-      // Higher intensity = faster ticks
-      const minDelay = 40; // ms
-      const maxDelay = 800; // ms
-      const delay = maxDelay - (this.intensity * (maxDelay - minDelay)) + (Math.random() * 50 - 25);
-      
-      this.clickIntervalId = setTimeout(scheduleNext, Math.max(minDelay, delay));
-    };
-    
-    scheduleNext();
-  }
-
-  stopLoop() {
-    this.isPlaying = false;
-    if (this.clickIntervalId) {
-      clearTimeout(this.clickIntervalId);
-      this.clickIntervalId = null;
-    }
-  }
-}
-
-// 4. Shop State Manager
+// 3. Shop State Manager
 class ShopApp {
   constructor() {
     this.products = [...PRODUCTS]; // Default to local mock products
@@ -411,7 +309,6 @@ class ShopApp {
     this.appliedPromo = null;
     this.currentCategory = "all";
     this.searchQuery = "";
-    this.audioSynth = new EMFAudioSynth();
     
     // Elements
     this.productGrid = document.getElementById("product-grid");
@@ -427,17 +324,11 @@ class ShopApp {
     this.promoApplyBtn = document.getElementById("promo-apply-btn");
     this.promoFeedback = document.getElementById("promo-feedback");
     
-    // EMF elements
-    this.emfMeter = document.getElementById("emf-meter");
-    this.emfNeedle = document.getElementById("emf-needle");
-    this.emfStatus = document.getElementById("emf-status");
-    
     // Modals
     this.detailModal = document.getElementById("detail-modal");
     this.detailContent = document.getElementById("detail-content");
     this.checkoutModal = document.getElementById("checkout-modal");
     this.receiptBox = document.getElementById("receipt-box");
-    this.audioToggleBtn = document.getElementById("audio-toggle-btn");
     
     // Init actions
     this.initTypewriter();
@@ -445,8 +336,6 @@ class ShopApp {
     this.initCatalog(); // Async load Shopify or local products
     this.updateCartUI();
     this.initQuiz();
-    this.updateAudioToggleUI(this.audioSynth.muted);
-    this.initAmbientEMF();
   }
 
   loadCartFromStorage() {
@@ -497,40 +386,7 @@ class ShopApp {
       }
     });
 
-    // Proximity EMF hover engine
-    this.productGrid.addEventListener("mousemove", (e) => {
-      const card = e.target.closest(".product-card");
-      if (!card) {
-        this.resetEMFMeter();
-        return;
-      }
-      
-      const isCursed = card.dataset.cursed === "true";
-      if (!isCursed) {
-        this.resetEMFMeter();
-        return;
-      }
-      
-      // Calculate cursor distance to card center to scale needle intensity!
-      const rect = card.getBoundingClientRect();
-      const cardCenterX = rect.left + rect.width / 2;
-      const cardCenterY = rect.top + rect.height / 2;
-      
-      const dx = e.clientX - cardCenterX;
-      const dy = e.clientY - cardCenterY;
-      const distance = Math.sqrt(dx*dx + dy*dy);
-      
-      // Max effect at center, decays over 300px
-      const maxDist = 250;
-      let intensity = 1 - (distance / maxDist);
-      intensity = Math.max(0, Math.min(1, intensity)); // clamp 0-1
-      
-      this.triggerEMFSpike(intensity);
-    });
 
-    this.productGrid.addEventListener("mouseleave", () => {
-      this.resetEMFMeter();
-    });
 
     // Cart Popover controls
     const cartDrawer = document.getElementById("cart-drawer");
@@ -600,77 +456,10 @@ class ShopApp {
       this.checkoutModal.close();
     });
 
-    // Logo hover EMF trigger
-    const logoContainer = document.querySelector(".logo-container");
-    if (logoContainer) {
-      logoContainer.addEventListener("mousemove", (e) => {
-        this.triggerEMFSpike(0.9);
-      });
-      logoContainer.addEventListener("mouseleave", () => {
-        this.resetEMFMeter();
-      });
-    }
 
-    // Audio Toggle Button
-    if (this.audioToggleBtn) {
-      this.audioToggleBtn.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent triggering full EMF click behavior
-        const isMutedNow = this.audioSynth.toggleMute();
-        this.updateAudioToggleUI(isMutedNow);
-        if (!isMutedNow) {
-          // Play a brief test sweep to verify sound is active
-          this.triggerEMFSpike(0.4);
-          setTimeout(() => this.resetEMFMeter(), 200);
-        }
-      });
-    }
-
-    // EMF meter click to unmute/test
-    if (this.emfMeter) {
-      this.emfMeter.addEventListener("click", () => {
-        if (this.audioSynth.muted) {
-          this.audioSynth.toggleMute();
-          this.updateAudioToggleUI(false);
-        } else {
-          this.audioSynth.init();
-        }
-        // Give a short mock audio check beep
-        this.triggerEMFSpike(0.5);
-        setTimeout(() => this.resetEMFMeter(), 250);
-      });
-    }
   }
 
-  // EMF Meter Engine
-  triggerEMFSpike(intensity) {
-    // Spiking needle rotation: -70deg (Safe) to +70deg (Danger)
-    const angle = -70 + (intensity * 140) + (Math.random() * 10 - 5);
-    this.emfNeedle.style.transform = `rotate(${angle}deg)`;
-    this.emfNeedle.classList.add("spiking");
-    
-    if (intensity > 0.15) {
-      this.emfStatus.textContent = intensity > 0.7 ? "DANGER (5)" : `ALERT (${Math.ceil(intensity * 5)})`;
-      this.emfStatus.className = "emf-status spike";
-      this.audioSynth.setIntensity(intensity);
-    } else {
-      this.resetEMFMeter();
-    }
-  }
 
-  resetEMFMeter() {
-    this.emfNeedle.style.transform = "rotate(-70deg)";
-    this.emfNeedle.classList.remove("spiking");
-    this.emfStatus.textContent = "Safe";
-    this.emfStatus.className = "emf-status";
-    this.audioSynth.setIntensity(0);
-  }
-
-  updateAudioToggleUI(isMuted) {
-    if (this.audioToggleBtn) {
-      this.audioToggleBtn.textContent = isMuted ? "🔇" : "🔊";
-      this.audioToggleBtn.title = isMuted ? "Unmute audio scanner feed" : "Mute audio scanner feed";
-    }
-  }
 
   // Catalog Renderer
   renderProducts() {
@@ -1366,57 +1155,9 @@ class ShopApp {
     renderQuestion();
   }
 
-  // 6. Ambient EMF Engine (Spiritual Sweeps)
-  initAmbientEMF() {
-    setInterval(() => {
-      // Don't trigger if the user is already hovering over an EMF trigger
-      if (this.audioSynth.intensity > 0) return;
-      
-      // 30% chance every 40 seconds
-      if (Math.random() > 0.3) return;
-      
-      // Simulate ambient entity passing by: needle spikes, static plays, LED warning flashes, then fades
-      let duration = 3000;
-      let start = Date.now();
-      
-      const sweep = () => {
-        let elapsed = Date.now() - start;
-        if (elapsed >= duration) {
-          this.resetEMFMeter();
-          return;
-        }
-        
-        let progress = elapsed / duration;
-        let intensity = 0;
-        if (progress < 0.2) {
-          intensity = (progress / 0.2) * 0.8;
-        } else {
-          intensity = 0.8 * (1 - (progress - 0.2) / 0.8);
-        }
-        
-        this.triggerEMFSpike(intensity);
-        requestAnimationFrame(sweep);
-      };
-      
-      sweep();
-    }, 40000);
-  }
 }
 
-// 6. Application Bootstrapper
+// 5. Application Bootstrapper
 document.addEventListener("DOMContentLoaded", () => {
   window.shopApp = new ShopApp();
-  
-  // Auto-unlock Web Audio context on first user click or key press anywhere
-  const unlockAudio = () => {
-    if (window.shopApp && window.shopApp.audioSynth) {
-      window.shopApp.audioSynth.init();
-    }
-    document.removeEventListener("click", unlockAudio);
-    document.removeEventListener("keydown", unlockAudio);
-    document.removeEventListener("touchstart", unlockAudio);
-  };
-  document.addEventListener("click", unlockAudio);
-  document.addEventListener("keydown", unlockAudio);
-  document.addEventListener("touchstart", unlockAudio);
 });
