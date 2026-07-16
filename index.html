@@ -10,6 +10,11 @@
 </head>
 <body>
 
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <span>First trunk load? Use code <strong class="glow-text-gold">FIRSTTRUNK</strong> for 10% off at checkout. (Enforced 1 per customer at checkout)</span>
+  </div>
+
   <!-- Header -->
   <header>
     <a href="#" class="logo-container">
@@ -33,13 +38,16 @@
     <!-- Header Widgets -->
     <div class="header-widgets">
       <!-- Interactive EMF Meter -->
-      <div class="emf-meter" id="emf-meter" title="Move cursor over cursed items to test for paranormal activity!">
+      <div class="emf-meter" id="emf-meter" title="Click to unmute audio feedback! Move cursor over cursed items.">
         <div class="emf-gauge">
           <div class="emf-arch"></div>
           <div class="emf-needle" id="emf-needle"></div>
         </div>
         <div class="emf-display">
-          <span class="emf-title">EMF Activity</span>
+          <span class="emf-title" style="display: flex; align-items: center; gap: 0.3rem;">
+            EMF Activity 
+            <button class="audio-toggle-btn" id="audio-toggle-btn" title="Toggle audio scanner feed" aria-label="Toggle audio">🔇</button>
+          </span>
           <span class="emf-status" id="emf-status">Safe</span>
         </div>
       </div>

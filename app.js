@@ -117,7 +117,7 @@ const PRODUCTS = [
     name: "Cursed Witch's Hex Bag",
     price: 34.99,
     category: "artifacts",
-    badge: "Cursed",
+    badge: "Artifact",
     cursed: true, // SPIKES EMF METER!
     description: "A dark, hand-stitched burlap pouch bound with twine. Contains mock ritual herbs, bones, and ancient talismans. Warning: Keep away from your electronics. Highly radioactive in EMF waves.",
     lore: "Bobby's Notes: 'Witches use hex bags to cast deadly curses from a distance. If you find one, burn it immediately.'",
@@ -307,19 +307,37 @@ class EMFAudioSynth {
     this.isPlaying = false;
     this.clickIntervalId = null;
     this.intensity = 0; // 0 to 1
+    // Load volume preference; default to true (muted) to comply with browser autoplay blocks
+    const saved = localStorage.getItem("scanner_audio_muted");
+    this.muted = saved !== "false";
   }
 
   init() {
-    if (this.audioCtx) return;
+    if (this.muted) return; // Keep AudioContext inactive if explicitly muted
+    if (this.audioCtx) {
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      return;
+    }
     try {
-      // AudioContext initialized upon user click/hover to satisfy browser security policies
       this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     } catch (e) {
       console.warn("Web Audio API not supported", e);
     }
   }
 
+  toggleMute() {
+    this.muted = !this.muted;
+    localStorage.setItem("scanner_audio_muted", this.muted.toString());
+    if (!this.muted) {
+      this.init();
+    }
+    return this.muted;
+  }
+
   playClick() {
+    if (this.muted) return;
     if (!this.audioCtx) return;
     if (this.audioCtx.state === 'suspended') {
       this.audioCtx.resume();
@@ -336,7 +354,7 @@ class EMFAudioSynth {
     // Randomize pitch slightly for organic geiger sound
     osc.frequency.setValueAtTime(80 + Math.random() * 200, this.audioCtx.currentTime);
     
-    gainNode.gain.setValueAtTime(0.08 * this.intensity, this.audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(0.25 * this.intensity, this.audioCtx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.04);
     
     osc.start();
@@ -419,6 +437,7 @@ class ShopApp {
     this.detailContent = document.getElementById("detail-content");
     this.checkoutModal = document.getElementById("checkout-modal");
     this.receiptBox = document.getElementById("receipt-box");
+    this.audioToggleBtn = document.getElementById("audio-toggle-btn");
     
     // Init actions
     this.initTypewriter();
@@ -426,6 +445,8 @@ class ShopApp {
     this.initCatalog(); // Async load Shopify or local products
     this.updateCartUI();
     this.initQuiz();
+    this.updateAudioToggleUI(this.audioSynth.muted);
+    this.initAmbientEMF();
   }
 
   loadCartFromStorage() {
@@ -578,6 +599,46 @@ class ShopApp {
     document.getElementById("receipt-close-btn").addEventListener("click", () => {
       this.checkoutModal.close();
     });
+
+    // Logo hover EMF trigger
+    const logoContainer = document.querySelector(".logo-container");
+    if (logoContainer) {
+      logoContainer.addEventListener("mousemove", (e) => {
+        this.triggerEMFSpike(0.9);
+      });
+      logoContainer.addEventListener("mouseleave", () => {
+        this.resetEMFMeter();
+      });
+    }
+
+    // Audio Toggle Button
+    if (this.audioToggleBtn) {
+      this.audioToggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent triggering full EMF click behavior
+        const isMutedNow = this.audioSynth.toggleMute();
+        this.updateAudioToggleUI(isMutedNow);
+        if (!isMutedNow) {
+          // Play a brief test sweep to verify sound is active
+          this.triggerEMFSpike(0.4);
+          setTimeout(() => this.resetEMFMeter(), 200);
+        }
+      });
+    }
+
+    // EMF meter click to unmute/test
+    if (this.emfMeter) {
+      this.emfMeter.addEventListener("click", () => {
+        if (this.audioSynth.muted) {
+          this.audioSynth.toggleMute();
+          this.updateAudioToggleUI(false);
+        } else {
+          this.audioSynth.init();
+        }
+        // Give a short mock audio check beep
+        this.triggerEMFSpike(0.5);
+        setTimeout(() => this.resetEMFMeter(), 250);
+      });
+    }
   }
 
   // EMF Meter Engine
@@ -602,6 +663,13 @@ class ShopApp {
     this.emfStatus.textContent = "Safe";
     this.emfStatus.className = "emf-status";
     this.audioSynth.setIntensity(0);
+  }
+
+  updateAudioToggleUI(isMuted) {
+    if (this.audioToggleBtn) {
+      this.audioToggleBtn.textContent = isMuted ? "🔇" : "🔊";
+      this.audioToggleBtn.title = isMuted ? "Unmute audio scanner feed" : "Mute audio scanner feed";
+    }
   }
 
   // Catalog Renderer
@@ -762,7 +830,11 @@ class ShopApp {
     this.promoFeedback.style.display = "none";
 
     // Codes validation
-    if (code === "BABY1967" || code === "LOREMASTER") {
+    if (code === "FIRSTTRUNK") {
+      this.appliedPromo = { code, type: "percent", value: 0.10 };
+      this.promoFeedback.textContent = "10% First Time Discount Applied!";
+      this.promoFeedback.className = "promo-feedback success";
+    } else if (code === "BABY1967") {
       this.appliedPromo = { code, type: "percent", value: 0.15 };
       this.promoFeedback.textContent = "15% Hunter Discount Applied!";
       this.promoFeedback.className = "promo-feedback success";
@@ -1037,7 +1109,12 @@ class ShopApp {
         category = "artifacts";
       }
 
-      const isCursed = tags.includes("cursed") || node.title.toLowerCase().includes("hex bag");
+      // Check if product is cursed or is an artifact to trigger the EMF meter behind the scenes
+      const isCursed = tags.includes("cursed") || 
+                       tags.includes("artifact") || 
+                       node.title.toLowerCase().includes("hex bag") || 
+                       node.title.toLowerCase().includes("amulet") || 
+                       node.title.toLowerCase().includes("blade");
 
       const stats = {
         "Vendor": node.vendor || "Hunter's Choice Supply",
@@ -1061,7 +1138,7 @@ class ShopApp {
         price: price,
         category: category,
         collections: productCollections,
-        badge: isCursed ? "Cursed" : (tags.includes("essential") ? "Essential" : "Gear"),
+        badge: isCursed ? "Artifact" : (tags.includes("essential") ? "Essential" : "Gear"),
         cursed: isCursed,
         description: node.description,
         lore: tags.find(t => t.startsWith("lore:"))?.replace("lore:", "") || "A specialized hunter resource.",
@@ -1162,7 +1239,34 @@ class ShopApp {
     let score = 0;
     const quizContainer = document.getElementById("quiz-container");
 
+    const renderAlreadyPassedScreen = () => {
+      quizContainer.innerHTML = `
+        <div class="quiz-results" style="display: flex; flex-direction: column; align-items: center;">
+          <span class="quiz-badge">Lore Certification: Active</span>
+          <h3 class="quiz-results-title">Lore Master Certified</h3>
+          <p class="quiz-results-desc">Welcome back, Hunter! You have already passed the Lore Assessment and earned your official Hunter's Certification. Keep your salt lines fresh and your iron loaded.</p>
+          
+          <div class="certification-badge" style="margin: 1.5rem 0; text-align: center;">
+            <svg viewBox="0 0 100 100" style="width: 100px; height: 100px; stroke: var(--accent-gold); fill: none; stroke-width: 2; filter: drop-shadow(0 0 8px var(--accent-gold-glow));">
+              <circle cx="50" cy="50" r="45" stroke-dasharray="4 2" />
+              <polygon points="50,15 78,75 15,38 85,38 22,75" />
+              <circle cx="50" cy="50" r="10" />
+            </svg>
+            <span style="display: block; font-family: var(--font-title); color: var(--accent-gold); font-size: 1.1rem; margin-top: 0.8rem; letter-spacing: 0.05em;">Authorized Demon Slayer</span>
+          </div>
+          
+          <p style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-top: 0.5rem;">Certification is locked to 1 per hunter trunk.</p>
+        </div>
+      `;
+    };
+
     const renderQuestion = () => {
+      // Enforce single claim via local storage
+      if (localStorage.getItem("hunters_quiz_passed") === "true") {
+        renderAlreadyPassedScreen();
+        return;
+      }
+
       if (currentQ >= quizData.length) {
         renderResults();
         return;
@@ -1192,14 +1296,12 @@ class ShopApp {
         </div>
       `;
 
-      // Event listener on options
       const optionButtons = quizContainer.querySelectorAll(".quiz-option");
       optionButtons.forEach(btn => {
         btn.addEventListener("click", (e) => {
           const selectedIdx = parseInt(btn.dataset.idx);
           const correctIdx = qData.correct;
           
-          // Disable all buttons to prevent double clicking
           optionButtons.forEach(b => b.style.pointerEvents = "none");
 
           if (selectedIdx === correctIdx) {
@@ -1210,7 +1312,6 @@ class ShopApp {
             optionButtons[correctIdx].classList.add("correct");
           }
 
-          // Advance to next question after delay
           setTimeout(() => {
             currentQ++;
             renderQuestion();
@@ -1223,53 +1324,99 @@ class ShopApp {
       const isPass = score === quizData.length;
       
       if (isPass) {
+        // Seal the pass state locally
+        localStorage.setItem("hunters_quiz_passed", "true");
+
         quizContainer.innerHTML = `
-          <div class="quiz-results">
+          <div class="quiz-results" style="display: flex; flex-direction: column; align-items: center;">
             <span class="quiz-badge">Assessment: Passed</span>
             <h3 class="quiz-results-title">Lore Master Certified</h3>
-            <p class="quiz-results-desc">Impressive! You answered all questions correctly. Bobby Singer would be proud. Use this voucher code to unlock a 15% discount on your next gear haul.</p>
+            <p class="quiz-results-desc">Impressive! You answered all questions correctly. Bobby Singer would be proud. You have successfully claimed your Hunter's Certification badge.</p>
             
-            <div class="promo-unlock">
-              <span class="promo-code" id="unlocked-code">LOREMASTER</span>
-              <button class="gold-btn" id="copy-code-btn" style="font-size: 0.75rem; padding: 0.4rem 1rem;">Copy Code</button>
+            <div class="certification-badge" style="margin: 1.5rem 0; text-align: center;">
+              <svg viewBox="0 0 100 100" style="width: 100px; height: 100px; stroke: var(--accent-gold); fill: none; stroke-width: 2; filter: drop-shadow(0 0 8px var(--accent-gold-glow));">
+                <circle cx="50" cy="50" r="45" stroke-dasharray="4 2" />
+                <polygon points="50,15 78,75 15,38 85,38 22,75" />
+                <circle cx="50" cy="50" r="10" />
+              </svg>
+              <span style="display: block; font-family: var(--font-title); color: var(--accent-gold); font-size: 1.1rem; margin-top: 0.8rem; letter-spacing: 0.05em;">Authorized Demon Slayer</span>
             </div>
             
-            <button class="red-btn" id="quiz-reset-btn" style="margin-top: 1rem;">Retake Assessment</button>
+            <p style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-top: 0.5rem;">Certification is locked to 1 per hunter trunk.</p>
           </div>
         `;
-        
-        // Copy functionality
-        document.getElementById("copy-code-btn").addEventListener("click", () => {
-          navigator.clipboard.writeText("LOREMASTER").then(() => {
-            const btn = document.getElementById("copy-code-btn");
-            btn.textContent = "Copied!";
-            setTimeout(() => btn.textContent = "Copy Code", 2000);
-          });
-        });
       } else {
         quizContainer.innerHTML = `
           <div class="quiz-results">
             <span class="quiz-badge" style="color: var(--accent-red)">Assessment: Failed</span>
             <h3 class="quiz-results-title" style="color: var(--accent-red)">Back to the Archives</h3>
-            <p class="quiz-results-desc">You scored ${score} out of ${quizData.length}. In the field, a mistake like that gets you ghosted. Study John's journal and try again to unlock your discount.</p>
+            <p class="quiz-results-desc">You scored ${score} out of ${quizData.length}. In the field, a mistake like that gets you ghosted. Study John's journal and try again to claim your certification.</p>
             <button class="gold-btn" id="quiz-reset-btn">Consult the Lore (Retry)</button>
           </div>
         `;
-      }
 
-      document.getElementById("quiz-reset-btn").addEventListener("click", () => {
-        currentQ = 0;
-        score = 0;
-        renderQuestion();
-      });
+        document.getElementById("quiz-reset-btn").addEventListener("click", () => {
+          currentQ = 0;
+          score = 0;
+          renderQuestion();
+        });
+      }
     };
 
-    // Initial render
     renderQuestion();
+  }
+
+  // 6. Ambient EMF Engine (Spiritual Sweeps)
+  initAmbientEMF() {
+    setInterval(() => {
+      // Don't trigger if the user is already hovering over an EMF trigger
+      if (this.audioSynth.intensity > 0) return;
+      
+      // 30% chance every 40 seconds
+      if (Math.random() > 0.3) return;
+      
+      // Simulate ambient entity passing by: needle spikes, static plays, LED warning flashes, then fades
+      let duration = 3000;
+      let start = Date.now();
+      
+      const sweep = () => {
+        let elapsed = Date.now() - start;
+        if (elapsed >= duration) {
+          this.resetEMFMeter();
+          return;
+        }
+        
+        let progress = elapsed / duration;
+        let intensity = 0;
+        if (progress < 0.2) {
+          intensity = (progress / 0.2) * 0.8;
+        } else {
+          intensity = 0.8 * (1 - (progress - 0.2) / 0.8);
+        }
+        
+        this.triggerEMFSpike(intensity);
+        requestAnimationFrame(sweep);
+      };
+      
+      sweep();
+    }, 40000);
   }
 }
 
 // 6. Application Bootstrapper
 document.addEventListener("DOMContentLoaded", () => {
   window.shopApp = new ShopApp();
+  
+  // Auto-unlock Web Audio context on first user click or key press anywhere
+  const unlockAudio = () => {
+    if (window.shopApp && window.shopApp.audioSynth) {
+      window.shopApp.audioSynth.init();
+    }
+    document.removeEventListener("click", unlockAudio);
+    document.removeEventListener("keydown", unlockAudio);
+    document.removeEventListener("touchstart", unlockAudio);
+  };
+  document.addEventListener("click", unlockAudio);
+  document.addEventListener("keydown", unlockAudio);
+  document.addEventListener("touchstart", unlockAudio);
 });
