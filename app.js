@@ -6,7 +6,7 @@
 // To load products from Shopify, set active to true and enter your credentials.
 // ==========================================
 const SHOPIFY_CONFIG = {
-  active: false, // Set to true to load catalog live from Shopify!
+  active: true, // Set to true to load catalog live from Shopify!
   shopDomain: "hunterschoicesupply.myshopify.com",
   storefrontAccessToken: "4c5023ab985c3b05bdf2a3a552fb38c6",
   apiVersion: "2023-10"
@@ -607,7 +607,8 @@ class ShopApp {
   // Catalog Renderer
   renderProducts() {
     let filtered = this.products.filter(prod => {
-      const matchCat = this.currentCategory === "all" || prod.category === this.currentCategory;
+      const matchCat = this.currentCategory === "all" || 
+                        (SHOPIFY_CONFIG.active ? (prod.collections && prod.collections.includes(this.currentCategory)) : prod.category === this.currentCategory);
       const matchSearch = prod.name.toLowerCase().includes(this.searchQuery) || 
                           prod.description.toLowerCase().includes(this.searchQuery) ||
                           prod.category.toLowerCase().includes(this.searchQuery);
@@ -933,6 +934,7 @@ class ShopApp {
         const shopifyProds = await this.fetchShopifyProducts();
         if (shopifyProds && shopifyProds.length > 0) {
           this.products = shopifyProds;
+          this.renderShopifyCollectionFilters();
         }
       } catch (err) {
         console.error("Shopify integration error, falling back to local database:", err);
@@ -943,7 +945,15 @@ class ShopApp {
 
   async fetchShopifyProducts() {
     const query = `
-      query GetProducts {
+      query GetProductsAndCollections {
+        collections(first: 10) {
+          edges {
+            node {
+              title
+              handle
+            }
+          }
+        }
         products(first: 20) {
           edges {
             node {
@@ -954,6 +964,13 @@ class ShopApp {
               vendor
               handle
               tags
+              collections(first: 5) {
+                edges {
+                  node {
+                    handle
+                  }
+                }
+              }
               variants(first: 1) {
                 edges {
                   node {
@@ -991,6 +1008,13 @@ class ShopApp {
     const json = await response.json();
     if (json.errors) throw new Error(JSON.stringify(json.errors));
 
+    // Map and store collections
+    const collections = json.data.collections.edges.map(edge => ({
+      title: edge.node.title,
+      handle: edge.node.handle
+    }));
+    this.shopifyCollections = collections;
+
     const edges = json.data.products.edges;
     return edges.map(edge => {
       const node = edge.node;
@@ -998,6 +1022,9 @@ class ShopApp {
       const imageNode = node.images.edges[0]?.node;
       const price = variantNode ? parseFloat(variantNode.price.amount) : 0;
       
+      // Get all collection handles this product belongs to
+      const productCollections = node.collections.edges.map(e => e.node.handle);
+
       let category = "gear";
       const typeLower = (node.productType || "").toLowerCase();
       const tags = node.tags.map(t => t.toLowerCase());
@@ -1033,6 +1060,7 @@ class ShopApp {
         name: node.title,
         price: price,
         category: category,
+        collections: productCollections,
         badge: isCursed ? "Cursed" : (tags.includes("essential") ? "Essential" : "Gear"),
         cursed: isCursed,
         description: node.description,
@@ -1043,6 +1071,20 @@ class ShopApp {
         imageUrl: imageNode?.url
       };
     });
+  }
+
+  renderShopifyCollectionFilters() {
+    if (!this.shopifyCollections || this.shopifyCollections.length === 0) return;
+
+    // Start with "All Gear"
+    let buttonsHTML = `<button class="filter-btn active" data-category="all">All Gear</button>`;
+
+    // Add buttons for each collection
+    buttonsHTML += this.shopifyCollections.map(col => `
+      <button class="filter-btn" data-category="${col.handle}">${col.title}</button>
+    `).join("");
+
+    this.filterButtonsContainer.innerHTML = buttonsHTML;
   }
 
   async createShopifyCheckout() {
@@ -1089,9 +1131,6 @@ class ShopApp {
     }
 
     return json.data.checkoutCreate.checkout.webUrl;
-  }
-
-    this.updateCartUI();
   }
 
   // 5. Hunter's Quiz Engine
