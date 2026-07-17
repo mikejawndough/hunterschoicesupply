@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hunter's Choice Supply | Supernatural Fanshop & Lore Gear</title>
-  <meta name="description" content="Get your authentic hunter gear, mystical replicas, and apparel from Hunter's Choice Supply. Test your lore knowledge and check for paranormal spikes!">
+  <meta name="description" content="Get your custom print-on-demand Supernatural fan t-shirts, coffee mugs, and apparel from Hunter's Choice Supply. Test your lore knowledge and check out print-on-demand gear!">
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,7 +12,7 @@
 
   <!-- Announcement Bar -->
   <div class="announcement-bar">
-    <span>First trunk load? Use code <strong class="glow-text-gold">FIRSTTRUNK</strong> for 10% off at checkout. (Enforced 1 per customer at checkout)</span>
+    <span>First trunk load? Use code <strong class="glow-text-gold">BABY1967</strong> for 10% off at checkout. (Enforced 1 per customer at checkout)</span>
   </div>
 
   <!-- Header -->
@@ -30,14 +30,31 @@
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#shop">Shop Gear</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#reviews">Field Reports</a></li>
         <li><a href="#quiz">Hunter's Quiz</a></li>
+        <li><a href="#" id="nav-newsletter-btn">Join Dispatch</a></li>
+        <li><a href="#" id="nav-track-btn">Track Order</a></li>
       </ul>
     </nav>
 
+    <!-- Hamburger Menu Trigger (Mobile only) -->
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+
     <!-- Header Widgets -->
     <div class="header-widgets">
-
+      <!-- Instagram Link Button -->
+      <a class="social-icon-btn" href="https://instagram.com/hunterschoicesupply" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </a>
 
       <!-- Popover Cart Invoker Button -->
       <button class="cart-icon-btn" id="cart-btn" commandfor="cart-drawer" command="toggle-popover" aria-label="Open Shopping Cart">
@@ -72,29 +89,82 @@
     <!-- Shop Catalog Section -->
     <section class="shop-section" id="shop">
       <div class="section-header">
-        <h2>Weapons & Mystical Supplies</h2>
-        <p>Stock up on salt, iron, silver, and rare relics to survive the supernatural.</p>
+        <h2>Bunker Collections</h2>
+        <p>Browse our official print-on-demand catalog, integrated directly from Shopify.</p>
       </div>
 
       <!-- Catalog Controls: Search and Filters -->
       <div class="catalog-controls">
         <div class="search-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="search-input" placeholder="Search weapons, lore, flannel...">
+          <input type="text" id="search-input" placeholder="Search mugs, tees, hoodies...">
         </div>
         
         <div class="filter-buttons" id="filter-buttons">
-          <button class="filter-btn active" data-category="all">All Gear</button>
-          <button class="filter-btn" data-category="gear">Weapons & Gear</button>
-          <button class="filter-btn" data-category="apparel">Apparel</button>
-          <button class="filter-btn" data-category="artifacts">Mystical Artifacts</button>
-          <button class="filter-btn" data-category="lore">Books & Lore</button>
+          <button class="filter-btn active" data-category="all">All Goods</button>
+          <button class="filter-btn" data-category="apparel">Tees & Apparel</button>
+          <button class="filter-btn" data-category="gear">Mugs & Tumblers</button>
+          <button class="filter-btn" data-category="artifacts">Printed Accessories</button>
+          <button class="filter-btn" data-category="lore">Notebooks & Lore</button>
         </div>
       </div>
 
       <!-- Catalog Grid -->
       <div class="product-grid" id="product-grid">
         <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Numbered Pagination -->
+      <div class="pagination-container" id="pagination-container">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviews">
+      <div class="section-header">
+        <h2>Field Reports & Testimonials</h2>
+        <p>Verified accounts from active hunters on the road. Log your own report below.</p>
+      </div>
+
+      <div class="reviews-container">
+        <!-- Column 1: Review Submission Form -->
+        <div class="review-form-container">
+          <h3>Log a Field Report</h3>
+          <form id="review-form">
+            <div class="form-group">
+              <label for="review-name">Codename / Hunter Name</label>
+              <input type="text" id="review-name" placeholder="e.g. Bobby S." required>
+            </div>
+            
+            <div class="form-group">
+              <label>Survival Rating</label>
+              <div class="rating-input" id="rating-input">
+                <span class="star-btn" data-value="1">★</span>
+                <span class="star-btn" data-value="2">★</span>
+                <span class="star-btn" data-value="3">★</span>
+                <span class="star-btn" data-value="4">★</span>
+                <span class="star-btn" data-value="5">★</span>
+              </div>
+              <input type="hidden" id="review-rating" value="5" required>
+            </div>
+
+            <div class="form-group">
+              <label for="review-text">Field Report Details</label>
+              <textarea id="review-text" rows="4" placeholder="Report on the gear effectiveness in the field..." required></textarea>
+            </div>
+
+            <button type="submit" class="gold-btn" style="width: 100%; justify-content: center;">Submit Report</button>
+          </form>
+        </div>
+
+        <!-- Column 2: Reviews Feed -->
+        <div class="reviews-feed">
+          <h3>Recent Reports</h3>
+          <div id="reviews-list">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
       </div>
     </section>
 
@@ -111,22 +181,43 @@
     <div class="footer-grid">
       <div class="footer-col">
         <h3>Hunter's Choice</h3>
-        <p>A specialized shop built by hunters, for hunters. Offering top-quality protection tools, replica memorabilia, and defense items since 2005. Keep your salt lines fresh and your trunk fully loaded.</p>
+        <p>A premium print-on-demand fanshop built for Supernatural fans. We offer high-quality graphic t-shirts, custom mugs, and unique printed accessories designed in-house. Show off your lore pride from the road.</p>
       </div>
       <div class="footer-col">
         <h3>Protection Rules</h3>
         <ul>
-          <li><a href="#shop">Get Silver Blades</a></li>
-          <li><a href="#shop">Salt & Iron Protection</a></li>
+          <li><a href="#shop">Bunker Coffee Mugs</a></li>
+          <li><a href="#shop">Graphic Tees & Apparel</a></li>
+          <li><a href="#reviews">Hunter Field Reports</a></li>
           <li><a href="#quiz">Test Lore Knowledge</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3>Winchester Road Trip</h3>
-        <p>Always on the road. Standard shipping rates apply, unless you are driving a 1967 Chevy Impala, in which case shipping is on us (use promo code <strong>BABY1967</strong>).</p>
+        <p>Always on the road. Standard shipping rates apply, unless it is your first trunk load, in which case use code <strong>BABY1967</strong> for 10% off at checkout.</p>
       </div>
     </div>
+
+    <!-- Newsletter / Dispatch signup block -->
+    <div class="footer-newsletter">
+      <div class="newsletter-content">
+        <h3>Join the Hunter Dispatch</h3>
+        <p>Subscribe to receive bunker alerts, print drops, and gear discount codes.</p>
+      </div>
+      <form id="newsletter-form" class="newsletter-form">
+        <input type="email" id="newsletter-email" placeholder="Enter your email coordinates..." required>
+        <button type="submit" class="gold-btn">Subscribe</button>
+      </form>
+    </div>
+    <div id="newsletter-feedback" class="newsletter-feedback"></div>
+
     <div class="footer-bottom">
+      <div class="footer-social-row" style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 1rem;">
+        <a href="https://instagram.com/hunterschoicesupply" target="_blank" rel="noopener noreferrer" class="social-footer-btn" style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; text-decoration: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: currentColor;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          @hunterschoicesupply
+        </a>
+      </div>
       <p>&copy; 2026 Hunter's Choice Supply. Handcrafted for Supernatural Fans. Saving people, hunting things.</p>
       <p>Made with Salt, Iron, and Silver.</p>
     </div>
@@ -162,9 +253,16 @@
           <span id="cart-total">$0.00</span>
         </div>
       </div>
+      
+      <!-- Print-on-Demand Production Timeline Disclaimer -->
+      <div class="cart-pod-disclaimer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Print-on-Demand: Production takes 2-5 days prior to shipment.</span>
+      </div>
+      
       <button class="red-btn cart-checkout-btn" id="checkout-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        Seal the Deal (Checkout)
+        Checkout Order
       </button>
     </div>
   </div>
@@ -175,6 +273,45 @@
     <button class="detail-close-btn" id="detail-close-btn" aria-label="Close details">&times;</button>
     <div id="detail-content">
       <!-- Populated dynamically via JS -->
+    </div>
+  </dialog>
+
+  <!-- Newsletter Pop-up Dialog -->
+  <dialog id="newsletter-modal" class="newsletter-modal" closedby="any">
+    <button class="newsletter-modal-close" id="newsletter-modal-close" aria-label="Close dialog">&times;</button>
+    <div class="newsletter-modal-content">
+      <div class="newsletter-modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px var(--accent-gold-glow));"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </div>
+      <h3>Join the Hunter Dispatch</h3>
+      <p>Subscribe to secure premium bunker alerts, print drops, and a <strong>10% discount coordinates code</strong> instantly!</p>
+      <form id="popup-newsletter-form" class="popup-newsletter-form">
+        <input type="email" id="popup-newsletter-email" placeholder="Enter your email coordinates..." required>
+        <button type="submit" class="gold-btn" style="width: 100%; justify-content: center; margin-top: 0.75rem;">Secure Discount Code</button>
+      </form>
+      <div id="popup-newsletter-feedback" class="popup-newsletter-feedback"></div>
+    </div>
+  </dialog>
+
+  <!-- Order Tracking Dialog -->
+  <dialog id="track-modal" class="track-modal" closedby="any">
+    <button class="track-modal-close" id="track-modal-close" aria-label="Close tracking">&times;</button>
+    <div class="track-modal-content">
+      <div class="track-modal-icon" style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px var(--accent-gold-glow));"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+      </div>
+      <h3>Track Your Shipment</h3>
+      <p>Enter your carrier tracking number to search live status updates directly.</p>
+      
+      <form id="track-form" class="track-form">
+        <div class="input-group" style="margin-bottom: 1rem;">
+          <input type="text" id="track-order-id" placeholder="Tracking Number (e.g. 9400100000000000000000)" required>
+        </div>
+        <button type="submit" class="gold-btn" style="width: 100%; justify-content: center;">Locate Shipment</button>
+      </form>
+      
+      <!-- Progress Tracker details (hidden initially) -->
+      <div id="track-result" class="track-result"></div>
     </div>
   </dialog>
 
@@ -190,7 +327,7 @@
       </svg>
     </div>
     <h3 class="checkout-title font-title glow-text-gold">Salt Circle Protection Active!</h3>
-    <p class="checkout-text">Your order has been secured against demonic interceptors. A verification flyer has been dispatched to your local hunter motel box.</p>
+    <p class="checkout-text">Your order has been secured! Because our mugs and shirts are printed on demand in the bunker, please allow 2-5 business days for printing and curing before tracking is dispatched to your local hunter motel box.</p>
     
     <div class="receipt-box" id="receipt-box">
       <!-- Populated dynamically via JS -->

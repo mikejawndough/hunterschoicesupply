@@ -15,19 +15,19 @@ const SHOPIFY_CONFIG = {
 // 1. Product Database (with Custom Inline SVGs)
 const PRODUCTS = [
   {
-    id: "silver-blade",
-    name: "Hunter's Silver Blade",
-    price: 89.99,
-    category: "gear",
-    badge: "Essential",
+    id: "silver-blade-tee",
+    name: "Silver Blade Graphic Tee",
+    price: 24.99,
+    category: "apparel",
+    badge: "Premium",
     cursed: false,
-    description: "Hand-forged pure carbon steel blade electroplated with high-grade sterling silver. Perfect for dispatching wearwolves, skinwalkers, and various shapeshifters. Includes a leather sheath engraved with a protective symbol.",
-    lore: "John's Journal: 'shapeshifters are killed by silver to the heart. Clean strike. Keep it polished.'",
+    description: "A premium 100% ring-spun cotton tee featuring a custom, highly detailed silver blade print. Soft to the touch and built to last through long road trips and active patrols.",
+    lore: "John's Journal: 'Always pack a silver graphic. Blend in with civilians. Stay comfortable in the heat.'",
     stats: {
-      "Lethality": "High (Against Vulnerable)",
-      "Material": "Sterling Silver Plated Steel",
-      "Vulnerability Match": "Shapeshifters, Werewolves",
-      "Maintenance": "Polishing required after contact"
+      "Fabric": "100% Combed Ring-spun Cotton",
+      "Print Type": "Direct-to-Garment (DTG) print",
+      "Fit": "Relaxed Unisex Fit",
+      "Sizes": "S to 3XL"
     },
     svgIcon: `
       <path d="M 50 15 L 60 45 L 53 45 L 53 80 L 47 80 L 47 45 L 40 45 Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -38,18 +38,18 @@ const PRODUCTS = [
   },
   {
     id: "winchester-journal",
-    name: "John Winchester's Journal Replica",
-    price: 125.00,
+    name: "Winchester Journal Notebook",
+    price: 19.99,
     category: "lore",
-    badge: "Collector",
+    badge: "New",
     cursed: false,
-    description: "An exact replica of the legendary leather-bound journal. Contains 80 pages of detailed sketches, monster weaknesses, newspaper clippings, exorcism rituals, and handwritten notes compiled by John Winchester himself.",
-    lore: "Dean's Diary: 'Dad's journal is the holy grail. Tells us everything we need to kill whatever is in the dark.'",
+    description: "A 150-page ruled hardcover notebook featuring a detailed John Winchester journal mock-up cover print. Perfect for keeping track of your thoughts, daily schedules, or monster research.",
+    lore: "Dean: 'Write it down. Every detail. That's how we remember what we're fighting.'",
     stats: {
-      "Page Count": "80 illustrated pages",
-      "Binding": "Faux Weathered Leather",
-      "Lore Rating": "Maximum (5/5)",
-      "Includes": "Lock pick set mockup & newspaper slips"
+      "Page Count": "150 lined pages",
+      "Cover Print": "High-gloss John Winchester journal wrap",
+      "Paper Style": "50lb text weight ruled paper",
+      "Size": "6 x 8 inches"
     },
     svgIcon: `
       <rect x="25" y="15" width="50" height="70" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -66,15 +66,15 @@ const PRODUCTS = [
     name: "Winchester Signature Flannel",
     price: 49.99,
     category: "apparel",
-    badge: "Comfort",
+    badge: "Classic",
     cursed: false,
-    description: "Heavy-duty cotton plaid flannel shirt in classic forest green and black. Built to withstand rough investigations, cemetery digging, and cold nights in the Impala. Features reinforced elbows.",
+    description: "Heavy-duty cotton plaid flannel shirt in classic forest green and black. Built to withstand rough investigations, cemetery digs, and cold nights in the Impala.",
     lore: "Bobby's Advice: 'Dress like a blue-collar worker. Look normal. No one suspects a couple of guys in flannel.'",
     stats: {
       "Material": "100% Heavy Brushed Cotton",
       "Fit": "Relaxed Hunter Fit",
       "Pockets": "Dual chest button pockets",
-      "Durability": "Washed, pre-shrunk, dirt-resistant"
+      "Sizes": "S to 2XL"
     },
     svgIcon: `
       <path d="M 20 20 L 35 15 L 50 25 L 65 15 L 80 20 L 75 45 L 68 45 L 68 85 L 32 85 L 32 45 L 25 45 Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -87,19 +87,19 @@ const PRODUCTS = [
     `
   },
   {
-    id: "salt-iron-kit",
-    name: "Salt & Iron Protection Kit",
-    price: 29.99,
+    id: "salt-iron-mug",
+    name: "Salt & Iron Ceramic Mug",
+    price: 14.99,
     category: "gear",
-    badge: "Essential",
+    badge: "Best Seller",
     cursed: false,
-    description: "A compact wooden box containing two cylinders of rock salt (sourced from active mines) and a 6-inch forged iron railroad spike. Essential for sealing window thresholds and fending off angry spirits.",
-    lore: "John's Journal: 'Spirits and demons cannot cross a line of pure salt. Forged iron disperses spirit forms instantly.'",
+    description: "An 11oz high-grade white ceramic coffee mug featuring a classic Salt & Iron Protection design. A perfect way to ward off spirits while enjoying your morning brew. Dishwasher and microwave safe.",
+    lore: "John's Journal: 'Spirits and demons cannot cross a line of pure salt. Keep it close to your coffee.'",
     stats: {
-      "Salt Volume": "2x 150g containers",
-      "Iron Content": "99% pure forged iron spike",
-      "Effectiveness": "Ghost containment & demon stalling",
-      "Box Type": "Anti-possession stamped dark wood"
+      "Volume": "11oz (325ml)",
+      "Material": "100% white ceramic",
+      "Care": "Dishwasher & Microwave safe",
+      "Print": "Double-sided sublimation print"
     },
     svgIcon: `
       <rect x="25" y="30" width="50" height="45" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -113,19 +113,19 @@ const PRODUCTS = [
     `
   },
   {
-    id: "hex-bag",
-    name: "Cursed Witch's Hex Bag",
-    price: 34.99,
+    id: "hex-bag-tote",
+    name: "Witch Hex Bag Canvas Tote",
+    price: 18.99,
     category: "artifacts",
-    badge: "Artifact",
-    cursed: true, // SPIKES EMF METER!
-    description: "A dark, hand-stitched burlap pouch bound with twine. Contains mock ritual herbs, bones, and ancient talismans. Warning: Keep away from your electronics. Highly radioactive in EMF waves.",
-    lore: "Bobby's Notes: 'Witches use hex bags to cast deadly curses from a distance. If you find one, burn it immediately.'",
+    badge: "Accessories",
+    cursed: false,
+    description: "A heavy-weight cotton canvas tote bag featuring a high-resolution printed witch hex bag graphic. Ideal for carrying notebooks, laptops, or groceries on the road.",
+    lore: "Bobby's Notes: 'Witches use hex bags to cast curses from a distance. Use this tote to carry your books instead.'",
     stats: {
-      "Paranormal Output": "Dangerously High",
-      "Warning": "Will cause extreme EMF spikes!",
-      "Contents": "Burlap pouch, chicken bones (mock), runic coins",
-      "Cure": "Burn in fire to break the curse"
+      "Material": "10oz 100% Cotton Canvas",
+      "Dimensions": "15 x 15 inches",
+      "Strap Drop": "11-inch reinforced handles",
+      "Capacity": "Holds up to 20 lbs"
     },
     svgIcon: `
       <path d="M 35 30 Q 50 45, 65 30 Q 70 65, 50 80 Q 30 65, 35 30 Z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -139,12 +139,12 @@ const PRODUCTS = [
   },
   {
     id: "deans-amulet",
-    name: "Dean's Amulet (Samulet)",
-    price: 39.99,
+    name: "Dean's Amulet Replica Necklace",
+    price: 15.00,
     category: "artifacts",
     badge: "Replica",
     cursed: false,
-    description: "An authentic metal replica of the bronze amulet Sam gave to Dean as a Christmas gift. Depicts a horned deity face. Hangs on a durable black cord. Said to glow in the presence of God.",
+    description: "An authentic metal replica of the bronze amulet Sam gave to Dean as a Christmas gift. Hangs on a durable, adjustable black cord. An essential piece of fan memorabilia.",
     lore: "Castiel: 'This amulet is very rare. It is an instrument... it can detect God.'",
     stats: {
       "Finish": "Antique Bronze Plated Alloy",
@@ -163,19 +163,19 @@ const PRODUCTS = [
     `
   },
   {
-    id: "emf-detector-device",
-    name: "Classic EMF Detector (Active)",
-    price: 79.99,
-    category: "gear",
-    badge: "Interactive",
+    id: "emf-detector-hoodie",
+    name: "EMF Detector Graphic Hoodie",
+    price: 39.99,
+    category: "apparel",
+    badge: "Printed",
     cursed: false,
-    description: "A replica of the modified Walkman EMF detector used by Sam and Dean. Displays 5 indicator LEDs and has a ticking meter dial. (Includes a light sensor circuit that buzzes/ticks faster as ambient electromagnetic frequencies change).",
-    lore: "Dean's Journal: 'Modified a tape player to capture EMF waves. Spikes near spirits, ghosts, and black magic.'",
+    description: "A cozy cotton-blend fleece hoodie featuring a detailed, glow-in-the-dark styled EMF activity meter graphic print. Perfect for staying warm while scanning the perimeter.",
+    lore: "Dean's Journal: 'Modified tape players read EMF. Keep a hoodie ready for night cases.'",
     stats: {
-      "Frequencies": "Reads 50Hz to 20,000Hz",
-      "Lights": "5-stage LED strip gauge",
-      "Power": "9V battery (not included)",
-      "Materials": "Vintage grey ABS housing"
+      "Fabric": "50% Cotton, 50% Polyester fleece",
+      "Weight": "8.0 oz/yd² midweight",
+      "Print": "Durable screen-print graphic",
+      "Sizes": "S to 3XL"
     },
     svgIcon: `
       <rect x="28" y="20" width="44" height="65" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -193,19 +193,19 @@ const PRODUCTS = [
     `
   },
   {
-    id: "angel-blade",
-    name: "Archangel Blade Replica",
-    price: 95.00,
+    id: "angel-blade-tumbler",
+    name: "Angel Blade Stainless Tumbler",
+    price: 29.99,
     category: "gear",
-    badge: "Replica",
+    badge: "Insulated",
     cursed: false,
-    description: "A gorgeous, solid metal replica of the triangular dagger wielded by Angels of the Lord. Highly polished silver finish with a comfortable, ergonomically detailed twisted grip handle.",
-    lore: "Castiel: 'An angel blade can kill angels, archangels, demons, and reapers. Do not handle lightly.'",
+    description: "A 20oz double-wall vacuum insulated stainless steel travel tumbler featuring a laser-engraved Archangel Blade design. Keeps drinks ice-cold for 24 hours or hot for 12.",
+    lore: "Castiel: 'An angel blade is a powerful weapon. Keep your drinks cold while patrolling.'",
     stats: {
-      "Material": "Chrome Polished Solid Stainless Steel",
-      "Length": "18.5 inches total",
-      "Shape": "Triangular three-sided blade",
-      "Weight": "1.8 lbs"
+      "Capacity": "20oz (590ml)",
+      "Material": "18/8 Kitchen-grade Stainless Steel",
+      "Insulation": "Double-wall vacuum insulation",
+      "Lid": "BPA-free splash resistant sliding lid"
     },
     svgIcon: `
       <!-- Triple-edged blade path -->
@@ -219,19 +219,19 @@ const PRODUCTS = [
     `
   },
   {
-    id: "devils-trap-decal",
-    name: "Devil's Trap Rug Decal",
-    price: 34.99,
+    id: "devils-trap-mousepad",
+    name: "Devil's Trap Circular Mouse Pad",
+    price: 12.99,
     category: "artifacts",
-    badge: "Defensive",
+    badge: "Desk Gear",
     cursed: false,
-    description: "A 3-foot circular vinyl rug containing a meticulously printed Devil's Trap. Perfect for placing under carpets, at thresholds, or in the center of your training room. Guaranteed to trap lower to mid-tier demons.",
-    lore: "Dean Winchester: 'Once they walk inside, they can't leave. They lose their mojo. Easy interrogation.'",
+    description: "A circular neoprene mouse pad featuring a printed Devil's Trap planetary seal. Non-slip rubber backing and a silky cloth surface ensure smooth cursor sweeps.",
+    lore: "Dean Winchester: 'Once they walk inside, they can't leave. Keeps your cursor trapped right where you want it.'",
     stats: {
-      "Diameter": "36 inches (3 feet)",
-      "Material": "Heavy-duty non-slip vinyl",
-      "Symbolism": "Pentagram with planetary glyphs",
-      "Sturdiness": "Scuff-resistant, washable"
+      "Diameter": "8.5 inches",
+      "Material": "Smooth polyester surface with neoprene rubber base",
+      "Thickness": "0.12 inches (3mm) backing",
+      "Anti-slip": "Heavy-grip textured bottom"
     },
     svgIcon: `
       <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -330,12 +330,46 @@ class ShopApp {
     this.checkoutModal = document.getElementById("checkout-modal");
     this.receiptBox = document.getElementById("receipt-box");
     
+    // Reviews elements
+    this.reviewsList = document.getElementById("reviews-list");
+    this.reviewForm = document.getElementById("review-form");
+    this.ratingInput = document.getElementById("rating-input");
+    this.ratingHidden = document.getElementById("review-rating");
+    
+    // Newsletter elements
+    this.newsletterForm = document.getElementById("newsletter-form");
+    this.newsletterEmail = document.getElementById("newsletter-email");
+    this.newsletterFeedback = document.getElementById("newsletter-feedback");
+    
+    // Popup newsletter elements
+    this.newsletterModal = document.getElementById("newsletter-modal");
+    this.popupNewsletterForm = document.getElementById("popup-newsletter-form");
+    this.popupNewsletterEmail = document.getElementById("popup-newsletter-email");
+    this.popupNewsletterFeedback = document.getElementById("popup-newsletter-feedback");
+    
+    // Mobile navigation elements
+    this.menuToggle = document.getElementById("menu-toggle");
+    this.navElement = document.querySelector("header nav");
+    
+    // Pagination elements
+    this.paginationContainer = document.getElementById("pagination-container");
+    this.currentPage = 1;
+    this.itemsPerPage = 6;
+    
+    // Order tracking elements
+    this.trackModal = document.getElementById("track-modal");
+    this.trackForm = document.getElementById("track-form");
+    this.trackOrderId = document.getElementById("track-order-id");
+    this.trackResult = document.getElementById("track-result");
+    
     // Init actions
     this.initTypewriter();
     this.initEvents();
     this.initCatalog(); // Async load Shopify or local products
     this.updateCartUI();
+    this.initReviews();
     this.initQuiz();
+    this.initNewsletterPopup();
   }
 
   loadCartFromStorage() {
@@ -355,6 +389,7 @@ class ShopApp {
     // Search
     this.searchInput.addEventListener("input", (e) => {
       this.searchQuery = e.target.value.toLowerCase().trim();
+      this.currentPage = 1;
       this.renderProducts();
     });
 
@@ -367,6 +402,7 @@ class ShopApp {
       btn.classList.add("active");
       
       this.currentCategory = btn.dataset.category;
+      this.currentPage = 1;
       this.renderProducts();
     });
 
@@ -456,7 +492,196 @@ class ShopApp {
       this.checkoutModal.close();
     });
 
+    // Star Rating click listener
+    if (this.ratingInput) {
+      const stars = this.ratingInput.querySelectorAll(".star-btn");
+      
+      const updateStars = (val) => {
+        stars.forEach(s => {
+          const sVal = parseInt(s.dataset.value);
+          s.classList.toggle("active", sVal <= val);
+        });
+      };
+      
+      updateStars(parseInt(this.ratingHidden.value));
 
+      stars.forEach(star => {
+        star.addEventListener("click", () => {
+          const val = parseInt(star.dataset.value);
+          this.ratingHidden.value = val;
+          updateStars(val);
+        });
+      });
+    }
+
+    // Review Form submit listener
+    if (this.reviewForm) {
+      this.reviewForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const nameInput = document.getElementById("review-name");
+        const textInput = document.getElementById("review-text");
+        
+        const newReview = {
+          name: nameInput.value.trim(),
+          rating: parseInt(this.ratingHidden.value),
+          text: textInput.value.trim()
+        };
+        
+        this.reviews.unshift(newReview);
+        this.saveReviewsToStorage();
+        this.renderReviews();
+        
+        nameInput.value = "";
+        textInput.value = "";
+        this.ratingHidden.value = "5";
+        if (this.ratingInput) {
+          const stars = this.ratingInput.querySelectorAll(".star-btn");
+          stars.forEach(s => s.classList.add("active"));
+        }
+        
+        alert("Field report logged to archives.");
+      });
+    }
+
+    // Newsletter signup listener
+    if (this.newsletterForm) {
+      this.newsletterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = this.newsletterEmail.value.trim().toLowerCase();
+        
+        const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
+        if (subscribers.includes(email)) {
+          this.newsletterFeedback.textContent = "Coordinates already registered in the archives!";
+          this.newsletterFeedback.className = "newsletter-feedback error";
+          return;
+        }
+        
+        subscribers.push(email);
+        localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
+        
+        this.newsletterFeedback.innerHTML = `
+          Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
+        `;
+        this.newsletterFeedback.className = "newsletter-feedback success";
+        this.newsletterEmail.value = "";
+      });
+    }
+
+    // Top nav newsletter link click to open popup
+    const navNewsletterBtn = document.getElementById("nav-newsletter-btn");
+    if (navNewsletterBtn && this.newsletterModal) {
+      navNewsletterBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.newsletterModal.showModal();
+      });
+    }
+
+    // Popup Close button
+    const popupCloseBtn = document.getElementById("newsletter-modal-close");
+    if (popupCloseBtn && this.newsletterModal) {
+      popupCloseBtn.addEventListener("click", () => {
+        this.newsletterModal.close();
+      });
+    }
+
+    // Popup newsletter form submit
+    if (this.popupNewsletterForm) {
+      this.popupNewsletterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = this.popupNewsletterEmail.value.trim().toLowerCase();
+        
+        const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
+        if (subscribers.includes(email)) {
+          this.popupNewsletterFeedback.textContent = "Coordinates already registered in the archives!";
+          this.popupNewsletterFeedback.className = "popup-newsletter-feedback error";
+          return;
+        }
+        
+        subscribers.push(email);
+        localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
+        localStorage.setItem("hunters_dismissed_popup", "true");
+        
+        this.popupNewsletterFeedback.innerHTML = `
+          Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
+        `;
+        this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
+        this.popupNewsletterEmail.value = "";
+      });
+    }
+
+    // Mobile hamburger menu toggle
+    if (this.menuToggle && this.navElement) {
+      this.menuToggle.addEventListener("click", () => {
+        this.menuToggle.classList.toggle("open");
+        this.navElement.classList.toggle("open");
+      });
+
+      // Close menu when clicking a link
+      const navLinks = this.navElement.querySelectorAll("a");
+      navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          this.menuToggle.classList.remove("open");
+          this.navElement.classList.remove("open");
+        });
+      });
+    }
+
+    // Open tracking modal click
+    const navTrackBtn = document.getElementById("nav-track-btn");
+    if (navTrackBtn && this.trackModal) {
+      navTrackBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (this.trackResult) this.trackResult.style.display = "none";
+        if (this.trackOrderId) this.trackOrderId.value = "";
+        this.trackModal.showModal();
+      });
+    }
+
+    // Close tracking modal click
+    const trackCloseBtn = document.getElementById("track-modal-close");
+    if (trackCloseBtn && this.trackModal) {
+      trackCloseBtn.addEventListener("click", () => {
+        this.trackModal.close();
+      });
+    }
+
+    // Track order form submit
+    if (this.trackForm) {
+      this.trackForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const trackingNumber = this.trackOrderId.value.trim();
+        
+        // Construct live tracking URLs
+        const uspsUrl = `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(trackingNumber)}`;
+        const trackingUrl = `https://t.17track.net/en#nums=${encodeURIComponent(trackingNumber)}`;
+        
+        this.trackResult.innerHTML = `
+          <div class="track-info-header" style="margin-bottom: 1rem;">
+            <span>Carrier Code: <strong style="color:var(--accent-gold);">${trackingNumber}</strong></span>
+          </div>
+          
+          <p style="font-size: 0.8rem; text-align: left; margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.4;">
+            Live shipment coordinates generated. Click the buttons below to open official portals, or inspect the live carrier dispatch tracker embedded below.
+          </p>
+          
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+            <a href="${uspsUrl}" target="_blank" rel="noopener noreferrer" class="gold-btn" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.8rem; padding: 0.6rem;">
+              USPS Tracker
+            </a>
+            <a href="${trackingUrl}" target="_blank" rel="noopener noreferrer" class="gold-btn" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.8rem; padding: 0.6rem; border-color: rgba(255,255,255,0.15);">
+              17Track Portal
+            </a>
+          </div>
+          
+          <!-- Embedded 17Track Live Iframe Widget -->
+          <div style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background: #fff; height: 350px;">
+            <iframe src="https://t.17track.net/en#nums=${encodeURIComponent(trackingNumber)}" style="width: 100%; height: 100%; border: none;" loading="lazy"></iframe>
+          </div>
+        `;
+        this.trackResult.style.display = "block";
+      });
+    }
   }
 
 
@@ -475,13 +700,25 @@ class ShopApp {
     if (filtered.length === 0) {
       this.productGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 4rem 0;">
-          <p>No weapons matching your query were found in our store archives.</p>
+          <p>No products matching your query were found in our store archives.</p>
         </div>
       `;
+      if (this.paginationContainer) {
+        this.paginationContainer.innerHTML = "";
+      }
       return;
     }
 
-    this.productGrid.innerHTML = filtered.map(prod => `
+    // Paginate products
+    const totalPages = Math.ceil(filtered.length / this.itemsPerPage);
+    if (this.currentPage > totalPages) {
+      this.currentPage = totalPages || 1;
+    }
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    const paginatedProducts = filtered.slice(startIndex, endIndex);
+
+    this.productGrid.innerHTML = paginatedProducts.map(prod => `
       <article class="product-card" data-id="${prod.id}" data-cursed="${prod.cursed}">
         <div class="product-image-container">
           <span class="product-badge ${prod.cursed ? 'cursed' : ''}">${prod.badge}</span>
@@ -504,6 +741,69 @@ class ShopApp {
         </div>
       </article>
     `).join("");
+
+    this.renderPagination(totalPages);
+  }
+
+  renderPagination(totalPages) {
+    if (!this.paginationContainer) return;
+
+    if (totalPages <= 1) {
+      this.paginationContainer.innerHTML = "";
+      return;
+    }
+
+    let buttonsHTML = "";
+    
+    // Prev arrow
+    buttonsHTML += `
+      <button class="pagination-btn arrow-btn" ${this.currentPage === 1 ? "disabled" : ""} data-action="prev" aria-label="Previous Page">
+        &lsaquo;
+      </button>
+    `;
+
+    // Numbers
+    for (let i = 1; i <= totalPages; i++) {
+      buttonsHTML += `
+        <button class="pagination-btn ${this.currentPage === i ? "active" : ""}" data-page="${i}">
+          ${i}
+        </button>
+      `;
+    }
+
+    // Next arrow
+    buttonsHTML += `
+      <button class="pagination-btn arrow-btn" ${this.currentPage === totalPages ? "disabled" : ""} data-action="next" aria-label="Next Page">
+        &rsaquo;
+      </button>
+    `;
+
+    this.paginationContainer.innerHTML = buttonsHTML;
+
+    // Listeners for pagination buttons
+    const btns = this.paginationContainer.querySelectorAll(".pagination-btn");
+    btns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const page = e.target.dataset.page;
+        const action = e.target.dataset.action;
+
+        if (page) {
+          this.currentPage = parseInt(page);
+        } else if (action === "prev" && this.currentPage > 1) {
+          this.currentPage--;
+        } else if (action === "next" && this.currentPage < totalPages) {
+          this.currentPage++;
+        }
+
+        this.renderProducts();
+        
+        // Scroll smoothly back to top of shop section
+        const shopSection = document.getElementById("shop");
+        if (shopSection) {
+          shopSection.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
   }
 
   // Cart Management
@@ -692,13 +992,9 @@ class ShopApp {
     this.promoFeedback.style.display = "none";
 
     // Codes validation
-    if (code === "FIRSTTRUNK") {
+    if (code === "BABY1967") {
       this.appliedPromo = { code, type: "percent", value: 0.10 };
       this.promoFeedback.textContent = "10% First Time Discount Applied!";
-      this.promoFeedback.className = "promo-feedback success";
-    } else if (code === "BABY1967") {
-      this.appliedPromo = { code, type: "percent", value: 0.15 };
-      this.promoFeedback.textContent = "15% Hunter Discount Applied!";
       this.promoFeedback.className = "promo-feedback success";
     } else if (code === "SAMMY") {
       this.appliedPromo = { code, type: "percent", value: 0.10 };
@@ -781,6 +1077,10 @@ class ShopApp {
           <div class="detail-price-row">
             <span class="detail-price">$${prod.price.toFixed(2)}</span>
             <button class="red-btn" id="modal-add-btn" data-id="${prod.id}">Add to Trunk</button>
+          </div>
+          <div class="pod-info-banner">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span><strong>Print-on-Demand item:</strong> Printed in the bunker. Please allow 2-5 days for printing & curing before shipment.</span>
           </div>
         </div>
       </div>
@@ -1027,18 +1327,28 @@ class ShopApp {
   }
 
   async createShopifyCheckout() {
-    const lineItems = this.cart.map(item => ({
-      variantId: item.product.shopifyVariantId || item.product.id,
-      quantity: item.quantity
-    }));
+    // Filter out local mock products that don't have a valid Shopify GID (starts with gid://)
+    const lines = this.cart
+      .filter(item => {
+        const id = item.product.shopifyVariantId || item.product.id;
+        return id && id.startsWith("gid://");
+      })
+      .map(item => ({
+        merchandiseId: item.product.shopifyVariantId || item.product.id,
+        quantity: item.quantity
+      }));
+
+    if (lines.length === 0) {
+      throw new Error("No real Shopify products in your cart. Local mock items cannot be checked out on Shopify.");
+    }
 
     const mutation = `
-      mutation checkoutCreate($input: CheckoutCreateInput!) {
-        checkoutCreate(input: $input) {
-          checkout {
-            webUrl
+      mutation cartCreate($input: CartInput!) {
+        cartCreate(input: $input) {
+          cart {
+            checkoutUrl
           }
-          checkoutUserErrors {
+          userErrors {
             message
           }
         }
@@ -1055,7 +1365,7 @@ class ShopApp {
       body: JSON.stringify({
         query: mutation,
         variables: {
-          input: { lineItems }
+          input: { lines }
         }
       })
     });
@@ -1064,36 +1374,99 @@ class ShopApp {
     const json = await response.json();
     if (json.errors) throw new Error(JSON.stringify(json.errors));
 
-    const errors = json.data.checkoutCreate.checkoutUserErrors;
+    const errors = json.data.cartCreate.userErrors;
     if (errors && errors.length > 0) {
       throw new Error(errors[0].message);
     }
 
-    return json.data.checkoutCreate.checkout.webUrl;
+    return json.data.cartCreate.cart.checkoutUrl;
   }
 
-  // 5. Hunter's Quiz Engine
+  // 5. Field Reports & Reviews Engine
+  initReviews() {
+    this.reviews = this.loadReviewsFromStorage();
+    this.renderReviews();
+  }
+
+  loadReviewsFromStorage() {
+    const saved = localStorage.getItem("hunters_reviews");
+    return saved ? JSON.parse(saved) : [];
+  }
+
+  saveReviewsToStorage() {
+    localStorage.setItem("hunters_reviews", JSON.stringify(this.reviews));
+  }
+
+  renderReviews() {
+    if (!this.reviewsList) return;
+    
+    if (this.reviews.length === 0) {
+      this.reviewsList.innerHTML = `
+        <div style="text-align: center; color: var(--text-muted); padding: 3rem 1rem; border: 1px dashed var(--border-color); border-radius: var(--radius-md); background: rgba(18, 14, 10, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <p style="font-family: var(--font-title); font-size: 1rem; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase;">No Reports Logged</p>
+          <p style="font-size: 0.85rem; max-width: 280px; line-height: 1.4;">Be the first to report your protective gear findings from the road!</p>
+        </div>
+      `;
+      return;
+    }
+    
+    this.reviewsList.innerHTML = this.reviews.map(rev => `
+      <div class="review-card">
+        <div class="review-header">
+          <span class="review-author">${rev.name}</span>
+          <span class="review-stars">${"★".repeat(rev.rating)}${"☆".repeat(5 - rev.rating)}</span>
+        </div>
+        <p class="review-text">"${rev.text}"</p>
+      </div>
+    `).join("");
+  }
+
+  // 6. Popup Newsletter Engine
+  initNewsletterPopup() {
+    // If they already subscribed or dismissed, don't auto-pop
+    if (localStorage.getItem("hunters_dismissed_popup") === "true") return;
+    
+    // Auto-trigger 6 seconds after page loads
+    setTimeout(() => {
+      if (this.newsletterModal && !this.newsletterModal.open) {
+        this.newsletterModal.showModal();
+        
+        // Store dismissed flag when dialog is closed so it doesn't pop up next page load
+        this.newsletterModal.addEventListener("close", () => {
+          localStorage.setItem("hunters_dismissed_popup", "true");
+        }, { once: true });
+      }
+    }, 6000);
+  }
+
+  // 7. Hunter's Quiz Engine
   initQuiz() {
     const quizData = [
       {
-        q: "What is the primary substance used to create boundary lines that ghosts and demons cannot cross?",
-        options: ["Cold Iron", "Holy Water", "Rock Salt", "Grave Dust"],
-        correct: 2 // Rock Salt
+        q: "According to Lucifer, how many things in all of creation is the legendary Colt unable to kill?",
+        options: ["3 things", "5 things", "7 things", "12 things"],
+        correct: 1 // 5 things
       },
       {
-        q: "Which model and year is the Winchesters' iconic muscle car, affectionately known as 'Baby'?",
-        options: ["1967 Chevrolet Impala", "1969 Dodge Charger", "1970 Ford Mustang", "1968 Chevrolet Camaro"],
-        correct: 0 // 1967 Chevrolet Impala
+        q: "What is the specific code word/phrase Sam and Dean use to signal that they are in immediate danger?",
+        options: ["Motel Six", "Funkytown", "Baby 67", "Kansas Road"],
+        correct: 1 // Funkytown
       },
       {
-        q: "What specialized weapon is required to permanently kill a demon without exorcising them?",
-        options: ["Silver Blade", "Ruby's Ancient Knife", "Angel Blade", "First Blade"],
-        correct: 1 // Ruby's Ancient Knife
+        q: "What common household cleaning chemical is highly toxic to Leviathans, burning their skin upon contact?",
+        options: ["Bleach", "Ammonia", "Borax", "Baking Soda"],
+        correct: 2 // Borax
       },
       {
-        q: "Which ancient angel raised Dean Winchester from hell and became their closest celestial ally?",
-        options: ["Uriel", "Gabriel", "Michael", "Castiel"],
-        correct: 3 // Castiel
+        q: "In the fan-favorite episode 'Mystery Spot', which of the following is NOT one of the ways Dean dies during Sam's endless Tuesday loop?",
+        options: ["Hit by a car", "Electrocuted by a radio", "Choking on a taco", "Falling down an elevator shaft"],
+        correct: 3 // Falling down an elevator shaft
+      },
+      {
+        q: "What is Sam Winchester's official LSAT score, mentioned when discussing his pre-law days at Stanford?",
+        options: ["168", "174", "178", "180"],
+        correct: 1 // 174
       }
     ];
 
