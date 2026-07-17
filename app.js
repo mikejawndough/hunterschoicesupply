@@ -508,9 +508,6 @@ class ShopApp {
 
   // Cart Management
   addToCart(id) {
-    // User interacted - initialize audio context
-    this.audioSynth.init();
-
     const product = this.products.find(p => p.id === id);
     if (!product) return;
 
