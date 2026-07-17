@@ -564,31 +564,64 @@ class ShopApp {
     }
 
     const normalizedItems = rawLines.map(item => {
-      // Local cart structure check
+      // Determine product details defensively across local cart and Shopify schemas
+      let id = "";
+      let name = "";
+      let price = 0;
+      let quantity = item.quantity || 1;
+      let imageUrl = null;
+      let svgIcon = null;
+
       if (item.product) {
-        return {
-          id: item.product.id,
-          name: item.product.name,
-          price: item.product.price,
-          quantity: item.quantity,
-          imageUrl: item.product.imageUrl || null,
-          svgIcon: item.product.svgIcon || null
-        };
+        const p = item.product;
+        id = p.id || item.id || "";
+        name = p.title || p.name || "Product";
+        
+        // Parse price defensively
+        if (p.price !== undefined && p.price !== null) {
+          if (typeof p.price === "number") {
+            price = p.price;
+          } else if (typeof p.price === "string") {
+            price = parseFloat(p.price);
+          } else if (p.price.amount) {
+            price = parseFloat(p.price.amount);
+          }
+        }
+        
+        imageUrl = p.imageUrl || (p.featuredImage?.url) || (p.images?.edges?.[0]?.node?.url) || null;
+        svgIcon = p.svgIcon || null;
+      } else {
+        // Fallback for Shopify Cart Line connection (merchandise nested)
+        const merch = item.merchandise || {};
+        const prod = merch.product || {};
+        
+        id = merch.id || item.id || "";
+        name = prod.title || merch.title || item.title || "Shopify Product";
+        
+        // Parse price defensively
+        const rawPrice = merch.price || item.price;
+        if (rawPrice !== undefined && rawPrice !== null) {
+          if (typeof rawPrice === "number") {
+            price = rawPrice;
+          } else if (typeof rawPrice === "string") {
+            price = parseFloat(rawPrice);
+          } else if (rawPrice.amount) {
+            price = parseFloat(rawPrice.amount);
+          }
+        } else if (item.estimatedCost?.totalAmount?.amount) {
+          price = parseFloat(item.estimatedCost.totalAmount.amount);
+        }
+        
+        imageUrl = merch.image?.url || prod.featuredImage?.url || null;
       }
-      
-      // Shopify Cart Line structure check
-      const merch = item.merchandise || {};
-      const prod = merch.product || {};
-      const priceAmount = merch.price ? parseFloat(merch.price.amount) : (item.estimatedCost?.totalAmount?.amount ? parseFloat(item.estimatedCost.totalAmount.amount) : 0);
-      const imgUrl = merch.image?.url || prod.featuredImage?.url || null;
-      
+
       return {
-        id: merch.id || item.id,
-        name: prod.title || merch.title || "Shopify Product",
-        price: priceAmount,
-        quantity: item.quantity || 1,
-        imageUrl: imgUrl,
-        svgIcon: null
+        id,
+        name,
+        price: isNaN(price) ? 0 : price,
+        quantity,
+        imageUrl,
+        svgIcon
       };
     });
 
