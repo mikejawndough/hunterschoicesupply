@@ -1482,11 +1482,55 @@ class ShopApp {
   }
 
   // Modals Display
-  showDetailsModal(id) {
-    const prod = this.products.find(p => p.id === id);
-    if (!prod) return;
+  openDetailModal() {
+    this.detailModal = document.getElementById("detail-modal");
+    if (!this.detailModal) return;
+    if (this.detailModal.open) {
+      try { this.detailModal.close(); } catch(e) {}
+    }
+    this.detailModal.classList.add("open");
+    this.detailModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 680px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
+    if (typeof this.detailModal.showModal === "function") {
+      try { this.detailModal.showModal(); } catch (e) { this.detailModal.setAttribute("open", ""); }
+    } else {
+      this.detailModal.setAttribute("open", "");
+    }
+  }
 
-    // Build journal page content
+  closeDetailModal() {
+    this.detailModal = document.getElementById("detail-modal");
+    if (!this.detailModal) return;
+    this.detailModal.classList.remove("open");
+    this.detailModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
+    if (typeof this.detailModal.close === "function") {
+      try { this.detailModal.close(); } catch (e) {}
+    }
+    this.detailModal.removeAttribute("open");
+  }
+
+  showDetailsModal(id) {
+    if (!id) return;
+    const cleanId = String(id).toLowerCase();
+
+    // Flexible product finder
+    let prod = (this.products || []).find(p => p.id === id || p.id === cleanId);
+    if (!prod) {
+      prod = (this.products || []).find(p => 
+        (p.id && String(p.id).toLowerCase().includes(cleanId)) ||
+        (p.handle && String(p.handle).toLowerCase().includes(cleanId)) ||
+        (p.name && String(p.name).toLowerCase().includes(cleanId.replace(/-/g, " "))) ||
+        (p.title && String(p.title).toLowerCase().includes(cleanId.replace(/-/g, " ")))
+      );
+    }
+    if (!prod && typeof PRODUCTS !== "undefined") {
+      prod = PRODUCTS.find(p => p.id === cleanId || (p.name && p.name.toLowerCase().includes(cleanId.replace(/-/g, " "))));
+    }
+
+    if (!prod) {
+      console.warn("Product not found for modal:", id);
+      return;
+    }
+
     const statsHTML = Object.entries(prod.stats || {}).map(([lbl, val]) => `
       <div class="journal-stats-row">
         <span class="journal-label">${lbl}:</span>
@@ -1494,32 +1538,34 @@ class ShopApp {
       </div>
     `).join("");
 
+    const priceNum = typeof prod.price === "number" ? prod.price : parseFloat(prod.price || 0);
+
     this.detailContent.innerHTML = `
       <div class="detail-grid">
         <div class="detail-left">
           ${prod.imageUrl ? 
-            `<img src="${prod.imageUrl}" alt="${prod.name}" style="width:100%; height:100%; object-fit:contain; max-height:220px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.6));">` : 
-            `<svg viewBox="0 0 100 100">${prod.svgIcon}</svg>`
+            `<img src="${prod.imageUrl}" alt="${prod.name || prod.title}" style="width:100%; height:100%; object-fit:contain; max-height:240px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.6));">` : 
+            `<svg viewBox="0 0 100 100">${prod.svgIcon || ""}</svg>`
           }
         </div>
         <div class="detail-right">
           <div class="detail-badge-row">
-            <span class="detail-badge ${prod.cursed ? 'danger' : ''}">${prod.badge}</span>
-            <span class="detail-badge">${prod.category}</span>
+            <span class="detail-badge ${prod.cursed ? 'danger' : ''}">${prod.badge || 'Official Gear'}</span>
+            <span class="detail-badge">${prod.category || 'Bunker Drop'}</span>
           </div>
-          <h3 class="detail-title font-title">${prod.name}</h3>
-          <p class="detail-desc">${prod.description}</p>
+          <h3 class="detail-title font-title">${prod.name || prod.title}</h3>
+          <p class="detail-desc">${prod.description || 'Official Supernatural print-on-demand item.'}</p>
           
           <div class="journal-stats">
             <h4 class="journal-stats-title">Winchester Journal Entry</h4>
-            ${statsHTML || '<p style="font-size: 0.8rem; font-style: italic; color: var(--text-muted)">No journal entries logged yet.</p>'}
+            ${statsHTML || '<p style="font-size: 0.8rem; font-style: italic; color: var(--text-muted)">No extra specs required. Pure bunker craftsmanship.</p>'}
             <p style="font-size: 0.8rem; font-style: italic; color: var(--accent-gold); margin-top: 0.75rem;">
-              "${prod.lore}"
+              "${prod.lore || 'Saving people, hunting things. The family business.'}"
             </p>
           </div>
 
           <div class="detail-price-row">
-            <span class="detail-price">$${prod.price.toFixed(2)}</span>
+            <span class="detail-price">$${priceNum.toFixed(2)}</span>
             <button class="red-btn" id="modal-add-btn" data-id="${prod.id}">Add to Trunk</button>
           </div>
           <div class="pod-info-banner">
@@ -1531,12 +1577,16 @@ class ShopApp {
     `;
 
     // Modal add button
-    document.getElementById("modal-add-btn").addEventListener("click", () => {
-      this.addToCart(prod.id);
-      this.detailModal.close();
-    });
+    const addBtn = document.getElementById("modal-add-btn");
+    if (addBtn) {
+      addBtn.addEventListener("click", () => {
+        this.addToCart(prod.id);
+        this.closeDetailModal();
+        this.openCartDrawer();
+      });
+    }
 
-    this.detailModal.showModal();
+    this.openDetailModal();
   }
 
   async triggerCheckout() {
