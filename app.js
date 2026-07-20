@@ -562,7 +562,7 @@ class ShopApp {
         this.subscribeShopifyCustomer(email);
 
         this.newsletterFeedback.innerHTML = `
-          Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
+          Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
         `;
         this.newsletterFeedback.className = "newsletter-feedback success";
         this.newsletterEmail.value = "";
@@ -607,7 +607,7 @@ class ShopApp {
         this.subscribeShopifyCustomer(email);
 
         this.popupNewsletterFeedback.innerHTML = `
-          Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
+          Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
         `;
         this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
         this.popupNewsletterEmail.value = "";
