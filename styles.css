@@ -407,68 +407,73 @@ nav ul a:hover::after {
   border: 1px solid var(--border-color);
   padding: 1.25rem 2rem;
   border-radius: var(--radius-md);
-  position: relative;
-  z-index: 1;
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 .search-box {
-  position: relative;
-  flex: 1 1 280px;
-  max-width: 380px;
-  z-index: 2;
+  position: relative !important;
+  flex: 1 1 260px !important;
+  max-width: 360px !important;
+  z-index: 20 !important;
 }
 
 .search-box input {
-  width: 100%;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  transition: all var(--transition-speed) ease;
+  width: 100% !important;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.95rem !important;
+  cursor: text !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 20 !important;
+  transition: all var(--transition-speed) ease !important;
 }
 
 .search-box input:focus {
-  outline: none;
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 10px var(--accent-gold-glow);
+  outline: none !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 10px var(--accent-gold-glow) !important;
 }
 
 .search-box svg {
-  position: absolute;
-  left: 0.85rem;
-  top: 50%;
-  transform: translateY(-50%);
-  stroke: var(--text-muted);
-  pointer-events: none;
+  position: absolute !important;
+  left: 0.85rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  stroke: var(--text-muted) !important;
+  pointer-events: none !important;
+  z-index: 21 !important;
 }
 
 .filter-buttons {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  display: flex !important;
+  gap: 0.75rem !important;
+  flex-wrap: wrap !important;
   position: relative !important;
-  z-index: 10 !important;
+  z-index: 20 !important;
 }
 
 .filter-btn {
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 0.65rem 1.25rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.65rem 1.25rem !important;
+  font-size: 0.85rem !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  border-radius: var(--radius-sm) !important;
   cursor: pointer !important;
   pointer-events: auto !important;
   position: relative !important;
-  z-index: 10 !important;
+  z-index: 25 !important;
   user-select: none !important;
-  transition: all var(--transition-speed) ease;
+  transition: all var(--transition-speed) ease !important;
 }
 
 .filter-btn * {

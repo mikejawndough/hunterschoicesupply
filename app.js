@@ -365,24 +365,38 @@ class ShopApp {
   }
 
   initEvents() {
-    // Search
-    this.searchInput.addEventListener("input", (e) => {
-      this.searchQuery = e.target.value.toLowerCase().trim();
-      this.currentPage = 1;
-      this.renderProducts();
-    });
+    // Search Handlers
+    if (this.searchInput) {
+      const handleSearch = (e) => {
+        this.searchQuery = e.target.value.toLowerCase().trim();
+        this.currentPage = 1;
+        this.renderProducts();
+      };
+      this.searchInput.addEventListener("input", handleSearch);
+      this.searchInput.addEventListener("keyup", handleSearch);
+    }
 
-    // Filters
-    this.filterButtonsContainer.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter-btn");
+    // Filter Handlers (Direct & Delegated)
+    const handleFilterClick = (btn) => {
       if (!btn) return;
-      
-      this.filterButtonsContainer.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       
-      this.currentCategory = btn.dataset.category;
+      this.currentCategory = btn.dataset.category || "all";
       this.currentPage = 1;
       this.renderProducts();
+    };
+
+    if (this.filterButtonsContainer) {
+      this.filterButtonsContainer.addEventListener("click", (e) => {
+        const btn = e.target.closest(".filter-btn");
+        if (btn) handleFilterClick(btn);
+      });
+    }
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-btn");
+      if (btn) handleFilterClick(btn);
     });
 
     // Add to cart / View details / EMF hover interaction (Event delegation on product grid)
