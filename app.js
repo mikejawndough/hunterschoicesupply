@@ -1097,8 +1097,18 @@ class ShopApp {
       }
     };
 
-    const targetKey = bundleConfigs[bundleId] ? bundleId : "bunker-care-package";
-    const config = bundleConfigs[targetKey];
+    const aliases = {
+      "completionist-set": "completionist-set",
+      "team-free-will": "completionist-set",
+      "team-free-will-completionist-set": "completionist-set",
+      "bunker-care-package": "bunker-care-package",
+      "bunker-care": "bunker-care-package",
+      "convention-survivor-kit": "convention-survivor-kit",
+      "convention-survivor": "convention-survivor-kit"
+    };
+
+    const resolvedId = aliases[bundleId] || (bundleConfigs[bundleId] ? bundleId : "bunker-care-package");
+    const config = bundleConfigs[resolvedId];
     this.activeBundleConfig = config;
 
     if (this.bundleModalTitle) this.bundleModalTitle.textContent = config.name;
