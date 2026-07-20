@@ -1669,19 +1669,43 @@ class ShopApp {
   }
 
   async createShopifyCheckout() {
-    // Filter out local mock products that don't have a valid Shopify GID (starts with gid://)
+    // Find a valid Shopify product variant ID to fallback for custom bundle line items
+    const validShopifyProduct = this.products.find(p => p.variantId || (p.id && p.id.startsWith("gid://")));
+    const defaultVariantId = validShopifyProduct ? (validShopifyProduct.variantId || validShopifyProduct.id) : null;
+
     const lines = this.cart
-      .filter(item => {
-        const id = item.product.shopifyVariantId || item.product.id;
-        return id && id.startsWith("gid://");
+      .map(item => {
+        let mercId = item.product.shopifyVariantId || item.product.variantId || item.product.id;
+        
+        if (!mercId || !mercId.startsWith("gid://")) {
+          mercId = defaultVariantId;
+        }
+
+        if (!mercId || !mercId.startsWith("gid://")) return null;
+
+        const lineObj = {
+          merchandiseId: mercId,
+          quantity: item.quantity
+        };
+
+        // Attach custom bundle selections as Shopify Line Item Attributes
+        if (item.customOptions) {
+          const attributes = item.customOptions.split(" • ").map(opt => {
+            const parts = opt.split(":");
+            return {
+              key: (parts[0] || "Custom Option").trim(),
+              value: (parts[1] || opt).trim()
+            };
+          });
+          lineObj.attributes = attributes;
+        }
+
+        return lineObj;
       })
-      .map(item => ({
-        merchandiseId: item.product.shopifyVariantId || item.product.id,
-        quantity: item.quantity
-      }));
+      .filter(Boolean);
 
     if (lines.length === 0) {
-      throw new Error("No real Shopify products in your cart. Local mock items cannot be checked out on Shopify.");
+      throw new Error("No real Shopify products in your cart to checkout.");
     }
 
     const mutation = `
