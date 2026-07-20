@@ -852,32 +852,34 @@ class ShopApp {
   openBundleModal() {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
-    this.bundleModal.setAttribute("open", "true");
+
+    // Remove open attribute first to prevent InvalidStateError DOMException on showModal()
+    this.bundleModal.removeAttribute("open");
     this.bundleModal.classList.add("open");
     this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 5% !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
-    
+
     if (typeof this.bundleModal.showModal === "function") {
       try {
-        if (!this.bundleModal.open) {
-          this.bundleModal.showModal();
-        }
-      } catch (e) {}
+        this.bundleModal.showModal();
+      } catch (e) {
+        this.bundleModal.setAttribute("open", "");
+      }
+    } else {
+      this.bundleModal.setAttribute("open", "");
     }
   }
 
   closeBundleModal() {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
-    this.bundleModal.removeAttribute("open");
     this.bundleModal.classList.remove("open");
     this.bundleModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
     if (typeof this.bundleModal.close === "function") {
       try {
-        if (this.bundleModal.open) {
-          this.bundleModal.close();
-        }
+        this.bundleModal.close();
       } catch (e) {}
     }
+    this.bundleModal.removeAttribute("open");
   }
 
   getProductsForBundleType(type) {
