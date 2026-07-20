@@ -32,9 +32,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Generate unique random code (e.g. HUNTER-A8B9C2)
-    const randomChars = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const discountCode = `HUNTER-${randomChars}`;
+    // Generate unique short discount code (e.g. WELCOME-A8B9C)
+    const randomChars = Math.random().toString(36).substring(2, 7).toUpperCase();
+    const discountCode = `WELCOME-${randomChars}`;
 
     // STEP A: Create 10% Off Basic Discount Code (combines with product & shipping discounts)
     const discountMutation = `
@@ -91,13 +91,17 @@ export default async function handler(req, res) {
       console.warn("Shopify Admin Discount warning:", discountRes.errors);
     }
 
-    // STEP B: Create or find Customer Profile with emailMarketingConsent
+    // STEP B: Create Customer Profile with SUBSCRIBED marketing consent & Metafield
     const customerMutation = `
       mutation customerCreate($input: CustomerInput!) {
         customerCreate(input: $input) {
           customer {
             id
             email
+            emailMarketingConsent {
+              marketingState
+              consentUpdatedAt
+            }
           }
           userErrors {
             field
@@ -112,9 +116,18 @@ export default async function handler(req, res) {
         email: email.trim().toLowerCase(),
         emailMarketingConsent: {
           marketingState: "SUBSCRIBED",
-          marketingOptInLevel: "SINGLE_OPT_IN"
+          marketingOptInLevel: "SINGLE_OPT_IN",
+          consentUpdatedAt: new Date().toISOString()
         },
-        tags: ["newsletter", "welcome_discount"]
+        tags: ["newsletter", "welcome_discount"],
+        metafields: [
+          {
+            namespace: "custom",
+            key: "welcome_discount_code",
+            type: "single_line_text_field",
+            value: discountCode
+          }
+        ]
       }
     };
 
@@ -124,6 +137,7 @@ export default async function handler(req, res) {
     if (customerRes.data?.customerCreate?.customer?.id) {
       customerGid = customerRes.data.customerCreate.customer.id;
     } else {
+      // Fallback: If customer already exists, query for customer ID by email
       const findCustomerQuery = `
         query findCustomer($query: String!) {
           customers(first: 1, query: $query) {
@@ -139,7 +153,7 @@ export default async function handler(req, res) {
       customerGid = findRes.data?.customers?.edges[0]?.node?.id || null;
     }
 
-    // STEP C: Set Metafield on Customer Profile (custom.welcome_discount_code)
+    // STEP C: Ensure Metafield is set on Customer Profile (custom.welcome_discount_code)
     if (customerGid) {
       const metafieldsMutation = `
         mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
