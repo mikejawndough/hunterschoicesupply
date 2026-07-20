@@ -724,20 +724,19 @@ class ShopApp {
 
     // Single Unified Listener for all Bundle buttons and cards
     document.addEventListener("click", (e) => {
+      if (e.target.closest("#bundle-modal-close")) return;
+
       const bundleTarget = e.target.closest(".bundle-open-btn, .bundle-card");
       if (bundleTarget) {
-        if (e.target.closest("#bundle-modal-close, button:not(.bundle-open-btn)")) return;
-
         e.preventDefault();
         
-        const btn = bundleTarget.classList.contains("bundle-open-btn") 
-          ? bundleTarget 
-          : bundleTarget.querySelector(".bundle-open-btn");
-
-        const bundleId = (btn && btn.dataset.bundleId) 
-          ? btn.dataset.bundleId 
-          : (bundleTarget.dataset.bundleId || "bunker-care-package");
-
+        let bundleId = bundleTarget.dataset.bundleId;
+        if (!bundleId) {
+          const innerBtn = bundleTarget.querySelector(".bundle-open-btn");
+          if (innerBtn) bundleId = innerBtn.dataset.bundleId;
+        }
+        
+        bundleId = bundleId || "bunker-care-package";
         this.openBundleCustomizer(bundleId);
       }
     });
@@ -970,20 +969,24 @@ class ShopApp {
 
   getProductsForBundleType(type) {
     const fallbackShirts = [
-      "She Wants The D Graphic Tee | Dean Winchester Fan T-Shirt",
-      "Silver Blade Graphic Tee"
+      "Bobby Singer \"BALLS!\" Tee",
+      "Driver Picks The Music Tee",
+      "\"Baby\" 1967 Impala Tee",
+      "Vote Crowley Campaign Graphic Tee"
     ];
 
     const fallbackMugs = [
-      "Carry On My Wayward Son Silhouette Mug",
-      "Team Castiel Collegiate Ceramic Mug"
+      "Crowley \"Hell to Raise\" Mug",
+      "Team Dean Collegiate Mug",
+      "Team Sam Collegiate Mug",
+      "\"I Deserve Pie\" Ceramic Mug",
+      "Castiel \"People Skills\" Mug"
     ];
 
     const fallbackPins = [
-      "Fight The Fairies Custom Pin Button",
-      "She Wants The D Custom Pin Button",
-      "Team Castiel Collegiate Custom Pin Button",
-      "Team Dean Collegiate Custom Pin Button"
+      "Team Free Will Pin Button",
+      "Anti-Possession Protection Pin",
+      "Winchester Brothers Emblem Pin"
     ];
 
     if (!this.products || this.products.length === 0) {
@@ -1632,7 +1635,7 @@ class ShopApp {
       const priceStr = typeof prod.price === "number" ? `$${prod.price.toFixed(2)}` : `$${prod.price}`;
 
       return `
-        <div class="carousel-item" data-id="${prod.id}" onclick="window.shopApp ? window.shopApp.showDetailsModal('${prod.id}') : (window.location.href='shop.html')">
+        <div class="carousel-item" data-id="${prod.id}" onclick="window.openCarouselProductModal('${prod.id}')" style="cursor: pointer;">
           <div class="carousel-img-wrap">
             ${imgHTML}
           </div>
@@ -2177,6 +2180,16 @@ window.openBundleCustomizer = (bundleId) => {
     window.shopApp.openBundleCustomizer(bundleId);
   } else if (window.app) {
     window.app.openBundleCustomizer(bundleId);
+  }
+};
+
+window.openCarouselProductModal = (productId) => {
+  initShopApp();
+  const appInstance = window.shopApp || window.app;
+  if (appInstance) {
+    appInstance.showDetailsModal(productId);
+  } else {
+    window.location.href = "shop.html";
   }
 };
 
