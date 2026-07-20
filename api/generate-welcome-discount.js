@@ -1,5 +1,6 @@
 // api/generate-welcome-discount.js
 // Serverless Function Handler for Shopify Admin API Discount Code Generation & Customer Metafield Setup
+// Includes 2-Step Split Execution Flow to eliminate Shopify Flow Welcome Email race conditions.
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,6 +19,8 @@ export default async function handler(req, res) {
   if (!adminApiToken) {
     return res.status(500).json({ success: false, error: 'SHOPIFY_ADMIN_API_SECRET_TOKEN environment variable is missing.' });
   }
+
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   async function shopifyAdminGql(query, variables = {}) {
     const response = await fetch(`https://${shopDomain}/admin/api/${apiVersion}/graphql.json`, {
@@ -91,17 +94,13 @@ export default async function handler(req, res) {
       console.warn("Shopify Admin Discount warning:", discountRes.errors);
     }
 
-    // STEP B: Create Customer Profile with SUBSCRIBED marketing consent & Metafield
+    // STEP 1: FIRST API CALL - Create or Update Customer Profile with Metafield and NOT_SUBSCRIBED consent
     const customerMutation = `
       mutation customerCreate($input: CustomerInput!) {
         customerCreate(input: $input) {
           customer {
             id
             email
-            emailMarketingConsent {
-              marketingState
-              consentUpdatedAt
-            }
           }
           userErrors {
             field
@@ -115,9 +114,7 @@ export default async function handler(req, res) {
       input: {
         email: email.trim().toLowerCase(),
         emailMarketingConsent: {
-          marketingState: "SUBSCRIBED",
-          marketingOptInLevel: "SINGLE_OPT_IN",
-          consentUpdatedAt: new Date().toISOString()
+          marketingState: "NOT_SUBSCRIBED"
         },
         tags: ["newsletter", "welcome_discount"],
         metafields: [
@@ -137,7 +134,7 @@ export default async function handler(req, res) {
     if (customerRes.data?.customerCreate?.customer?.id) {
       customerGid = customerRes.data.customerCreate.customer.id;
     } else {
-      // Fallback: If customer already exists, query for customer ID by email
+      // Fallback: If customer profile already exists in Shopify, query ID by email and update Metafield
       const findCustomerQuery = `
         query findCustomer($query: String!) {
           customers(first: 1, query: $query) {
@@ -151,18 +148,45 @@ export default async function handler(req, res) {
       `;
       const findRes = await shopifyAdminGql(findCustomerQuery, { query: `email:${email.trim().toLowerCase()}` });
       customerGid = findRes.data?.customers?.edges[0]?.node?.id || null;
+
+      if (customerGid) {
+        const metafieldsMutation = `
+          mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
+            metafieldsSet(metafields: $metafields) {
+              metafields {
+                id
+              }
+            }
+          }
+        `;
+        await shopifyAdminGql(metafieldsMutation, {
+          metafields: [
+            {
+              ownerId: customerGid,
+              namespace: "custom",
+              key: "welcome_discount_code",
+              type: "single_line_text_field",
+              value: discountCode
+            }
+          ]
+        });
+      }
     }
 
-    // STEP C: Ensure Metafield is set on Customer Profile (custom.welcome_discount_code)
+    // STEP 2: DELAY - Pause for 1000ms to allow Shopify to index the metafield
+    await delay(1000);
+
+    // STEP 3: SECOND API CALL - Trigger Subscription by updating marketing state to SUBSCRIBED
     if (customerGid) {
-      const metafieldsMutation = `
-        mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
-          metafieldsSet(metafields: $metafields) {
-            metafields {
+      const updateConsentMutation = `
+        mutation customerEmailMarketingConsentUpdate($input: CustomerEmailMarketingConsentUpdateInput!) {
+          customerEmailMarketingConsentUpdate(input: $input) {
+            customer {
               id
-              namespace
-              key
-              value
+              emailMarketingConsent {
+                marketingState
+                consentUpdatedAt
+              }
             }
             userErrors {
               field
@@ -172,19 +196,18 @@ export default async function handler(req, res) {
         }
       `;
 
-      const metafieldsVariables = {
-        metafields: [
-          {
-            ownerId: customerGid,
-            namespace: "custom",
-            key: "welcome_discount_code",
-            type: "single_line_text_field",
-            value: discountCode
+      const updateConsentVariables = {
+        input: {
+          customerId: customerGid,
+          emailMarketingConsent: {
+            marketingState: "SUBSCRIBED",
+            marketingOptInLevel: "SINGLE_OPT_IN",
+            consentUpdatedAt: new Date().toISOString()
           }
-        ]
+        }
       };
 
-      await shopifyAdminGql(metafieldsMutation, metafieldsVariables);
+      await shopifyAdminGql(updateConsentMutation, updateConsentVariables);
     }
 
     return res.status(200).json({
