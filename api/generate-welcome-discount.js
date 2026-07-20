@@ -35,9 +35,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Generate unique short discount code (e.g. WELCOME-A8B9C)
-    const randomChars = Math.random().toString(36).substring(2, 7).toUpperCase();
-    const discountCode = `WELCOME-${randomChars}`;
+    // Generate Supernatural lore-themed discount codes (e.g. IMPALA-7K9P, BUNKER-4M8T, WAYWARD-3X9L)
+    const prefixes = ["IMPALA", "HUNTER", "BUNKER", "WAYWARD", "DEVILSTRAP"];
+    const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+    const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const discountCode = `${randomPrefix}-${randomChars}`;
 
     // STEP A: Create 10% Off Basic Discount Code (combines with product & shipping discounts)
     const discountMutation = `
