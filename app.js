@@ -935,37 +935,21 @@ class ShopApp {
 
   // Bundle Customizer System
   openBundleModal() {
-    this.bundleModal = document.getElementById("bundle-modal");
-    if (!this.bundleModal) return;
-
-    this.bundleModal.removeAttribute("style");
-    this.bundleModal.classList.remove("open");
-    if (this.bundleModal.open) {
-      try { this.bundleModal.close(); } catch(e) {}
-    }
-
-    if (typeof this.bundleModal.showModal === "function") {
-      try {
-        this.bundleModal.showModal();
-      } catch (e) {
-        this.bundleModal.setAttribute("open", "");
-      }
-    } else {
-      this.bundleModal.setAttribute("open", "");
-    }
+    const modal = document.getElementById("bundle-modal");
+    if (!modal) return;
+    modal.style.display = "flex";
+    setTimeout(() => {
+      modal.classList.add("active");
+    }, 10);
   }
 
   closeBundleModal() {
-    this.bundleModal = document.getElementById("bundle-modal");
-    if (!this.bundleModal) return;
-    this.bundleModal.classList.remove("open");
-    this.bundleModal.removeAttribute("style");
-    if (typeof this.bundleModal.close === "function") {
-      try {
-        this.bundleModal.close();
-      } catch (e) {}
-    }
-    this.bundleModal.removeAttribute("open");
+    const modal = document.getElementById("bundle-modal");
+    if (!modal) return;
+    modal.classList.remove("active");
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 250);
   }
 
   getProductsForBundleType(type) {
@@ -1696,7 +1680,7 @@ class ShopApp {
       const priceStr = typeof prod.price === "number" ? `$${prod.price.toFixed(2)}` : `$${prod.price}`;
 
       return `
-        <div class="carousel-item" data-id="${prod.id}" onclick="window.openCarouselProductModal('${prod.id}')" style="cursor: pointer;">
+        <div class="carousel-item" data-id="${prod.id}">
           <div class="carousel-img-wrap">
             ${imgHTML}
           </div>
