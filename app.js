@@ -548,18 +548,16 @@ class ShopApp {
         e.preventDefault();
         const email = this.newsletterEmail.value.trim().toLowerCase();
         
+        if (!email || !email.includes("@")) return;
+
         const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
-        if (subscribers.includes(email)) {
-          this.newsletterFeedback.textContent = "Coordinates already registered in the archives!";
-          this.newsletterFeedback.className = "newsletter-feedback error";
-          return;
+        if (!subscribers.includes(email)) {
+          subscribers.push(email);
+          localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
         }
         
-        subscribers.push(email);
-        localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
-        
-        // Push subscriber directly to Shopify Customer List
-        this.subscribeShopifyCustomer(email);
+        // Unconditionally push subscriber directly to Shopify Customer List
+        const success = await this.subscribeShopifyCustomer(email);
 
         this.newsletterFeedback.innerHTML = `
           Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
@@ -592,19 +590,17 @@ class ShopApp {
         e.preventDefault();
         const email = this.popupNewsletterEmail.value.trim().toLowerCase();
         
+        if (!email || !email.includes("@")) return;
+
         const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
-        if (subscribers.includes(email)) {
-          this.popupNewsletterFeedback.textContent = "Coordinates already registered in the archives!";
-          this.popupNewsletterFeedback.className = "popup-newsletter-feedback error";
-          return;
+        if (!subscribers.includes(email)) {
+          subscribers.push(email);
+          localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
         }
-        
-        subscribers.push(email);
-        localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
         localStorage.setItem("hunters_dismissed_popup", "true");
         
-        // Push subscriber directly to Shopify Customer List
-        this.subscribeShopifyCustomer(email);
+        // Unconditionally push subscriber directly to Shopify Customer List
+        const success = await this.subscribeShopifyCustomer(email);
 
         this.popupNewsletterFeedback.innerHTML = `
           Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
