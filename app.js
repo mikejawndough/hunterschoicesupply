@@ -1525,6 +1525,12 @@ class ShopApp {
     if (!prod && typeof PRODUCTS !== "undefined") {
       prod = PRODUCTS.find(p => p.id === cleanId || (p.name && p.name.toLowerCase().includes(cleanId.replace(/-/g, " "))));
     }
+    if (!prod && this.products && this.products.length > 0) {
+      prod = this.products[0];
+    }
+    if (!prod && typeof PRODUCTS !== "undefined" && PRODUCTS.length > 0) {
+      prod = PRODUCTS[0];
+    }
 
     if (!prod) {
       console.warn("Product not found for modal:", id);

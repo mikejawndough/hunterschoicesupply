@@ -1342,6 +1342,19 @@ dialog[open]::backdrop {
   position: relative;
 }
 
+.detail-modal[open],
+.detail-modal.open {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important;
+}
+
 /* Aged Journal Overlay Effect */
 .detail-modal::before {
   content: '';
@@ -2496,10 +2509,11 @@ dialog[open]::backdrop {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
-  top: 5% !important;
+  position: fixed !important;
+  top: 50% !important;
   left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 99999 !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important;
 }
 
 .bundle-modal-close {
