@@ -483,11 +483,20 @@ nav ul a:hover::after {
   pointer-events: none !important;
 }
 
-.filter-btn:hover, .filter-btn.active {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  background: rgba(197, 168, 128, 0.08);
-  box-shadow: 0 0 10px rgba(197, 168, 128, 0.15);
+.filter-btn:hover {
+  border-color: var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+  background: rgba(197, 168, 128, 0.15) !important;
+  box-shadow: 0 0 15px var(--accent-gold-glow) !important;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  border-color: var(--accent-gold) !important;
+  color: var(--bg-primary) !important;
+  background: var(--accent-gold) !important;
+  box-shadow: 0 0 15px var(--accent-gold-glow) !important;
+  font-weight: 700 !important;
 }
 
 /* Product Catalog Grid */
