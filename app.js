@@ -342,6 +342,7 @@ class ShopApp {
     this.activeBundleConfig = null;
     
     // Init actions
+    this.highlightActiveNav();
     this.initTypewriter();
     this.initEvents();
     this.initCatalog(); // Async load Shopify or local products
@@ -349,6 +350,20 @@ class ShopApp {
     this.initReviews();
     this.initQuiz();
     this.initNewsletterPopup();
+  }
+
+  highlightActiveNav() {
+    const currentPath = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll("header nav a");
+    navLinks.forEach(link => {
+      const href = link.getAttribute("href");
+      if (!href) return;
+      if (href === currentPath || (currentPath === "" && href === "index.html") || (currentPath === "index.html" && href === "index.html")) {
+        link.classList.add("active");
+      } else if (!href.startsWith("#")) {
+        link.classList.remove("active");
+      }
+    });
   }
 
   loadCartFromStorage() {

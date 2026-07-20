@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hunter's Choice Supply | Supernatural Fanshop & Lore Gear</title>
-  <meta name="description" content="Get your custom print-on-demand Supernatural fan t-shirts, coffee mugs, and apparel from Hunter's Choice Supply. Test your lore knowledge and check out print-on-demand gear!">
+  <title>Field Reports & Testimonials | Hunter's Choice Supply</title>
+  <meta name="description" content="Read verified field reports and survival gear ratings from active Supernatural hunters, or submit your own report.">
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,8 +17,7 @@
 
   <!-- Header -->
   <header>
-    <a href="#" class="logo-container">
-      <!-- Custom Store Logo -->
+    <a href="index.html" class="logo-container">
       <img src="assets/logo.jpg" alt="Hunter's Choice Supply Logo" class="logo-image">
       <div class="logo-text">
         <h1>Hunter's Choice</h1>
@@ -29,10 +28,10 @@
     <!-- Navigation -->
     <nav>
       <ul>
-        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="shop.html">Shop</a></li>
         <li><a href="bundles.html">Bundles</a></li>
-        <li><a href="reviews.html">Field Reports</a></li>
+        <li><a href="reviews.html" class="active">Field Reports</a></li>
         <li><a href="quiz.html">Hunter's Quiz</a></li>
         <li><a href="#" id="nav-newsletter-btn">Join Dispatch</a></li>
         <li><a href="#" id="nav-track-btn">Track Order</a></li>
@@ -48,7 +47,6 @@
 
     <!-- Header Widgets -->
     <div class="header-widgets">
-      <!-- Instagram Link Button -->
       <a class="social-icon-btn" href="https://instagram.com/hunterschoicesupply" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -57,7 +55,6 @@
         </svg>
       </a>
 
-      <!-- Cart Button -->
       <button class="cart-icon-btn" id="cart-btn" aria-label="Open Shopping Cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="9" cy="21" r="1"></circle>
@@ -71,119 +68,8 @@
 
   <!-- Main Content -->
   <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <span class="hero-tagline glow-text-gold">Saving People, Hunting Things</span>
-        <h2>Hunter's Choice Supply</h2>
-        <div class="hero-quote">
-          <span id="hero-quote-text"></span><span class="typewriter-cursor"></span>
-        </div>
-        <a href="#shop" class="gold-btn">
-          Equip Your Trunk
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </section>
-
-    <!-- Featured Bundles Section -->
-    <section class="bundles-section" id="bundles">
-      <div class="section-header">
-        <h2>Bunker Vault Bundles</h2>
-        <p>Bundle & save up to $7.00 on exclusive Supernatural gear packages.</p>
-      </div>
-
-      <div class="bundles-grid">
-        <!-- Bundle 1 -->
-        <div class="bundle-card" onclick="window.openBundleCustomizer('bunker-care-package')" data-bundle-id="bunker-care-package" style="cursor: pointer;">
-          <span class="bundle-badge">Save $6.99</span>
-          <div class="bundle-icon">
-            <svg viewBox="0 0 100 100" class="bundle-svg"><rect x="20" y="30" width="60" height="50" rx="4" fill="none" stroke="var(--accent-gold)" stroke-width="2"/><path d="M20 45 h60 M50 30 v50" stroke="var(--accent-gold)" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="50" cy="30" r="6" fill="var(--accent-gold)"/></svg>
-          </div>
-          <h3 class="bundle-title">The Bunker Care Package</h3>
-          <p class="bundle-desc">1 Graphic Tee + 1 Standard 11oz Ceramic Mug</p>
-          <div class="bundle-pricing">
-            <span class="original-price">$46.98</span>
-            <span class="bundle-price">$39.99</span>
-          </div>
-          <button type="button" class="gold-btn bundle-open-btn" onclick="window.openBundleCustomizer('bunker-care-package')" data-bundle-id="bunker-care-package" style="width: 100%; justify-content: center; margin-top: 1rem;">
-            Customize & Add Bundle
-          </button>
-        </div>
-
-        <!-- Bundle 2 -->
-        <div class="bundle-card featured" onclick="window.openBundleCustomizer('convention-survivor-kit')" data-bundle-id="convention-survivor-kit" style="cursor: pointer;">
-          <span class="bundle-badge">Most Popular • Save $7.00</span>
-          <div class="bundle-icon">
-            <svg viewBox="0 0 100 100" class="bundle-svg"><circle cx="50" cy="50" r="35" fill="none" stroke="var(--accent-gold)" stroke-width="2"/><polygon points="50,20 60,40 82,40 64,54 71,76 50,62 29,76 36,54 18,40 40,40" fill="none" stroke="var(--accent-gold)" stroke-width="1.5"/></svg>
-          </div>
-          <h3 class="bundle-title">The Convention Survivor Kit</h3>
-          <p class="bundle-desc">1 Graphic Tee + "Team Free Will" Pin Trio (3 Pins)</p>
-          <div class="bundle-pricing">
-            <span class="original-price">$44.99</span>
-            <span class="bundle-price">$37.99</span>
-          </div>
-          <button type="button" class="gold-btn bundle-open-btn" onclick="window.openBundleCustomizer('convention-survivor-kit')" data-bundle-id="convention-survivor-kit" style="width: 100%; justify-content: center; margin-top: 1rem;">
-            Customize & Add Bundle
-          </button>
-        </div>
-
-        <!-- Bundle 3 -->
-        <div class="bundle-card" onclick="window.openBundleCustomizer('completionist-set')" data-bundle-id="completionist-set" style="cursor: pointer;">
-          <span class="bundle-badge">Ultimate Value • Save $6.99</span>
-          <div class="bundle-icon">
-            <svg viewBox="0 0 100 100" class="bundle-svg"><path d="M 50 15 L 80 40 L 70 85 L 30 85 L 20 40 Z" fill="none" stroke="var(--accent-gold)" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="none" stroke="var(--accent-gold)" stroke-width="1.5"/></svg>
-          </div>
-          <h3 class="bundle-title">Team Free Will Completionist Set</h3>
-          <p class="bundle-desc">1 Graphic Tee + 1 Pin Button + 1 Standard 11oz Mug</p>
-          <div class="bundle-pricing">
-            <span class="original-price">$51.98</span>
-            <span class="bundle-price">$44.99</span>
-          </div>
-          <button type="button" class="gold-btn bundle-open-btn" onclick="window.openBundleCustomizer('completionist-set')" data-bundle-id="completionist-set" style="width: 100%; justify-content: center; margin-top: 1rem;">
-            Customize & Add Bundle
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Shop Catalog Section -->
-    <section class="shop-section" id="shop">
-      <div class="section-header">
-        <h2>Bunker Collections</h2>
-        <p>Browse our official print-on-demand catalog, integrated directly from Shopify.</p>
-      </div>
-
-      <!-- Catalog Controls: Search and Filters -->
-      <div class="catalog-controls">
-        <div class="search-box">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="search-input" placeholder="Search mugs, tees, hoodies...">
-        </div>
-        
-        <div class="filter-buttons" id="filter-buttons">
-          <button class="filter-btn active" data-category="all">All Gear</button>
-          <button class="filter-btn" data-category="shirt">Graphic Tees</button>
-          <button class="filter-btn" data-category="mug">Mugs & Tumblers</button>
-          <button class="filter-btn" data-category="pin">Pin Buttons</button>
-          <button class="filter-btn" data-category="paper">Wrapping Paper</button>
-        </div>
-      </div>
-
-      <!-- Catalog Grid -->
-      <div class="product-grid" id="product-grid">
-        <!-- Populated dynamically via JS -->
-      </div>
-
-      <!-- Numbered Pagination -->
-      <div class="pagination-container" id="pagination-container">
-        <!-- Populated dynamically via JS -->
-      </div>
-    </section>
-
     <!-- Reviews Section -->
-    <section class="reviews-section" id="reviews">
+    <section class="reviews-section" id="reviews" style="padding-top: 3rem;">
       <div class="section-header">
         <h2>Field Reports & Testimonials</h2>
         <p>Verified accounts from active hunters on the road. Log your own report below.</p>
@@ -229,13 +115,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Quiz Section -->
-    <section class="quiz-section" id="quiz">
-      <div class="quiz-container" id="quiz-container">
-        <!-- Populated dynamically via JS -->
-      </div>
-    </section>
   </main>
 
   <!-- Footer -->
@@ -243,15 +122,15 @@
     <div class="footer-grid">
       <div class="footer-col">
         <h3>Hunter's Choice</h3>
-        <p>A premium print-on-demand fanshop built for Supernatural fans. We offer high-quality graphic t-shirts, custom mugs, and unique printed accessories designed in-house. Show off your lore pride from the road.</p>
+        <p>A premium print-on-demand fanshop built for Supernatural fans. We offer high-quality graphic t-shirts, custom mugs, and unique printed accessories designed in-house.</p>
       </div>
       <div class="footer-col">
         <h3>Protection Rules</h3>
         <ul>
-          <li><a href="#shop">Bunker Coffee Mugs</a></li>
-          <li><a href="#shop">Graphic Tees & Apparel</a></li>
-          <li><a href="#reviews">Hunter Field Reports</a></li>
-          <li><a href="#quiz">Test Lore Knowledge</a></li>
+          <li><a href="shop.html">Bunker Coffee Mugs</a></li>
+          <li><a href="shop.html">Graphic Tees & Apparel</a></li>
+          <li><a href="reviews.html">Hunter Field Reports</a></li>
+          <li><a href="quiz.html">Test Lore Knowledge</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -260,7 +139,6 @@
       </div>
     </div>
 
-    <!-- Newsletter / Dispatch signup block -->
     <div class="footer-newsletter">
       <div class="newsletter-content">
         <h3>Join the Hunter Dispatch</h3>
@@ -280,8 +158,7 @@
           @hunterschoicesupply
         </a>
       </div>
-      <p>&copy; 2026 Hunter's Choice Supply. Handcrafted for Supernatural Fans. Saving people, hunting things.</p>
-      <p>Made with Salt, Iron, and Silver.</p>
+      <p>&copy; 2026 Hunter's Choice Supply. Handcrafted for Supernatural Fans.</p>
     </div>
   </footer>
 
@@ -291,9 +168,7 @@
       <h3>Your Trunk (Cart)</h3>
       <button class="close-cart-btn" id="close-cart-btn" aria-label="Close Shopping Cart">&times;</button>
     </div>
-    <div class="cart-items" id="cart-items">
-      <!-- Populated dynamically via JS -->
-    </div>
+    <div class="cart-items" id="cart-items"></div>
     <div class="cart-footer">
       <div class="promo-section">
         <input type="text" id="promo-input" placeholder="Enter Hunter Code (e.g. SAMMY)">
@@ -316,7 +191,6 @@
         </div>
       </div>
       
-      <!-- Print-on-Demand Production Timeline Disclaimer -->
       <div class="cart-pod-disclaimer">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span>Print-on-Demand: Production takes 2-5 days prior to shipment.</span>
@@ -329,13 +203,10 @@
     </div>
   </div>
 
-  <!-- Product Detail Dialog (Journal Styled) -->
-  <!-- MANDATORY: closedby="any" triggers native light-dismiss on click outside -->
+  <!-- Product Detail Dialog -->
   <dialog id="detail-modal" class="detail-modal" closedby="any">
     <button class="detail-close-btn" id="detail-close-btn" aria-label="Close details">&times;</button>
-    <div id="detail-content">
-      <!-- Populated dynamically via JS -->
-    </div>
+    <div id="detail-content"></div>
   </dialog>
 
   <!-- Newsletter Pop-up Dialog -->
@@ -371,8 +242,6 @@
         </div>
         <button type="submit" class="gold-btn" style="width: 100%; justify-content: center;">Locate Shipment</button>
       </form>
-      
-      <!-- Progress Tracker details (hidden initially) -->
       <div id="track-result" class="track-result"></div>
     </div>
   </dialog>
@@ -386,9 +255,7 @@
         <p id="bundle-modal-subtitle">Select options for your bundle items.</p>
       </div>
       <form id="bundle-form" class="bundle-form">
-        <div id="bundle-options-container" class="bundle-options-container">
-          <!-- Dynamic Bundle Selection Controls inserted via JS -->
-        </div>
+        <div id="bundle-options-container" class="bundle-options-container"></div>
         <button type="submit" class="gold-btn" style="width: 100%; justify-content: center; margin-top: 1.5rem;">
           Confirm & Add Bundle to Trunk
         </button>
@@ -399,39 +266,24 @@
   <!-- Checkout Success Dialog -->
   <dialog id="checkout-modal" class="checkout-modal">
     <div class="checkout-success-icon">
-      <!-- Animated Salt Circle & Pentagram -->
       <svg class="salt-circle-svg" viewBox="0 0 100 100">
-        <!-- Salt Circle border -->
         <circle class="salt-circle-path" cx="50" cy="50" r="45" />
-        <!-- Inside Devil's Trap Pentagram -->
         <polygon class="pentagram-path" points="50,15 78,75 15,38 85,38 22,75" />
       </svg>
     </div>
     <h3 class="checkout-title font-title glow-text-gold">Salt Circle Protection Active!</h3>
     <p class="checkout-text">Your order has been secured! Because our mugs and shirts are printed on demand in the bunker, please allow 2-5 business days for printing and curing before tracking is dispatched to your local hunter motel box.</p>
-    
-    <div class="receipt-box" id="receipt-box">
-      <!-- Populated dynamically via JS -->
-    </div>
-    
+    <div class="receipt-box" id="receipt-box"></div>
     <button class="gold-btn" id="receipt-close-btn" style="width: 100%; justify-content: center;">Return to Patrol</button>
   </dialog>
 
-  <!-- Polyfills for Popover & Invokers APIs -->
+  <!-- Polyfills -->
   <script type="module">
-    // MANDATORY: Feature detect 'commandForElement' on HTMLButtonElement.prototype.
-    // Conditionally load the invokers-polyfill from a CDN only in browsers lacking native support.
     if (!('commandForElement' in HTMLButtonElement.prototype)) {
-      import('https://esm.run/invokers-polyfill')
-        .catch(err => console.error('Failed to load invokers polyfill:', err));
+      import('https://esm.run/invokers-polyfill').catch(err => console.error(err));
     }
-
-    // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
-    // Conditionally load the popover-polyfill from a CDN only in browsers lacking native support.
     if (!('popover' in HTMLElement.prototype)) {
-      import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js')
-        .then(({ apply }) => apply())
-        .catch(err => console.error('Failed to load popover polyfill:', err));
+      import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js').then(({ apply }) => apply()).catch(err => console.error(err));
     }
   </script>
 
