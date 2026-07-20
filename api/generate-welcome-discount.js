@@ -15,6 +15,10 @@ export default async function handler(req, res) {
   const adminApiToken = process.env.SHOPIFY_ADMIN_API_SECRET_TOKEN || process.env.SHOPIFY_ADMIN_TOKEN;
   const apiVersion = process.env.SHOPIFY_API_VERSION || '2023-10';
 
+  if (!adminApiToken) {
+    return res.status(500).json({ success: false, error: 'SHOPIFY_ADMIN_API_SECRET_TOKEN environment variable is missing.' });
+  }
+
   async function shopifyAdminGql(query, variables = {}) {
     const response = await fetch(`https://${shopDomain}/admin/api/${apiVersion}/graphql.json`, {
       method: 'POST',
@@ -87,7 +91,7 @@ export default async function handler(req, res) {
       console.warn("Shopify Admin Discount warning:", discountRes.errors);
     }
 
-    // STEP B: Create or find Customer Profile with acceptsMarketing: true
+    // STEP B: Create or find Customer Profile with emailMarketingConsent
     const customerMutation = `
       mutation customerCreate($input: CustomerInput!) {
         customerCreate(input: $input) {
@@ -106,7 +110,10 @@ export default async function handler(req, res) {
     const customerVariables = {
       input: {
         email: email.trim().toLowerCase(),
-        acceptsMarketing: true,
+        emailMarketingConsent: {
+          marketingState: "SUBSCRIBED",
+          marketingOptInLevel: "SINGLE_OPT_IN"
+        },
         tags: ["newsletter", "welcome_discount"]
       }
     };
