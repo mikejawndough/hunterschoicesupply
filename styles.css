@@ -2234,6 +2234,7 @@ dialog[open]::backdrop {
   border-radius: var(--radius-lg);
   padding: 1.8rem 1.25rem 1.5rem 1.25rem;
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2247,16 +2248,21 @@ dialog[open]::backdrop {
   transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Extended invisible hit area to prevent edge flicker during translateY lift */
+.bundle-card * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Extended invisible hit area behind card content to prevent edge flicker during translateY lift */
 .bundle-card::after {
   content: "";
   position: absolute;
-  top: -10px;
-  bottom: -10px;
-  left: -5px;
-  right: -5px;
+  top: -12px;
+  bottom: -12px;
+  left: -12px;
+  right: -12px;
   pointer-events: auto;
-  z-index: 0;
+  z-index: -1;
 }
 
 .bundle-card:hover {
@@ -2390,7 +2396,7 @@ dialog[open]::backdrop {
   cursor: pointer !important;
   pointer-events: auto !important;
   position: relative !important;
-  z-index: 5 !important;
+  z-index: 10 !important;
   user-select: none !important;
 }
 
