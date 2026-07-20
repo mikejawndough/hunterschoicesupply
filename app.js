@@ -544,7 +544,7 @@ class ShopApp {
 
     // Newsletter signup listener
     if (this.newsletterForm) {
-      this.newsletterForm.addEventListener("submit", (e) => {
+      this.newsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = this.newsletterEmail.value.trim().toLowerCase();
         
@@ -558,6 +558,9 @@ class ShopApp {
         subscribers.push(email);
         localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
         
+        // Push subscriber directly to Shopify Customer List
+        this.subscribeShopifyCustomer(email);
+
         this.newsletterFeedback.innerHTML = `
           Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
         `;
@@ -585,7 +588,7 @@ class ShopApp {
 
     // Popup newsletter form submit
     if (this.popupNewsletterForm) {
-      this.popupNewsletterForm.addEventListener("submit", (e) => {
+      this.popupNewsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = this.popupNewsletterEmail.value.trim().toLowerCase();
         
@@ -600,6 +603,9 @@ class ShopApp {
         localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
         localStorage.setItem("hunters_dismissed_popup", "true");
         
+        // Push subscriber directly to Shopify Customer List
+        this.subscribeShopifyCustomer(email);
+
         this.popupNewsletterFeedback.innerHTML = `
           Welcome to the dispatch! Use code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow);">BABY1967</strong> for 10% off your orders.
         `;
@@ -1763,6 +1769,65 @@ class ShopApp {
     }
 
     return json.data.cartCreate.cart.checkoutUrl;
+  }
+
+  async subscribeShopifyCustomer(email) {
+    if (!SHOPIFY_CONFIG.active) return false;
+
+    const tempPassword = "Hunters!" + Math.random().toString(36).slice(-8) + "#1";
+
+    const query = `
+      mutation customerCreate($input: CustomerCreateInput!) {
+        customerCreate(input: $input) {
+          customer {
+            id
+            email
+            acceptsMarketing
+          }
+          customerUserErrors {
+            code
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      input: {
+        email: email,
+        password: tempPassword,
+        acceptsMarketing: true
+      }
+    };
+
+    try {
+      const url = `https://${SHOPIFY_CONFIG.shopDomain}/api/${SHOPIFY_CONFIG.apiVersion}/graphql.json`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": SHOPIFY_CONFIG.storefrontAccessToken
+        },
+        body: JSON.stringify({ query, variables })
+      });
+
+      if (!response.ok) return false;
+      const json = await response.json();
+      if (json.errors) return false;
+
+      const userErrors = json.data?.customerCreate?.customerUserErrors || [];
+      if (userErrors.length > 0) {
+        console.warn("Shopify customer subscription note:", userErrors[0].message);
+        return true;
+      }
+
+      console.log("Successfully added subscriber to Shopify Customer List:", email);
+      return true;
+    } catch (err) {
+      console.error("Shopify customer subscription error:", err);
+      return false;
+    }
   }
 
   // 5. Field Reports & Reviews Engine
