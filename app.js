@@ -1943,9 +1943,9 @@ class ShopApp {
         correct: 1 // 5 things
       },
       {
-        q: "What is the specific code word/phrase Sam and Dean use to signal that they are in immediate danger?",
-        options: ["Motel Six", "Funkytown", "Baby 67", "Kansas Road"],
-        correct: 1 // Funkytown
+        q: "What is the secret code word Sam and Dean use to signal that they are in immediate danger?",
+        options: ["Poughkeepsie", "Funkytown", "Jericho", "Lawrence"],
+        correct: 0 // Poughkeepsie
       },
       {
         q: "What common household cleaning chemical is highly toxic to Leviathans, burning their skin upon contact?",
