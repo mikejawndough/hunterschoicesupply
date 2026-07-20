@@ -726,25 +726,22 @@ class ShopApp {
       });
     }
 
-    // Open bundle customizer modal (Direct & Delegated listener)
-    const attachBundleListeners = () => {
-      const bundleBtns = document.querySelectorAll(".bundle-open-btn");
-      bundleBtns.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const bundleId = btn.dataset.bundleId || "bunker-care-package";
-          this.openBundleCustomizer(bundleId);
-        });
-      });
-    };
-    attachBundleListeners();
-
+    // Single Unified Listener for all Bundle buttons and cards
     document.addEventListener("click", (e) => {
-      const bundleBtn = e.target.closest(".bundle-open-btn");
-      if (bundleBtn) {
+      const bundleTarget = e.target.closest(".bundle-open-btn, .bundle-card");
+      if (bundleTarget) {
+        if (e.target.closest("#bundle-modal-close, button:not(.bundle-open-btn)")) return;
+
         e.preventDefault();
-        const bundleId = bundleBtn.dataset.bundleId || "bunker-care-package";
+        
+        const btn = bundleTarget.classList.contains("bundle-open-btn") 
+          ? bundleTarget 
+          : bundleTarget.querySelector(".bundle-open-btn");
+
+        const bundleId = (btn && btn.dataset.bundleId) 
+          ? btn.dataset.bundleId 
+          : (bundleTarget.dataset.bundleId || "bunker-care-package");
+
         this.openBundleCustomizer(bundleId);
       }
     });
