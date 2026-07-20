@@ -2241,6 +2241,8 @@ dialog[open]::backdrop {
   max-width: 340px;
   width: 100%;
   margin: 0 auto;
+  cursor: pointer !important;
+  user-select: none;
   transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
@@ -2369,8 +2371,25 @@ dialog[open]::backdrop {
   color: var(--accent-gold);
 }
 
-.bundle-open-btn * {
-  pointer-events: none;
+.bundle-open-btn,
+.gold-btn {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  padding: 0.9rem 1.5rem !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 5 !important;
+  user-select: none !important;
+}
+
+.bundle-open-btn *,
+.gold-btn * {
+  pointer-events: none !important;
 }
 
 .bundle-modal::backdrop {
