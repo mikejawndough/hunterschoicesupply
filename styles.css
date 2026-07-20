@@ -367,6 +367,9 @@ nav ul a:hover::after {
   padding: 5rem 5%;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative !important;
+  z-index: 100 !important;
+  isolation: isolate;
 }
 
 .section-header {
@@ -2277,11 +2280,11 @@ dialog[open]::backdrop {
 .bundle-card::after {
   content: "";
   position: absolute;
-  top: -12px;
-  bottom: -12px;
-  left: -12px;
-  right: -12px;
-  pointer-events: auto;
+  top: -6px;
+  bottom: -6px;
+  left: -6px;
+  right: -6px;
+  pointer-events: none !important;
   z-index: -1;
 }
 
