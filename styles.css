@@ -407,13 +407,15 @@ nav ul a:hover::after {
   border: 1px solid var(--border-color);
   padding: 1.25rem 2rem;
   border-radius: var(--radius-md);
+  position: relative;
+  z-index: 1;
 }
 
 .search-box {
   position: relative;
-  flex: 1;
-  min-width: 280px;
-  max-width: 450px;
+  flex: 1 1 280px;
+  max-width: 380px;
+  z-index: 2;
 }
 
 .search-box input {
@@ -447,24 +449,37 @@ nav ul a:hover::after {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 .filter-btn {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
-  padding: 0.6rem 1.2rem;
+  padding: 0.65rem 1.25rem;
   font-size: 0.85rem;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.05em;
   border-radius: var(--radius-sm);
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+  user-select: none !important;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-btn * {
+  pointer-events: none !important;
 }
 
 .filter-btn:hover, .filter-btn.active {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
-  background: rgba(197, 168, 128, 0.05);
+  background: rgba(197, 168, 128, 0.08);
+  box-shadow: 0 0 10px rgba(197, 168, 128, 0.15);
 }
 
 /* Product Catalog Grid */
