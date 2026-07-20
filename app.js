@@ -938,10 +938,11 @@ class ShopApp {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
 
-    // Remove open attribute first to prevent InvalidStateError DOMException on showModal()
-    this.bundleModal.removeAttribute("open");
-    this.bundleModal.classList.add("open");
-    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 5% !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
+    this.bundleModal.removeAttribute("style");
+    this.bundleModal.classList.remove("open");
+    if (this.bundleModal.open) {
+      try { this.bundleModal.close(); } catch(e) {}
+    }
 
     if (typeof this.bundleModal.showModal === "function") {
       try {
@@ -958,7 +959,7 @@ class ShopApp {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
     this.bundleModal.classList.remove("open");
-    this.bundleModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
+    this.bundleModal.removeAttribute("style");
     if (typeof this.bundleModal.close === "function") {
       try {
         this.bundleModal.close();
@@ -1485,13 +1486,17 @@ class ShopApp {
   openDetailModal() {
     this.detailModal = document.getElementById("detail-modal");
     if (!this.detailModal) return;
+    this.detailModal.removeAttribute("style");
+    this.detailModal.classList.remove("open");
     if (this.detailModal.open) {
       try { this.detailModal.close(); } catch(e) {}
     }
-    this.detailModal.classList.add("open");
-    this.detailModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 680px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
     if (typeof this.detailModal.showModal === "function") {
-      try { this.detailModal.showModal(); } catch (e) { this.detailModal.setAttribute("open", ""); }
+      try {
+        this.detailModal.showModal();
+      } catch (e) {
+        this.detailModal.setAttribute("open", "");
+      }
     } else {
       this.detailModal.setAttribute("open", "");
     }
@@ -1501,7 +1506,7 @@ class ShopApp {
     this.detailModal = document.getElementById("detail-modal");
     if (!this.detailModal) return;
     this.detailModal.classList.remove("open");
-    this.detailModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
+    this.detailModal.removeAttribute("style");
     if (typeof this.detailModal.close === "function") {
       try { this.detailModal.close(); } catch (e) {}
     }

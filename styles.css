@@ -1337,22 +1337,15 @@ dialog[open]::backdrop {
 /* Journal styled Product Detail Modal */
 .detail-modal {
   max-width: 700px;
+  width: 92vw;
   border-color: rgba(197, 168, 128, 0.4);
   background: radial-gradient(circle at center, #1b1712 0%, var(--bg-secondary) 100%);
   position: relative;
 }
 
-.detail-modal[open],
-.detail-modal.open {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 999999 !important;
+.detail-modal[open] {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Aged Journal Overlay Effect */
@@ -2483,11 +2476,7 @@ dialog[open]::backdrop {
 
 /* Bundle Customizer Modal */
 .bundle-modal {
-  position: fixed;
-  top: 5% !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 500px;
+  width: 520px;
   max-width: 92vw;
   max-height: 88vh;
   overflow-y: auto;
@@ -2497,23 +2486,11 @@ dialog[open]::backdrop {
   color: var(--text-primary);
   padding: 1.5rem 1.5rem 1.75rem 1.5rem;
   box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px var(--accent-gold-glow);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
 }
 
-.bundle-modal[open],
-.bundle-modal.open {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 999999 !important;
+.bundle-modal[open] {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .bundle-modal-close {
