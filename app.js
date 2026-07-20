@@ -766,6 +766,51 @@ class ShopApp {
 
 
 
+  matchProductCategory(prod, categoryHandle) {
+    if (!categoryHandle || categoryHandle === "all") return true;
+
+    const catLower = categoryHandle.toLowerCase();
+
+    // Check Shopify collections array if available
+    if (Array.isArray(prod.collections) && prod.collections.length > 0) {
+      if (prod.collections.some(c => c.toLowerCase() === catLower || c.toLowerCase().includes(catLower))) {
+        return true;
+      }
+    }
+
+    // Check prod.category (apparel, mugs, pins, accessories, lore, etc.)
+    if (prod.category && (prod.category.toLowerCase() === catLower || prod.category.toLowerCase().includes(catLower))) {
+      return true;
+    }
+
+    // Check product title & productType
+    const prodName = (prod.name || prod.title || "").toLowerCase();
+    const prodType = (prod.productType || prod.stats?.Type || "").toLowerCase();
+
+    if (catLower.includes("shirt") || catLower.includes("apparel") || catLower.includes("tee")) {
+      return (prodName.includes("tee") || prodName.includes("shirt") || prodType.includes("shirt") || prodType.includes("apparel")) &&
+             !prodName.includes("mug") && !prodName.includes("pin") && !prodName.includes("wrap");
+    }
+
+    if (catLower.includes("mug") || catLower.includes("drinkware")) {
+      return prodName.includes("mug") || prodType.includes("mug");
+    }
+
+    if (catLower.includes("pin") || catLower.includes("button") || catLower.includes("accessory") || catLower.includes("accessories")) {
+      return prodName.includes("pin") || prodName.includes("button") || prodType.includes("pin") || prodType.includes("button");
+    }
+
+    if (catLower.includes("paper") || catLower.includes("wrap")) {
+      return prodName.includes("wrap") || prodName.includes("paper") || prodType.includes("wrap");
+    }
+
+    if (catLower.includes("lore") || catLower.includes("book")) {
+      return prodName.includes("journal") || prodName.includes("book") || prodType.includes("book");
+    }
+
+    return false;
+  }
+
   // Catalog Renderer
   renderProducts() {
     let filtered = this.products.filter(prod => {
@@ -773,11 +818,14 @@ class ShopApp {
       if (prod.category === "bundles" || (prod.name && prod.name.toLowerCase().includes("bundle"))) {
         return false;
       }
-      const matchCat = this.currentCategory === "all" || 
-                        (SHOPIFY_CONFIG.active ? (prod.collections && prod.collections.includes(this.currentCategory)) : prod.category === this.currentCategory);
-      const matchSearch = prod.name.toLowerCase().includes(this.searchQuery) || 
-                          prod.description.toLowerCase().includes(this.searchQuery) ||
-                          prod.category.toLowerCase().includes(this.searchQuery);
+
+      const matchCat = this.matchProductCategory(prod, this.currentCategory);
+
+      const pDesc = prod.description || "";
+      const pCat = prod.category || "";
+      const matchSearch = (prod.name || "").toLowerCase().includes(this.searchQuery) || 
+                          pDesc.toLowerCase().includes(this.searchQuery) ||
+                          pCat.toLowerCase().includes(this.searchQuery);
       return matchCat && matchSearch;
     });
 
