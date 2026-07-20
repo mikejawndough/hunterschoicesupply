@@ -1669,40 +1669,55 @@ class ShopApp {
   }
 
   async createShopifyCheckout() {
-    // Find a valid Shopify product variant ID to fallback for custom bundle line items
-    const validShopifyProduct = this.products.find(p => p.variantId || (p.id && p.id.startsWith("gid://")));
-    const defaultVariantId = validShopifyProduct ? (validShopifyProduct.variantId || validShopifyProduct.id) : null;
+    const lines = [];
 
-    const lines = this.cart
-      .map(item => {
-        let mercId = item.product.shopifyVariantId || item.product.variantId || item.product.id;
-        
-        if (!mercId || !mercId.startsWith("gid://")) {
-          mercId = defaultVariantId;
-        }
+    this.cart.forEach(item => {
+      const prodId = (item.product.id || "").toLowerCase();
+      const isBundle = prodId.includes("bunker-care-package") ||
+                       prodId.includes("convention-survivor-kit") ||
+                       prodId.includes("completionist-set") ||
+                       (item.product.name && item.product.name.toLowerCase().includes("bundle"));
 
-        if (!mercId || !mercId.startsWith("gid://")) return null;
+      if (isBundle && item.customOptions) {
+        // Parse customOptions e.g. "Select Graphic Tee / Shirt: Title • Select Shirt Size: Size • Select 11oz Ceramic Mug: Title"
+        const parts = item.customOptions.split(" • ");
+        parts.forEach(part => {
+          const colonIdx = part.indexOf(":");
+          if (colonIdx !== -1) {
+            const label = part.substring(0, colonIdx).trim().toLowerCase();
+            const value = part.substring(colonIdx + 1).trim();
 
-        const lineObj = {
-          merchandiseId: mercId,
-          quantity: item.quantity
-        };
+            // Skip sizing labels as independent product variants
+            if (label.includes("size")) return;
 
-        // Attach custom bundle selections as Shopify Line Item Attributes
-        if (item.customOptions) {
-          const attributes = item.customOptions.split(" • ").map(opt => {
-            const parts = opt.split(":");
-            return {
-              key: (parts[0] || "Custom Option").trim(),
-              value: (parts[1] || opt).trim()
-            };
+            // Find matching product object inside this.products by name/title
+            const matchedProd = this.products.find(p => {
+              const pName = (p.name || p.title || "").toLowerCase();
+              const valLower = value.toLowerCase();
+              return pName === valLower || pName.includes(valLower) || valLower.includes(pName);
+            });
+
+            if (matchedProd) {
+              const variantId = matchedProd.shopifyVariantId || matchedProd.variantId || matchedProd.id;
+              if (variantId && variantId.startsWith("gid://")) {
+                lines.push({
+                  merchandiseId: variantId,
+                  quantity: item.quantity
+                });
+              }
+            }
+          }
+        });
+      } else {
+        const mercId = item.product.shopifyVariantId || item.product.variantId || item.product.id;
+        if (mercId && mercId.startsWith("gid://")) {
+          lines.push({
+            merchandiseId: mercId,
+            quantity: item.quantity
           });
-          lineObj.attributes = attributes;
         }
-
-        return lineObj;
-      })
-      .filter(Boolean);
+      }
+    });
 
     if (lines.length === 0) {
       throw new Error("No real Shopify products in your cart to checkout.");
