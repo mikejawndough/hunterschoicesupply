@@ -17,7 +17,7 @@ const PRODUCTS = [
   {
     id: "silver-blade-tee",
     name: "Silver Blade Graphic Tee",
-    price: 24.99,
+    price: 29.99,
     category: "apparel",
     badge: "Premium",
     cursed: false,
@@ -37,59 +37,9 @@ const PRODUCTS = [
     `
   },
   {
-    id: "winchester-journal",
-    name: "Winchester Journal Notebook",
-    price: 19.99,
-    category: "lore",
-    badge: "New",
-    cursed: false,
-    description: "A 150-page ruled hardcover notebook featuring a detailed John Winchester journal mock-up cover print. Perfect for keeping track of your thoughts, daily schedules, or monster research.",
-    lore: "Dean: 'Write it down. Every detail. That's how we remember what we're fighting.'",
-    stats: {
-      "Page Count": "150 lined pages",
-      "Cover Print": "High-gloss John Winchester journal wrap",
-      "Paper Style": "50lb text weight ruled paper",
-      "Size": "6 x 8 inches"
-    },
-    svgIcon: `
-      <rect x="25" y="15" width="50" height="70" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-      <line x1="32" y1="15" x2="32" y2="85" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
-      <!-- Straps -->
-      <path d="M 25 35 H 75" stroke="currentColor" stroke-width="2"/>
-      <path d="M 25 65 H 75" stroke="currentColor" stroke-width="2"/>
-      <rect x="55" y="32" width="10" height="6" fill="var(--bg-secondary)" stroke="currentColor" stroke-width="1"/>
-      <rect x="55" y="62" width="10" height="6" fill="var(--bg-secondary)" stroke="currentColor" stroke-width="1"/>
-    `
-  },
-  {
-    id: "winchester-flannel",
-    name: "Winchester Signature Flannel",
-    price: 49.99,
-    category: "apparel",
-    badge: "Classic",
-    cursed: false,
-    description: "Heavy-duty cotton plaid flannel shirt in classic forest green and black. Built to withstand rough investigations, cemetery digs, and cold nights in the Impala.",
-    lore: "Bobby's Advice: 'Dress like a blue-collar worker. Look normal. No one suspects a couple of guys in flannel.'",
-    stats: {
-      "Material": "100% Heavy Brushed Cotton",
-      "Fit": "Relaxed Hunter Fit",
-      "Pockets": "Dual chest button pockets",
-      "Sizes": "S to 2XL"
-    },
-    svgIcon: `
-      <path d="M 20 20 L 35 15 L 50 25 L 65 15 L 80 20 L 75 45 L 68 45 L 68 85 L 32 85 L 32 45 L 25 45 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-      <!-- Plaid details -->
-      <line x1="38" y1="25" x2="38" y2="85" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
-      <line x1="62" y1="25" x2="62" y2="85" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
-      <line x1="50" y1="25" x2="50" y2="85" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="32" y1="50" x2="68" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
-      <line x1="32" y1="70" x2="68" y2="70" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
-    `
-  },
-  {
     id: "salt-iron-mug",
-    name: "Salt & Iron Ceramic Mug",
-    price: 14.99,
+    name: "Salt & Iron Ceramic Mug (11oz)",
+    price: 16.99,
     category: "gear",
     badge: "Best Seller",
     cursed: false,
@@ -113,136 +63,157 @@ const PRODUCTS = [
     `
   },
   {
-    id: "hex-bag-tote",
-    name: "Witch Hex Bag Canvas Tote",
-    price: 18.99,
-    category: "artifacts",
-    badge: "Accessories",
-    cursed: false,
-    description: "A heavy-weight cotton canvas tote bag featuring a high-resolution printed witch hex bag graphic. Ideal for carrying notebooks, laptops, or groceries on the road.",
-    lore: "Bobby's Notes: 'Witches use hex bags to cast curses from a distance. Use this tote to carry your books instead.'",
-    stats: {
-      "Material": "10oz 100% Cotton Canvas",
-      "Dimensions": "15 x 15 inches",
-      "Strap Drop": "11-inch reinforced handles",
-      "Capacity": "Holds up to 20 lbs"
-    },
-    svgIcon: `
-      <path d="M 35 30 Q 50 45, 65 30 Q 70 65, 50 80 Q 30 65, 35 30 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-      <!-- Tied string -->
-      <ellipse cx="50" cy="40" rx="10" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M 45 40 Q 38 48, 42 55" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M 55 40 Q 62 48, 58 55" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Patch details -->
-      <rect x="42" y="52" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
-    `
-  },
-  {
-    id: "deans-amulet",
-    name: "Dean's Amulet Replica Necklace",
-    price: 15.00,
-    category: "artifacts",
-    badge: "Replica",
-    cursed: false,
-    description: "An authentic metal replica of the bronze amulet Sam gave to Dean as a Christmas gift. Hangs on a durable, adjustable black cord. An essential piece of fan memorabilia.",
-    lore: "Castiel: 'This amulet is very rare. It is an instrument... it can detect God.'",
-    stats: {
-      "Finish": "Antique Bronze Plated Alloy",
-      "Pendant Size": "2.2 inches",
-      "Cord Length": "24 inches adjustable",
-      "Sentimental Value": "Infinite"
-    },
-    svgIcon: `
-      <!-- Amulet outline resembling a face with horns -->
-      <path d="M 50 25 C 45 25, 42 35, 42 45 C 42 60, 48 75, 50 78 C 52 75, 58 60, 58 45 C 58 35, 55 25, 50 25 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-      <!-- Horns -->
-      <path d="M 42 35 C 32 30, 30 18, 38 18 C 42 18, 43 25, 42 35" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M 58 35 C 68 30, 70 18, 62 18 C 58 18, 57 25, 58 35" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Loop ring -->
-      <circle cx="50" cy="20" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
-    `
-  },
-  {
-    id: "emf-detector-hoodie",
-    name: "EMF Detector Graphic Hoodie",
-    price: 39.99,
-    category: "apparel",
-    badge: "Printed",
-    cursed: false,
-    description: "A cozy cotton-blend fleece hoodie featuring a detailed, glow-in-the-dark styled EMF activity meter graphic print. Perfect for staying warm while scanning the perimeter.",
-    lore: "Dean's Journal: 'Modified tape players read EMF. Keep a hoodie ready for night cases.'",
-    stats: {
-      "Fabric": "50% Cotton, 50% Polyester fleece",
-      "Weight": "8.0 oz/yd² midweight",
-      "Print": "Durable screen-print graphic",
-      "Sizes": "S to 3XL"
-    },
-    svgIcon: `
-      <rect x="28" y="20" width="44" height="65" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-      <!-- Speaker grill circles -->
-      <circle cx="50" cy="65" r="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
-      <!-- Meter dial -->
-      <path d="M 38 45 A 12 12 0 0 1 62 45" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="50" y1="45" x2="44" y2="38" stroke="currentColor" stroke-width="2"/>
-      <!-- LED indicator dots -->
-      <circle cx="38" cy="27" r="2" fill="currentColor"/>
-      <circle cx="44" cy="27" r="2" fill="currentColor"/>
-      <circle cx="50" cy="27" r="2" fill="currentColor"/>
-      <circle cx="56" cy="27" r="2" fill="currentColor"/>
-      <circle cx="62" cy="27" r="2" fill="currentColor"/>
-    `
-  },
-  {
-    id: "angel-blade-tumbler",
-    name: "Angel Blade Stainless Tumbler",
-    price: 29.99,
+    id: "salt-iron-mug-15oz",
+    name: "Salt & Iron Jumbo Mug (15oz)",
+    price: 21.99,
     category: "gear",
-    badge: "Insulated",
+    badge: "Large Capacity",
     cursed: false,
-    description: "A 20oz double-wall vacuum insulated stainless steel travel tumbler featuring a laser-engraved Archangel Blade design. Keeps drinks ice-cold for 24 hours or hot for 12.",
-    lore: "Castiel: 'An angel blade is a powerful weapon. Keep your drinks cold while patrolling.'",
+    description: "A jumbo 15oz high-grade white ceramic coffee mug with extra coffee volume for late night research sessions.",
+    lore: "Dean Winchester: 'I need extra coffee before starting an all-nighter at the library.'",
     stats: {
-      "Capacity": "20oz (590ml)",
-      "Material": "18/8 Kitchen-grade Stainless Steel",
-      "Insulation": "Double-wall vacuum insulation",
-      "Lid": "BPA-free splash resistant sliding lid"
+      "Volume": "15oz (444ml)",
+      "Material": "100% white ceramic",
+      "Care": "Dishwasher & Microwave safe",
+      "Print": "Full wrap sublimation print"
     },
     svgIcon: `
-      <!-- Triple-edged blade path -->
-      <path d="M 50 10 L 56 60 L 52 62 L 52 85 L 48 85 L 48 62 L 44 60 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-      <!-- Twisted handle details -->
-      <line x1="48" y1="67" x2="52" y2="70" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="48" y1="73" x2="52" y2="76" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="48" y1="79" x2="52" y2="82" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Center spine ridge -->
-      <line x1="50" y1="10" x2="50" y2="60" stroke="currentColor" stroke-width="1"/>
+      <rect x="22" y="25" width="56" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M 78 35 H 88 V 65 H 78" fill="none" stroke="currentColor" stroke-width="2"/>
     `
   },
   {
-    id: "devils-trap-mousepad",
-    name: "Devil's Trap Circular Mouse Pad",
-    price: 12.99,
+    id: "team-free-will-pins",
+    name: "Team Free Will Pin Button",
+    price: 5.00,
     category: "artifacts",
-    badge: "Desk Gear",
+    badge: "Popular",
     cursed: false,
-    description: "A circular neoprene mouse pad featuring a printed Devil's Trap planetary seal. Non-slip rubber backing and a silky cloth surface ensure smooth cursor sweeps.",
-    lore: "Dean Winchester: 'Once they walk inside, they can't leave. Keeps your cursor trapped right where you want it.'",
+    description: "A glossy 1.25-inch metal pin button featuring iconic Supernatural emblems. Perfect for jackets, backpacks, or lanyard display.",
+    lore: "Castiel: 'I'm the one who gripped you tight and raised you from perdition.'",
     stats: {
-      "Diameter": "8.5 inches",
-      "Material": "Smooth polyester surface with neoprene rubber base",
-      "Thickness": "0.12 inches (3mm) backing",
-      "Anti-slip": "Heavy-grip textured bottom"
+      "Size": "1.25 inches diameter",
+      "Backing": "Safety pin clasp",
+      "Finish": "UV resistant gloss cover"
+    },
+    svgIcon: `
+      <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+      <polygon points="50,25 58,42 77,42 62,53 68,71 50,60 32,71 38,53 23,42 42,42" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    `
+  },
+  {
+    id: "supernatural-wrapping-paper",
+    name: "Custom Premium Wrapping Paper",
+    price: 19.99,
+    category: "artifacts",
+    badge: "Custom Print",
+    cursed: false,
+    description: "High-quality heavy 90gsm paper roll printed with continuous anti-possession and Devil's trap runes. Make your gifts look like bunker artifacts.",
+    lore: "Sam: 'Wrap it up tight so no one gets suspicious.'",
+    stats: {
+      "Roll Size": "30 x 72 inches",
+      "Paper": "90gsm fine art paper",
+      "Finish": "Matte premium finish"
+    },
+    svgIcon: `
+      <rect x="25" y="20" width="50" height="60" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="2"/>
+      <line x1="25" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="2"/>
+    `
+  },
+  {
+    id: "winchester-journal",
+    name: "Winchester Journal Notebook",
+    price: 19.99,
+    category: "lore",
+    badge: "New",
+    cursed: false,
+    description: "A 150-page ruled hardcover notebook featuring a detailed John Winchester journal mock-up cover print. Perfect for keeping track of your thoughts, daily schedules, or monster research.",
+    lore: "Dean: 'Write it down. Every detail. That's how we remember what we're fighting.'",
+    stats: {
+      "Page Count": "150 lined pages",
+      "Cover Print": "High-gloss John Winchester journal wrap",
+      "Paper Style": "50lb text weight ruled paper",
+      "Size": "6 x 8 inches"
+    },
+    svgIcon: `
+      <rect x="25" y="15" width="50" height="70" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="32" y1="15" x2="32" y2="85" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <path d="M 25 35 H 75" stroke="currentColor" stroke-width="2"/>
+      <path d="M 25 65 H 75" stroke="currentColor" stroke-width="2"/>
+    `
+  },
+  {
+    id: "winchester-flannel",
+    name: "Winchester Signature Flannel",
+    price: 49.99,
+    category: "apparel",
+    badge: "Classic",
+    cursed: false,
+    description: "Heavy-duty cotton plaid flannel shirt in classic forest green and black. Built to withstand rough investigations, cemetery digs, and cold nights in the Impala.",
+    lore: "Bobby's Advice: 'Dress like a blue-collar worker. Look normal. No one suspects a couple of guys in flannel.'",
+    stats: {
+      "Material": "100% Heavy Brushed Cotton",
+      "Fit": "Relaxed Hunter Fit",
+      "Pockets": "Dual chest button pockets",
+      "Sizes": "S to 2XL"
+    },
+    svgIcon: `
+      <path d="M 20 20 L 35 15 L 50 25 L 65 15 L 80 20 L 75 45 L 68 45 L 68 85 L 32 85 L 32 45 L 25 45 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+    `
+  },
+  {
+    id: "bunker-care-package",
+    name: "The Bunker Care Package Bundle",
+    price: 39.99,
+    category: "bundles",
+    badge: "Save $6.99",
+    cursed: false,
+    description: "Includes 1 Graphic Tee + 1 Standard 11oz Ceramic Mug ($46.98 value for only $39.99).",
+    lore: "Bunker Essentials: 'Everything you need to gear up for a long road trip.'",
+    stats: {
+      "Includes": "1x Tee + 1x 11oz Mug",
+      "Savings": "Save $6.99 (15% off)"
+    },
+    svgIcon: `
+      <rect x="20" y="30" width="60" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M20 45 h60 M50 30 v50" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+    `
+  },
+  {
+    id: "convention-survivor-kit",
+    name: "The Convention Survivor Kit Bundle",
+    price: 37.99,
+    category: "bundles",
+    badge: "Save $7.00",
+    cursed: false,
+    description: "Includes 1 Graphic Tee + Team Free Will Pin Trio (3 Pins) ($44.99 value for only $37.99).",
+    lore: "Convention Ready: 'Look sharp and display your pins with pride.'",
+    stats: {
+      "Includes": "1x Tee + 3x Pin Buttons",
+      "Savings": "Save $7.00 (16% off)"
     },
     svgIcon: `
       <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
-      <circle cx="50" cy="50" r="31" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 2"/>
-      <polygon points="50,19 74,68 20,38 80,38 26,68" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Small planetary glyph mock indicators -->
-      <circle cx="50" cy="27" r="1.5" fill="currentColor"/>
-      <circle cx="70" cy="62" r="1.5" fill="currentColor"/>
-      <circle cx="30" cy="62" r="1.5" fill="currentColor"/>
-      <circle cx="75" cy="42" r="1.5" fill="currentColor"/>
-      <circle cx="25" cy="42" r="1.5" fill="currentColor"/>
+      <polygon points="50,20 60,40 82,40 64,54 71,76 50,62 29,76 36,54 18,40 40,40" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    `
+  },
+  {
+    id: "completionist-set",
+    name: "Team Free Will Completionist Set Bundle",
+    price: 44.99,
+    category: "bundles",
+    badge: "Save $6.99",
+    cursed: false,
+    description: "Includes 1 Graphic Tee + 1 Pin Button + 1 Standard 11oz Mug ($51.98 value for only $44.99).",
+    lore: "Ultimate Loadout: 'The complete hunter kit. Tee, Mug, and Pin.'",
+    stats: {
+      "Includes": "1x Tee + 1x Mug + 1x Pin",
+      "Savings": "Save $6.99 (13% off)"
+    },
+    svgIcon: `
+      <path d="M 50 15 L 80 40 L 70 85 L 30 85 L 20 40 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/>
     `
   }
 ];
@@ -362,6 +333,14 @@ class ShopApp {
     this.trackOrderId = document.getElementById("track-order-id");
     this.trackResult = document.getElementById("track-result");
     
+    // Bundle customizer elements
+    this.bundleModal = document.getElementById("bundle-modal");
+    this.bundleForm = document.getElementById("bundle-form");
+    this.bundleModalTitle = document.getElementById("bundle-modal-title");
+    this.bundleModalSubtitle = document.getElementById("bundle-modal-subtitle");
+    this.bundleOptionsContainer = document.getElementById("bundle-options-container");
+    this.activeBundleConfig = null;
+    
     // Init actions
     this.initTypewriter();
     this.initEvents();
@@ -424,46 +403,65 @@ class ShopApp {
 
 
 
-    // Cart Popover controls
-    const cartDrawer = document.getElementById("cart-drawer");
-    
+    // Cart open & close controls
+    const cartBtn = document.getElementById("cart-btn");
+    if (cartBtn) {
+      cartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.toggleCartDrawer();
+      });
+    }
+
+    const closeCartBtn = document.getElementById("close-cart-btn");
+    if (closeCartBtn) {
+      closeCartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.closeCartDrawer();
+      });
+    }
+
     // Cart actions (Quantity edits & item removals)
-    this.cartItemsContainer.addEventListener("click", (e) => {
-      const qtyBtn = e.target.closest(".qty-btn");
-      const removeBtn = e.target.closest(".cart-item-remove");
-      
-      if (qtyBtn) {
-        const id = qtyBtn.dataset.id;
-        const change = parseInt(qtyBtn.dataset.change);
-        this.updateQuantity(id, change);
-      }
-      
-      if (removeBtn) {
-        const id = removeBtn.dataset.id;
-        this.removeFromCart(id);
-      }
-    });
+    if (this.cartItemsContainer) {
+      this.cartItemsContainer.addEventListener("click", (e) => {
+        const qtyBtn = e.target.closest(".qty-btn");
+        const removeBtn = e.target.closest(".cart-item-remove");
+        
+        if (qtyBtn) {
+          const id = qtyBtn.dataset.id;
+          const change = parseInt(qtyBtn.dataset.change);
+          this.updateQuantity(id, change);
+        }
+        
+        if (removeBtn) {
+          const id = removeBtn.dataset.id;
+          this.removeFromCart(id);
+        }
+      });
+    }
 
     // Promo code apply
-    this.promoApplyBtn.addEventListener("click", () => this.applyPromoCode());
-    this.promoInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") this.applyPromoCode();
-    });
+    if (this.promoApplyBtn) {
+      this.promoApplyBtn.addEventListener("click", () => this.applyPromoCode());
+    }
+    if (this.promoInput) {
+      this.promoInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") this.applyPromoCode();
+      });
+    }
 
     // Checkout Modal open
-    document.getElementById("checkout-btn").addEventListener("click", () => {
-      if (this.cart.length === 0) {
-        alert("Your trunk is empty! Grab some salt before patrolling.");
-        return;
-      }
-      // Hide cart popover
-      if (cartDrawer.hidePopover) {
-        cartDrawer.hidePopover();
-      } else {
-        cartDrawer.setAttribute("style", "display: none;");
-      }
-      this.triggerCheckout();
-    });
+    const checkoutBtn = document.getElementById("checkout-btn");
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (this.getCartItemCount() === 0) {
+          alert("Your trunk is empty! Add some products to your order before checking out.");
+          return;
+        }
+        this.closeCartDrawer();
+        this.triggerCheckout();
+      });
+    }
 
     // Detail modal closing
     document.getElementById("detail-close-btn").addEventListener("click", () => {
@@ -682,6 +680,46 @@ class ShopApp {
         this.trackResult.style.display = "block";
       });
     }
+
+    // Open bundle customizer modal (Direct & Delegated listener)
+    const attachBundleListeners = () => {
+      const bundleBtns = document.querySelectorAll(".bundle-open-btn");
+      bundleBtns.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const bundleId = btn.dataset.bundleId || "bunker-care-package";
+          this.openBundleCustomizer(bundleId);
+        });
+      });
+    };
+    attachBundleListeners();
+
+    document.addEventListener("click", (e) => {
+      const bundleBtn = e.target.closest(".bundle-open-btn");
+      if (bundleBtn) {
+        e.preventDefault();
+        const bundleId = bundleBtn.dataset.bundleId || "bunker-care-package";
+        this.openBundleCustomizer(bundleId);
+      }
+    });
+
+    // Close bundle customizer modal
+    const bundleCloseBtn = document.getElementById("bundle-modal-close");
+    if (bundleCloseBtn) {
+      bundleCloseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.closeBundleModal();
+      });
+    }
+
+    // Submit bundle customizer form
+    if (this.bundleForm) {
+      this.bundleForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.handleBundleSubmit();
+      });
+    }
   }
 
 
@@ -689,6 +727,10 @@ class ShopApp {
   // Catalog Renderer
   renderProducts() {
     let filtered = this.products.filter(prod => {
+      // Exclude bundle items from general product catalog grid
+      if (prod.category === "bundles" || (prod.name && prod.name.toLowerCase().includes("bundle"))) {
+        return false;
+      }
       const matchCat = this.currentCategory === "all" || 
                         (SHOPIFY_CONFIG.active ? (prod.collections && prod.collections.includes(this.currentCategory)) : prod.category === this.currentCategory);
       const matchSearch = prod.name.toLowerCase().includes(this.searchQuery) || 
@@ -806,26 +848,325 @@ class ShopApp {
     });
   }
 
+  // Bundle Customizer System
+  openBundleModal() {
+    this.bundleModal = document.getElementById("bundle-modal");
+    if (!this.bundleModal) return;
+    this.bundleModal.setAttribute("open", "true");
+    this.bundleModal.classList.add("open");
+    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 2rem !important; border-radius: 12px !important; width: 520px !important; max-width: 90vw !important; max-height: 85vh !important; overflow-y: auto !important;";
+    
+    if (typeof this.bundleModal.showModal === "function") {
+      try {
+        if (!this.bundleModal.open) {
+          this.bundleModal.showModal();
+        }
+      } catch (e) {}
+    }
+  }
+
+  closeBundleModal() {
+    this.bundleModal = document.getElementById("bundle-modal");
+    if (!this.bundleModal) return;
+    this.bundleModal.removeAttribute("open");
+    this.bundleModal.classList.remove("open");
+    this.bundleModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
+    if (typeof this.bundleModal.close === "function") {
+      try {
+        if (this.bundleModal.open) {
+          this.bundleModal.close();
+        }
+      } catch (e) {}
+    }
+  }
+
+  getProductsForBundleType(type) {
+    const fallbackShirts = [
+      "She Wants The D Graphic Tee | Dean Winchester Fan T-Shirt",
+      "Silver Blade Graphic Tee"
+    ];
+
+    const fallbackMugs = [
+      "Carry On My Wayward Son Silhouette Mug",
+      "Team Castiel Collegiate Ceramic Mug"
+    ];
+
+    const fallbackPins = [
+      "Fight The Fairies Custom Pin Button",
+      "She Wants The D Custom Pin Button",
+      "Team Castiel Collegiate Custom Pin Button",
+      "Team Dean Collegiate Custom Pin Button"
+    ];
+
+    if (!this.products || this.products.length === 0) {
+      if (type === "shirt") return fallbackShirts;
+      if (type === "mug" || type === "mug11oz") return fallbackMugs;
+      if (type === "pin") return fallbackPins;
+      return [];
+    }
+    
+    const matchedNames = [];
+    this.products.forEach(p => {
+      const pName = p.name || p.title || "";
+      const nameLower = pName.toLowerCase();
+      const pType = (p.productType || "").toLowerCase();
+      const pTags = (Array.isArray(p.tags) ? p.tags.join(" ") : (p.tags || "")).toLowerCase();
+      
+      // Exclude bundle items themselves
+      if (nameLower.includes("bundle")) return;
+
+      if (type === "shirt") {
+        if (pType.includes("shirt") || pType.includes("apparel") || nameLower.includes("tee") || nameLower.includes("shirt")) {
+          if (!nameLower.includes("mug") && !nameLower.includes("pin") && !nameLower.includes("button") && !nameLower.includes("wrap")) {
+            matchedNames.push(pName);
+          }
+        }
+      } else if (type === "mug" || type === "mug11oz") {
+        if (pType.includes("mug") || nameLower.includes("mug") || pTags.includes("mug")) {
+          if (!nameLower.includes("shirt") && !nameLower.includes("pin") && !nameLower.includes("button") && !nameLower.includes("wrap")) {
+            matchedNames.push(pName);
+          }
+        }
+      } else if (type === "pin") {
+        if (nameLower.includes("pin") || nameLower.includes("button") || pTags.includes("pin") || pTags.includes("button")) {
+          if (!nameLower.includes("shirt") && !nameLower.includes("mug") && !nameLower.includes("wrap") && !nameLower.includes("paper")) {
+            matchedNames.push(pName);
+          }
+        }
+      }
+    });
+
+    if (matchedNames.length > 0) {
+      return [...new Set(matchedNames)];
+    }
+
+    if (type === "shirt") return fallbackShirts;
+    if (type === "mug" || type === "mug11oz") return fallbackMugs;
+    if (type === "pin") return fallbackPins;
+    return [];
+  }
+
+  openBundleCustomizer(bundleId) {
+    this.bundleModal = document.getElementById("bundle-modal");
+    this.bundleModalTitle = document.getElementById("bundle-modal-title");
+    this.bundleModalSubtitle = document.getElementById("bundle-modal-subtitle");
+    this.bundleOptionsContainer = document.getElementById("bundle-options-container");
+
+    if (!this.bundleModal) {
+      console.error("Critical: #bundle-modal element not found in DOM");
+      return;
+    }
+
+    const shirtChoices = this.getProductsForBundleType("shirt");
+    const mugChoices = this.getProductsForBundleType("mug11oz");
+    const pinChoices = this.getProductsForBundleType("pin");
+
+    const sizes = ["Small (S)", "Medium (M)", "Large (L)", "XL", "2XL", "3XL"];
+
+    const bundleConfigs = {
+      "bunker-care-package": {
+        id: "bunker-care-package",
+        name: "The Bunker Care Package Bundle",
+        price: 39.99,
+        subtitle: "1 Graphic Tee + 1 Standard 11oz Ceramic Mug ($39.99)",
+        options: [
+          {
+            id: "tee_style",
+            label: "Select Graphic Tee / Shirt",
+            choices: shirtChoices
+          },
+          {
+            id: "tee_size",
+            label: "Select Shirt Size",
+            choices: sizes
+          },
+          {
+            id: "mug_design",
+            label: "Select 11oz Ceramic Mug",
+            choices: mugChoices
+          }
+        ]
+      },
+      "convention-survivor-kit": {
+        id: "convention-survivor-kit",
+        name: "The Convention Survivor Kit Bundle",
+        price: 37.99,
+        subtitle: "1 Graphic Tee + Team Free Will Pin Trio ($37.99)",
+        options: [
+          {
+            id: "tee_style",
+            label: "Select Graphic Tee / Shirt",
+            choices: shirtChoices
+          },
+          {
+            id: "tee_size",
+            label: "Select Shirt Size",
+            choices: sizes
+          },
+          {
+            id: "pin_1",
+            label: "Select Pin #1",
+            choices: pinChoices
+          },
+          {
+            id: "pin_2",
+            label: "Select Pin #2",
+            choices: pinChoices
+          },
+          {
+            id: "pin_3",
+            label: "Select Pin #3",
+            choices: pinChoices
+          }
+        ]
+      },
+      "completionist-set": {
+        id: "completionist-set",
+        name: "Team Free Will Completionist Set Bundle",
+        price: 44.99,
+        subtitle: "1 Graphic Tee + 1 Pin Button + 1 Standard 11oz Mug ($44.99)",
+        options: [
+          {
+            id: "tee_style",
+            label: "Select Graphic Tee / Shirt",
+            choices: shirtChoices
+          },
+          {
+            id: "tee_size",
+            label: "Select Shirt Size",
+            choices: sizes
+          },
+          {
+            id: "pin_choice",
+            label: "Select Pin Button",
+            choices: pinChoices
+          },
+          {
+            id: "mug_design",
+            label: "Select 11oz Ceramic Mug",
+            choices: mugChoices
+          }
+        ]
+      }
+    };
+
+    const targetKey = bundleConfigs[bundleId] ? bundleId : "bunker-care-package";
+    const config = bundleConfigs[targetKey];
+    this.activeBundleConfig = config;
+
+    if (this.bundleModalTitle) this.bundleModalTitle.textContent = config.name;
+    if (this.bundleModalSubtitle) this.bundleModalSubtitle.textContent = config.subtitle;
+
+    if (this.bundleOptionsContainer) {
+      this.bundleOptionsContainer.innerHTML = config.options.map(opt => `
+        <div class="bundle-option-group" style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.8rem;">
+          <label for="bundle-opt-${opt.id}" style="font-family: var(--font-title); color: var(--accent-gold); font-size: 0.9rem;">${opt.label}</label>
+          <select class="bundle-option-select" id="bundle-opt-${opt.id}" data-opt-id="${opt.id}" style="width: 100%; padding: 0.7rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem;">
+            ${(opt.choices || []).map(choice => `<option value="${choice}">${choice}</option>`).join("")}
+          </select>
+        </div>
+      `).join("");
+    }
+
+    this.openBundleModal();
+  }
+
+  handleBundleSubmit() {
+    if (!this.activeBundleConfig) return;
+
+    const selects = this.bundleOptionsContainer.querySelectorAll(".bundle-option-select");
+    const selections = [];
+
+    selects.forEach(sel => {
+      const label = sel.previousElementSibling ? sel.previousElementSibling.textContent.trim() : "";
+      selections.push(`${label}: ${sel.value}`);
+    });
+
+    const customDesc = selections.join(" • ");
+    const bundleItem = {
+      product: {
+        id: `${this.activeBundleConfig.id}-${Date.now()}`,
+        name: this.activeBundleConfig.name,
+        price: this.activeBundleConfig.price,
+        description: customDesc,
+        badge: "Custom Bundle",
+        svgIcon: `<rect x="20" y="30" width="60" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 45 h60 M50 30 v50" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>`
+      },
+      quantity: 1,
+      customOptions: customDesc
+    };
+
+    this.cart.push(bundleItem);
+    this.saveCartToStorage();
+    this.updateCartUI();
+    this.closeBundleModal();
+    this.openCartDrawer();
+  }
+
+  // Cart Drawer Helper Methods
+  getCartItemCount() {
+    if (Array.isArray(this.cart)) {
+      return this.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    } else if (this.cart && this.cart.lines) {
+      const lines = Array.isArray(this.cart.lines) ? this.cart.lines : (this.cart.lines.edges || this.cart.lines.nodes || []);
+      return lines.reduce((sum, l) => sum + ((l.node ? l.node.quantity : l.quantity) || 1), 0);
+    }
+    return 0;
+  }
+
+  openCartDrawer() {
+    const drawer = document.getElementById("cart-drawer");
+    if (!drawer) return;
+    drawer.removeAttribute("style");
+    drawer.classList.add("open");
+    if (typeof drawer.showPopover === "function") {
+      try {
+        if (!drawer.matches(":popover-open")) {
+          drawer.showPopover();
+        }
+      } catch (e) {}
+    }
+  }
+
+  closeCartDrawer() {
+    const drawer = document.getElementById("cart-drawer");
+    if (!drawer) return;
+    drawer.removeAttribute("style");
+    drawer.classList.remove("open");
+    if (typeof drawer.hidePopover === "function") {
+      try {
+        if (drawer.matches(":popover-open")) {
+          drawer.hidePopover();
+        }
+      } catch (e) {}
+    }
+  }
+
+  toggleCartDrawer() {
+    const drawer = document.getElementById("cart-drawer");
+    if (!drawer) return;
+    if (drawer.classList.contains("open") || (drawer.matches && drawer.matches(":popover-open"))) {
+      this.closeCartDrawer();
+    } else {
+      this.openCartDrawer();
+    }
+  }
+
   // Cart Management
   addToCart(id) {
-    const product = this.products.find(p => p.id === id);
+    const product = this.products.find(p => p.id === id || String(p.id) === String(id));
     if (!product) return;
 
-    const existing = this.cart.find(item => item.product.id === id);
+    const existing = this.cart.find(item => item.product && (item.product.id === id || String(item.product.id) === String(id)));
     if (existing) {
-      existing.quantity++;
+      existing.quantity = (existing.quantity || 1) + 1;
     } else {
       this.cart.push({ product, quantity: 1 });
     }
 
     this.saveCartToStorage();
     this.updateCartUI();
-
-    // Declarative or JS open of popover drawer
-    const drawer = document.getElementById("cart-drawer");
-    if (drawer.showPopover) {
-      drawer.showPopover();
-    }
+    this.openCartDrawer();
   }
 
   updateQuantity(id, change) {
@@ -921,7 +1262,8 @@ class ShopApp {
         price: isNaN(price) ? 0 : price,
         quantity,
         imageUrl,
-        svgIcon
+        svgIcon,
+        description: item.customOptions || (item.product ? item.product.description : "")
       };
     });
 
@@ -934,7 +1276,7 @@ class ShopApp {
     if (normalizedItems.length === 0) {
       this.cartItemsContainer.innerHTML = `
         <div class="cart-empty-message">
-          <p>Your trunk trunk is currently empty.</p>
+          <p>Your trunk is currently empty.</p>
           <p style="font-size: 0.8rem; margin-top: 0.5rem;">Secure some gear before heading out!</p>
         </div>
       `;
@@ -947,6 +1289,7 @@ class ShopApp {
           }
           <div class="cart-item-details">
             <h4 class="cart-item-name">${item.name}</h4>
+            ${item.description ? `<p style="font-size: 0.72rem; color: var(--accent-gold); opacity: 0.9; margin: 0.15rem 0 0.35rem 0; line-height: 1.3;">${item.description}</p>` : ''}
             <span class="cart-item-price">$${item.price.toFixed(2)}</span>
             <div class="cart-item-quantity">
               <button class="qty-btn" data-id="${item.id}" data-change="-1">-</button>
@@ -1104,8 +1447,7 @@ class ShopApp {
           return;
         }
       } catch (err) {
-        console.error("Shopify Checkout creation failed, using local simulator:", err);
-        alert("Shopify checkout failed. Running simulation instead.");
+        console.warn("Shopify Checkout creation fallback to simulator:", err);
       }
     }
 
@@ -1604,6 +1946,15 @@ class ShopApp {
 }
 
 // 5. Application Bootstrapper
-document.addEventListener("DOMContentLoaded", () => {
-  window.shopApp = new ShopApp();
-});
+const initShopApp = () => {
+  if (!window.shopApp) {
+    window.shopApp = new ShopApp();
+    window.app = window.shopApp;
+  }
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initShopApp);
+} else {
+  initShopApp();
+}

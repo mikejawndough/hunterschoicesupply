@@ -602,6 +602,10 @@ nav ul a:hover::after {
   text-transform: uppercase;
 }
 
+.card-add-btn *, .card-view-btn * {
+  pointer-events: none;
+}
+
 .card-view-btn {
   background: transparent;
   color: var(--text-secondary);
@@ -877,15 +881,17 @@ footer {
     display var(--transition-speed) allow-discrete;
 }
 
-#cart-drawer:is(:popover-open, .\:popover-open) {
-  display: flex;
+#cart-drawer:is(:popover-open, .\:popover-open, .open) {
+  display: flex !important;
   flex-direction: column;
   transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
+  z-index: 1000;
 }
 
 @starting-style {
-  #cart-drawer:is(:popover-open, .\:popover-open) {
+  #cart-drawer:is(:popover-open, .\:popover-open, .open) {
     transform: translateY(-20px);
     opacity: 0;
   }
@@ -2202,4 +2208,215 @@ dialog[open]::backdrop {
 .stepper-desc {
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+/* Featured Bundles Section */
+.bundles-section {
+  padding: 4rem 5%;
+  background: radial-gradient(circle at center, rgba(30, 24, 18, 0.6) 0%, var(--bg-primary) 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bundles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bundle-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.bundle-card.featured {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, var(--bg-secondary) 100%);
+}
+
+.bundle-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 20px var(--accent-gold-glow);
+}
+
+.bundle-badge {
+  position: absolute;
+  top: -12px;
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bundle-icon {
+  width: 80px;
+  height: 80px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bundle-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bundle-title {
+  font-family: var(--font-title);
+  color: var(--accent-gold);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.bundle-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.bundle-pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.bundle-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-shadow: 0 0 6px var(--accent-gold-glow);
+}
+
+/* Bundle Customizer Modal */
+.bundle-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 520px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-gold-glow);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.bundle-modal[open],
+.bundle-modal.open {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+  z-index: 10000 !important;
+}
+
+.bundle-open-btn * {
+  pointer-events: none;
+}
+
+.bundle-modal::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.bundle-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.bundle-modal-close:hover {
+  color: var(--accent-gold);
+}
+
+.bundle-modal-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.bundle-modal-header h3 {
+  font-family: var(--font-title);
+  color: var(--accent-gold);
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.bundle-modal-header p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.bundle-option-group {
+  margin-bottom: 1.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.bundle-option-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bundle-option-select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.bundle-option-select:focus {
+  border-color: var(--accent-gold);
 }
