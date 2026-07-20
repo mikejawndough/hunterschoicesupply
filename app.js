@@ -1634,7 +1634,6 @@ class ShopApp {
     this.updateCartUI();
   }
 
-  // Shopify Integration Methods
   async initCatalog() {
     if (SHOPIFY_CONFIG.active) {
       try {
@@ -1648,6 +1647,38 @@ class ShopApp {
       }
     }
     this.renderProducts();
+    this.renderCarousel();
+  }
+
+  renderCarousel() {
+    const carouselTrack = document.getElementById("homepage-carousel-track");
+    if (!carouselTrack) return;
+
+    const catalogProds = (this.products || []).filter(p => p.category !== "bundles" && (!p.name || !p.name.toLowerCase().includes("bundle")));
+    if (catalogProds.length === 0) return;
+
+    const createCardHTML = (prod) => {
+      const imgHTML = prod.imageUrl 
+        ? `<img src="${prod.imageUrl}" alt="${prod.name}">`
+        : `<svg viewBox="0 0 100 100" style="width:60px; height:60px; stroke:var(--accent-gold); fill:none; stroke-width:2;">${prod.svgIcon || ""}</svg>`;
+
+      const priceStr = typeof prod.price === "number" ? `$${prod.price.toFixed(2)}` : `$${prod.price}`;
+
+      return `
+        <div class="carousel-item" data-id="${prod.id}" onclick="window.shopApp ? window.shopApp.showDetailsModal('${prod.id}') : (window.location.href='shop.html')">
+          <div class="carousel-img-wrap">
+            ${imgHTML}
+          </div>
+          <div class="carousel-item-title">${prod.name}</div>
+          <div class="carousel-item-price">${priceStr}</div>
+        </div>
+      `;
+    };
+
+    const originalCards = catalogProds.map(createCardHTML).join("");
+    const duplicatedCards = catalogProds.map(createCardHTML).join("");
+
+    carouselTrack.innerHTML = originalCards + duplicatedCards;
   }
 
   async fetchShopifyProducts() {
