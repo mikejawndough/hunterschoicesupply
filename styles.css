@@ -2319,19 +2319,19 @@ dialog[open]::backdrop {
 /* Bundle Customizer Modal */
 .bundle-modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  width: 520px;
-  max-width: 90vw;
-  max-height: 85vh;
+  top: 5% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 500px;
+  max-width: 92vw;
+  max-height: 88vh;
   overflow-y: auto;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   background: var(--bg-secondary);
   color: var(--text-primary);
-  padding: 2rem;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-gold-glow);
+  padding: 1.5rem 1.5rem 1.75rem 1.5rem;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px var(--accent-gold-glow);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -2344,8 +2344,29 @@ dialog[open]::backdrop {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
-  transform: translate(-50%, -50%) scale(1) !important;
-  z-index: 10000 !important;
+  top: 5% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 99999 !important;
+}
+
+.bundle-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  padding: 0.25rem;
+  transition: color var(--transition-speed) ease;
+}
+
+.bundle-modal-close:hover {
+  color: var(--accent-gold);
 }
 
 .bundle-open-btn * {

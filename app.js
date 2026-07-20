@@ -854,7 +854,7 @@ class ShopApp {
     if (!this.bundleModal) return;
     this.bundleModal.setAttribute("open", "true");
     this.bundleModal.classList.add("open");
-    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 2rem !important; border-radius: 12px !important; width: 520px !important; max-width: 90vw !important; max-height: 85vh !important; overflow-y: auto !important;";
+    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 5% !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
     
     if (typeof this.bundleModal.showModal === "function") {
       try {
@@ -1950,6 +1950,15 @@ const initShopApp = () => {
   if (!window.shopApp) {
     window.shopApp = new ShopApp();
     window.app = window.shopApp;
+  }
+};
+
+window.openBundleCustomizer = (bundleId) => {
+  initShopApp();
+  if (window.shopApp) {
+    window.shopApp.openBundleCustomizer(bundleId);
+  } else if (window.app) {
+    window.app.openBundleCustomizer(bundleId);
   }
 };
 
