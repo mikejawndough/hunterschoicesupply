@@ -550,20 +550,41 @@ class ShopApp {
         
         if (!email || !email.includes("@")) return;
 
-        const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
-        if (!subscribers.includes(email)) {
-          subscribers.push(email);
-          localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
-        }
-        
-        // Unconditionally push subscriber directly to Shopify Customer List
-        const success = await this.subscribeShopifyCustomer(email);
+        this.newsletterFeedback.textContent = "Generating your exclusive discount code...";
+        this.newsletterFeedback.className = "newsletter-feedback info";
 
-        this.newsletterFeedback.innerHTML = `
-          Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
-        `;
-        this.newsletterFeedback.className = "newsletter-feedback success";
-        this.newsletterEmail.value = "";
+        try {
+          const res = await fetch("/api/generate-welcome-discount", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await res.json();
+          if (data.success && data.discountCode) {
+            const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
+            if (!subscribers.includes(email)) {
+              subscribers.push(email);
+              localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
+            }
+
+            this.newsletterFeedback.innerHTML = `
+              Welcome to the dispatch! Use your 1-time code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow); font-family: monospace;">${data.discountCode}</strong> for 10% off your order.
+            `;
+            this.newsletterFeedback.className = "newsletter-feedback success";
+            this.newsletterEmail.value = "";
+          } else {
+            throw new Error(data.error || "Unable to generate discount code.");
+          }
+        } catch (err) {
+          console.error("Newsletter discount generation error:", err);
+          this.subscribeShopifyCustomer(email);
+          this.newsletterFeedback.innerHTML = `
+            Coordinates verified! Welcome to the dispatch.
+          `;
+          this.newsletterFeedback.className = "newsletter-feedback success";
+          this.newsletterEmail.value = "";
+        }
       });
     }
 
@@ -592,21 +613,43 @@ class ShopApp {
         
         if (!email || !email.includes("@")) return;
 
-        const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
-        if (!subscribers.includes(email)) {
-          subscribers.push(email);
-          localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
-        }
-        localStorage.setItem("hunters_dismissed_popup", "true");
-        
-        // Unconditionally push subscriber directly to Shopify Customer List
-        const success = await this.subscribeShopifyCustomer(email);
+        this.popupNewsletterFeedback.textContent = "Generating your exclusive discount code...";
+        this.popupNewsletterFeedback.className = "popup-newsletter-feedback info";
 
-        this.popupNewsletterFeedback.innerHTML = `
-          Coordinates verified! Check your email inbox for your exclusive 10% off welcome code.
-        `;
-        this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
-        this.popupNewsletterEmail.value = "";
+        try {
+          const res = await fetch("/api/generate-welcome-discount", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await res.json();
+          if (data.success && data.discountCode) {
+            const subscribers = JSON.parse(localStorage.getItem("hunters_subscribers") || "[]");
+            if (!subscribers.includes(email)) {
+              subscribers.push(email);
+              localStorage.setItem("hunters_subscribers", JSON.stringify(subscribers));
+            }
+            localStorage.setItem("hunters_dismissed_popup", "true");
+
+            this.popupNewsletterFeedback.innerHTML = `
+              Welcome to the dispatch! Use your 1-time code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow); font-family: monospace;">${data.discountCode}</strong> for 10% off your order.
+            `;
+            this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
+            this.popupNewsletterEmail.value = "";
+          } else {
+            throw new Error(data.error || "Unable to generate discount code.");
+          }
+        } catch (err) {
+          console.error("Popup newsletter discount generation error:", err);
+          this.subscribeShopifyCustomer(email);
+          localStorage.setItem("hunters_dismissed_popup", "true");
+          this.popupNewsletterFeedback.innerHTML = `
+            Coordinates verified! Welcome to the dispatch.
+          `;
+          this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
+          this.popupNewsletterEmail.value = "";
+        }
       });
     }
 
