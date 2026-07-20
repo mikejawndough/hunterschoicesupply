@@ -1757,17 +1757,8 @@ class ShopApp {
   }
 
   renderShopifyCollectionFilters() {
-    if (!this.shopifyCollections || this.shopifyCollections.length === 0) return;
-
-    // Start with "All Gear"
-    let buttonsHTML = `<button class="filter-btn active" data-category="all">All Gear</button>`;
-
-    // Add buttons for each collection
-    buttonsHTML += this.shopifyCollections.map(col => `
-      <button class="filter-btn" data-category="${col.handle}">${col.title}</button>
-    `).join("");
-
-    this.filterButtonsContainer.innerHTML = buttonsHTML;
+    // Keep curated category filter buttons fixed and intact
+    return;
   }
 
   async createShopifyCheckout() {
