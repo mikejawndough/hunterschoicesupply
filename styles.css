@@ -2243,19 +2243,26 @@ dialog[open]::backdrop {
   margin: 0 auto;
   cursor: pointer !important;
   user-select: none;
-  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  will-change: transform;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.bundle-card.featured {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, var(--bg-secondary) 100%);
+/* Extended invisible hit area to prevent edge flicker during translateY lift */
+.bundle-card::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -5px;
+  right: -5px;
+  pointer-events: auto;
+  z-index: 0;
 }
 
 .bundle-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) !important;
   border-color: var(--accent-gold);
-  box-shadow: 0 0 20px var(--accent-gold-glow);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-gold-glow);
 }
 
 .bundle-badge {
