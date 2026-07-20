@@ -12,136 +12,103 @@ const SHOPIFY_CONFIG = {
   apiVersion: "2023-10"
 };
 
-// 1. Product Database (with Custom Inline SVGs)
+// 1. Product Database (with Live Shopify CDN Photos)
 const PRODUCTS = [
   {
-    id: "silver-blade-tee",
-    name: "Silver Blade Graphic Tee",
-    price: 29.99,
-    category: "apparel",
-    badge: "Premium",
-    cursed: false,
-    description: "A premium 100% ring-spun cotton tee featuring a custom, highly detailed silver blade print. Soft to the touch and built to last through long road trips and active patrols.",
-    lore: "John's Journal: 'Always pack a silver graphic. Blend in with civilians. Stay comfortable in the heat.'",
-    stats: {
-      "Fabric": "100% Combed Ring-spun Cotton",
-      "Print Type": "Direct-to-Garment (DTG) print",
-      "Fit": "Relaxed Unisex Fit",
-      "Sizes": "S to 3XL"
-    },
-    svgIcon: `
-      <path d="M 50 15 L 60 45 L 53 45 L 53 80 L 47 80 L 47 45 L 40 45 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-      <line x1="43" y1="80" x2="57" y2="80" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <path d="M 50 80 L 50 90" stroke="currentColor" stroke-width="4"/>
-      <circle cx="50" cy="90" r="2" fill="currentColor"/>
-    `
-  },
-  {
-    id: "salt-iron-mug",
-    name: "Salt & Iron Ceramic Mug (11oz)",
+    id: "crowley-mug",
+    name: "Crowley \"Hell to Raise\" Mug",
     price: 16.99,
     category: "gear",
     badge: "Best Seller",
     cursed: false,
-    description: "An 11oz high-grade white ceramic coffee mug featuring a classic Salt & Iron Protection design. A perfect way to ward off spirits while enjoying your morning brew. Dishwasher and microwave safe.",
-    lore: "John's Journal: 'Spirits and demons cannot cross a line of pure salt. Keep it close to your coffee.'",
-    stats: {
-      "Volume": "11oz (325ml)",
-      "Material": "100% white ceramic",
-      "Care": "Dishwasher & Microwave safe",
-      "Print": "Double-sided sublimation print"
-    },
-    svgIcon: `
-      <rect x="25" y="30" width="50" height="45" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
-      <line x1="25" y1="42" x2="75" y2="42" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Lock latch -->
-      <rect x="46" y="38" width="8" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <!-- Salt shaker small outline -->
-      <path d="M 33 50 H 43 V 68 H 33 Z" stroke="currentColor" stroke-width="1"/>
-      <!-- Iron spike small outline -->
-      <path d="M 57 50 H 63 L 60 68 Z" stroke="currentColor" stroke-width="1"/>
-    `
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/14081445257622851458_2048.jpg?v=1784334329",
+    description: "An 11oz high-grade white ceramic coffee mug featuring Crowley King of Hell design.",
+    lore: "Crowley: 'Hello, boys. You have hell to raise.'",
+    stats: { "Volume": "11oz (325ml)", "Material": "100% white ceramic", "Care": "Dishwasher & Microwave safe" }
   },
   {
-    id: "salt-iron-mug-15oz",
-    name: "Salt & Iron Jumbo Mug (15oz)",
-    price: 21.99,
-    category: "gear",
-    badge: "Large Capacity",
-    cursed: false,
-    description: "A jumbo 15oz high-grade white ceramic coffee mug with extra coffee volume for late night research sessions.",
-    lore: "Dean Winchester: 'I need extra coffee before starting an all-nighter at the library.'",
-    stats: {
-      "Volume": "15oz (444ml)",
-      "Material": "100% white ceramic",
-      "Care": "Dishwasher & Microwave safe",
-      "Print": "Full wrap sublimation print"
-    },
-    svgIcon: `
-      <rect x="22" y="25" width="56" height="52" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
-      <path d="M 78 35 H 88 V 65 H 78" fill="none" stroke="currentColor" stroke-width="2"/>
-    `
-  },
-  {
-    id: "team-free-will-pins",
-    name: "Team Free Will Pin Button",
-    price: 5.00,
-    category: "artifacts",
+    id: "bobby-balls-tee",
+    name: "Bobby Singer \"BALLS!\" Tee",
+    price: 18.87,
+    category: "apparel",
     badge: "Popular",
     cursed: false,
-    description: "A glossy 1.25-inch metal pin button featuring iconic Supernatural emblems. Perfect for jackets, backpacks, or lanyard display.",
-    lore: "Castiel: 'I'm the one who gripped you tight and raised you from perdition.'",
-    stats: {
-      "Size": "1.25 inches diameter",
-      "Backing": "Safety pin clasp",
-      "Finish": "UV resistant gloss cover"
-    },
-    svgIcon: `
-      <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
-      <polygon points="50,25 58,42 77,42 62,53 68,71 50,60 32,71 38,53 23,42 42,42" fill="none" stroke="currentColor" stroke-width="1.5"/>
-    `
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/11064075585330012144_2048.jpg?v=1784334534",
+    description: "A premium 100% combed ring-spun cotton tee celebrating Bobby Singer and Singer Salvage.",
+    lore: "Bobby Singer: 'BALLS!'",
+    stats: { "Fabric": "100% Cotton", "Fit": "Relaxed Unisex Fit" }
   },
   {
-    id: "supernatural-wrapping-paper",
-    name: "Custom Premium Wrapping Paper",
-    price: 19.99,
-    category: "artifacts",
-    badge: "Custom Print",
+    id: "team-dean-mug",
+    name: "Team Dean Collegiate Mug",
+    price: 16.99,
+    category: "gear",
+    badge: "Collegiate",
     cursed: false,
-    description: "High-quality heavy 90gsm paper roll printed with continuous anti-possession and Devil's trap runes. Make your gifts look like bunker artifacts.",
-    lore: "Sam: 'Wrap it up tight so no one gets suspicious.'",
-    stats: {
-      "Roll Size": "30 x 72 inches",
-      "Paper": "90gsm fine art paper",
-      "Finish": "Matte premium finish"
-    },
-    svgIcon: `
-      <rect x="25" y="20" width="50" height="60" fill="none" stroke="currentColor" stroke-width="2"/>
-      <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="2"/>
-      <line x1="25" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="2"/>
-    `
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/3965527249333472604_2048.jpg?v=1784334625",
+    description: "Show your allegiance to Team Dean with this high-grade ceramic mug.",
+    lore: "Dean Winchester: 'Driver picks the music, shotgun shuts his piehole.'",
+    stats: { "Volume": "11oz (325ml)", "Material": "100% white ceramic" }
   },
   {
-    id: "winchester-journal",
-    name: "Winchester Journal Notebook",
-    price: 19.99,
-    category: "lore",
-    badge: "New",
+    id: "team-sam-mug",
+    name: "Team Sam Collegiate Mug",
+    price: 16.99,
+    category: "gear",
+    badge: "Collegiate",
     cursed: false,
-    description: "A 150-page ruled hardcover notebook featuring a detailed John Winchester journal mock-up cover print. Perfect for keeping track of your thoughts, daily schedules, or monster research.",
-    lore: "Dean: 'Write it down. Every detail. That's how we remember what we're fighting.'",
-    stats: {
-      "Page Count": "150 lined pages",
-      "Cover Print": "High-gloss John Winchester journal wrap",
-      "Paper Style": "50lb text weight ruled paper",
-      "Size": "6 x 8 inches"
-    },
-    svgIcon: `
-      <rect x="25" y="15" width="50" height="70" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-      <line x1="32" y1="15" x2="32" y2="85" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
-      <path d="M 25 35 H 75" stroke="currentColor" stroke-width="2"/>
-      <path d="M 25 65 H 75" stroke="currentColor" stroke-width="2"/>
-    `
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/3161397619150885216_2048.jpg?v=1784334848",
+    description: "Show your allegiance to Team Sam with this high-grade ceramic mug.",
+    lore: "Sam Winchester: 'Yesterday was Tuesday, but today is Tuesday too!'",
+    stats: { "Volume": "11oz (325ml)", "Material": "100% white ceramic" }
+  },
+  {
+    id: "driver-picks-tee",
+    name: "Driver Picks The Music Tee",
+    price: 18.87,
+    category: "apparel",
+    badge: "Iconic",
+    cursed: false,
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/2338535036533938011_2048.jpg?v=1784334936",
+    description: "Celebrate the rules of the Impala with this classic graphic tee.",
+    lore: "Dean Winchester: 'Driver picks the music, shotgun shuts his piehole.'",
+    stats: { "Fabric": "100% Cotton", "Fit": "Relaxed Unisex Fit" }
+  },
+  {
+    id: "baby-impala-tee",
+    name: "\"Baby\" 1967 Impala Tee",
+    price: 18.87,
+    category: "apparel",
+    badge: "Fan Favorite",
+    cursed: false,
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/7984996027300701481_2048.jpg?v=1784335015",
+    description: "A graphic tee featuring the legendary 1967 Chevy Impala on the open highway.",
+    lore: "Dean: 'She’s got a 327 4-barrel, 275 horse. She’s gorgeous.'",
+    stats: { "Fabric": "100% Cotton", "Fit": "Relaxed Unisex Fit" }
+  },
+  {
+    id: "i-deserve-pie-mug",
+    name: "\"I Deserve Pie\" Ceramic Mug",
+    price: 16.99,
+    category: "gear",
+    badge: "Must Have",
+    cursed: false,
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/9131146775908404850_2048.jpg?v=1784493985",
+    description: "An 11oz ceramic mug dedicated to Dean Winchester's eternal love for pie.",
+    lore: "Dean Winchester: 'Where's the pie?'",
+    stats: { "Volume": "11oz (325ml)", "Material": "100% white ceramic" }
+  },
+  {
+    id: "castiel-mug",
+    name: "Castiel \"People Skills\" Mug",
+    price: 16.99,
+    category: "gear",
+    badge: "Angel Favorite",
+    cursed: false,
+    imageUrl: "https://cdn.shopify.com/s/files/1/0828/1194/5199/files/11409800130934252306_2048.jpg?v=1784493832",
+    description: "A classic mug featuring Castiel's iconic quote about human interaction.",
+    lore: "Castiel: 'My people skills are rusty.'",
+    stats: { "Volume": "11oz (325ml)", "Material": "100% white ceramic" }
   },
   {
     id: "winchester-flannel",
