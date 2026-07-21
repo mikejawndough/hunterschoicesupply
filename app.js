@@ -377,18 +377,12 @@ class ShopApp {
     }
 
     // Filter Handlers (Direct & Delegated)
-    const handleFilterClick = (e, btn) => {
-      if (e && typeof e.preventDefault === "function") {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      const targetBtn = btn || (e && e.target ? e.target.closest(".filter-btn") : null);
-      if (!targetBtn) return;
-
+    const handleFilterClick = (btn) => {
+      if (!btn) return;
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      targetBtn.classList.add("active");
+      btn.classList.add("active");
       
-      this.currentCategory = targetBtn.dataset.category || "all";
+      this.currentCategory = btn.dataset.category || "all";
       this.currentPage = 1;
       this.renderProducts();
     };
@@ -396,13 +390,13 @@ class ShopApp {
     if (this.filterButtonsContainer) {
       this.filterButtonsContainer.addEventListener("click", (e) => {
         const btn = e.target.closest(".filter-btn");
-        if (btn) handleFilterClick(e, btn);
+        if (btn) handleFilterClick(btn);
       });
     }
 
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-btn");
-      if (btn) handleFilterClick(e, btn);
+      if (btn) handleFilterClick(btn);
     });
 
     // Add to cart / View details / EMF hover interaction (Event delegation on product grid)
@@ -803,14 +797,13 @@ class ShopApp {
       return true;
     }
 
-    // Check product title, productType, and tags
+    // Check product title & productType
     const prodName = (prod.name || prod.title || "").toLowerCase();
     const prodType = (prod.productType || prod.stats?.Type || "").toLowerCase();
-    const prodTags = (Array.isArray(prod.tags) ? prod.tags.join(" ") : (prod.tags || "")).toLowerCase();
 
     if (catLower.includes("shirt") || catLower.includes("apparel") || catLower.includes("tee")) {
       return (prodName.includes("tee") || prodName.includes("shirt") || prodType.includes("shirt") || prodType.includes("apparel")) &&
-             !prodName.includes("mug") && !prodName.includes("pin") && !prodName.includes("wrap") && !prodName.includes("paper");
+             !prodName.includes("mug") && !prodName.includes("pin") && !prodName.includes("wrap");
     }
 
     if (catLower.includes("mug") || catLower.includes("drinkware")) {
@@ -818,11 +811,11 @@ class ShopApp {
     }
 
     if (catLower.includes("pin") || catLower.includes("button") || catLower.includes("accessory") || catLower.includes("accessories")) {
-      return prodName.includes("pin") || prodName.includes("button") || prodType.includes("pin") || prodType.includes("button") || prodType.includes("accessories") || prodTags.includes("pin") || prodTags.includes("button");
+      return prodName.includes("pin") || prodName.includes("button") || prodType.includes("pin") || prodType.includes("button");
     }
 
     if (catLower.includes("paper") || catLower.includes("wrap")) {
-      return prodName.includes("wrap") || prodName.includes("paper") || prodType.includes("wrap") || prodType.includes("decor") || prodTags.includes("wrap") || prodTags.includes("paper");
+      return prodName.includes("wrap") || prodName.includes("paper") || prodType.includes("wrap");
     }
 
     if (catLower.includes("lore") || catLower.includes("book")) {
@@ -964,14 +957,14 @@ class ShopApp {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
 
-    this.bundleModal.removeAttribute("style");
+    // Remove open attribute first to prevent InvalidStateError DOMException on showModal()
+    this.bundleModal.removeAttribute("open");
     this.bundleModal.classList.add("open");
+    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 5% !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
 
     if (typeof this.bundleModal.showModal === "function") {
       try {
-        if (!this.bundleModal.open) {
-          this.bundleModal.showModal();
-        }
+        this.bundleModal.showModal();
       } catch (e) {
         this.bundleModal.setAttribute("open", "");
       }
@@ -983,20 +976,14 @@ class ShopApp {
   closeBundleModal() {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
-
     this.bundleModal.classList.remove("open");
-    this.bundleModal.removeAttribute("style");
+    this.bundleModal.style.cssText = "display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;";
     if (typeof this.bundleModal.close === "function") {
       try {
-        if (this.bundleModal.open) {
-          this.bundleModal.close();
-        }
-      } catch (e) {
-        this.bundleModal.removeAttribute("open");
-      }
-    } else {
-      this.bundleModal.removeAttribute("open");
+        this.bundleModal.close();
+      } catch (e) {}
     }
+    this.bundleModal.removeAttribute("open");
   }
 
   getProductsForBundleType(type) {
