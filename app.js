@@ -1321,6 +1321,25 @@ class ShopApp {
     this.saveCartToStorage();
     this.updateCartUI();
     this.openCartDrawer();
+
+    // Google Analytics E-commerce event
+    if (typeof gtag === 'function') {
+      const addedPrice = variantId && product.variants 
+        ? (product.variants.find(v => v.id === variantId)?.price || product.price) 
+        : product.price;
+
+      gtag('event', 'add_to_cart', {
+        currency: 'USD',
+        value: addedPrice,
+        items: [{
+          item_id: id,
+          item_name: product.name,
+          price: addedPrice,
+          quantity: 1,
+          item_variant: customOptions || undefined
+        }]
+      });
+    }
   }
 
   updateQuantity(cartItemId, change) {
@@ -1655,6 +1674,21 @@ class ShopApp {
   }
 
   async triggerCheckout() {
+    // Google Analytics Begin Checkout Event
+    if (typeof gtag === 'function' && this.cart.length > 0) {
+      gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: this.cart.reduce((sum, item) => sum + ((item.priceOverride || item.product.price) * item.quantity), 0),
+        items: this.cart.map(item => ({
+          item_id: item.product.id,
+          item_name: item.product.name,
+          price: item.priceOverride || item.product.price,
+          quantity: item.quantity,
+          item_variant: item.customOptions || undefined
+        }))
+      });
+    }
+
     if (SHOPIFY_CONFIG.active) {
       try {
         const checkoutUrl = await this.createShopifyCheckout();
