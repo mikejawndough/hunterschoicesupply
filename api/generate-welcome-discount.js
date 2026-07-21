@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }
 
-  const { email } = req.body || {};
+  const { email, firstName, lastName, birthday } = req.body || {};
   if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ success: false, error: 'Valid email address required.' });
   }
@@ -96,7 +96,31 @@ export default async function handler(req, res) {
       console.warn("Shopify Admin Discount warning:", discountRes.errors);
     }
 
-    // STEP 1: FIRST API CALL - Create or Update Customer Profile with Metafield and NOT_SUBSCRIBED consent
+    // Compile tags & metafields for customer input
+    const tags = ["newsletter", "welcome_discount"];
+    if (birthday) {
+      tags.push(`birthday:${birthday}`);
+    }
+
+    const metafields = [
+      {
+        namespace: "custom",
+        key: "welcome_discount_code",
+        type: "single_line_text_field",
+        value: discountCode
+      }
+    ];
+
+    if (birthday) {
+      metafields.push({
+        namespace: "custom",
+        key: "birthday",
+        type: "date",
+        value: birthday
+      });
+    }
+
+    // STEP 1: FIRST API CALL - Create or Update Customer Profile with Metafields and NOT_SUBSCRIBED consent
     const customerMutation = `
       mutation customerCreate($input: CustomerInput!) {
         customerCreate(input: $input) {
@@ -115,18 +139,13 @@ export default async function handler(req, res) {
     const customerVariables = {
       input: {
         email: email.trim().toLowerCase(),
+        firstName: firstName ? firstName.trim() : undefined,
+        lastName: lastName ? lastName.trim() : undefined,
         emailMarketingConsent: {
           marketingState: "NOT_SUBSCRIBED"
         },
-        tags: ["newsletter", "welcome_discount"],
-        metafields: [
-          {
-            namespace: "custom",
-            key: "welcome_discount_code",
-            type: "single_line_text_field",
-            value: discountCode
-          }
-        ]
+        tags: tags,
+        metafields: metafields
       }
     };
 
@@ -136,7 +155,7 @@ export default async function handler(req, res) {
     if (customerRes.data?.customerCreate?.customer?.id) {
       customerGid = customerRes.data.customerCreate.customer.id;
     } else {
-      // Fallback: If customer profile already exists in Shopify, query ID by email and update Metafield
+      // Fallback: If customer profile already exists in Shopify, query ID by email and update
       const findCustomerQuery = `
         query findCustomer($query: String!) {
           customers(first: 1, query: $query) {
@@ -152,6 +171,32 @@ export default async function handler(req, res) {
       customerGid = findRes.data?.customers?.edges[0]?.node?.id || null;
 
       if (customerGid) {
+        // Update first name, last name, and tags on existing profile
+        const customerUpdateMutation = `
+          mutation customerUpdate($input: CustomerInput!) {
+            customerUpdate(input: $input) {
+              customer {
+                id
+              }
+              userErrors {
+                field
+                message
+              }
+            }
+          }
+        `;
+
+        const updateCustomerVars = {
+          input: {
+            id: customerGid,
+            firstName: firstName ? firstName.trim() : undefined,
+            lastName: lastName ? lastName.trim() : undefined,
+            tags: tags
+          }
+        };
+        await shopifyAdminGql(customerUpdateMutation, updateCustomerVars);
+
+        // Update metafields (code + birthday)
         const metafieldsMutation = `
           mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
             metafieldsSet(metafields: $metafields) {
@@ -161,21 +206,32 @@ export default async function handler(req, res) {
             }
           }
         `;
-        await shopifyAdminGql(metafieldsMutation, {
-          metafields: [
-            {
-              ownerId: customerGid,
-              namespace: "custom",
-              key: "welcome_discount_code",
-              type: "single_line_text_field",
-              value: discountCode
-            }
-          ]
-        });
+
+        const metafieldsPayload = [
+          {
+            ownerId: customerGid,
+            namespace: "custom",
+            key: "welcome_discount_code",
+            type: "single_line_text_field",
+            value: discountCode
+          }
+        ];
+
+        if (birthday) {
+          metafieldsPayload.push({
+            ownerId: customerGid,
+            namespace: "custom",
+            key: "birthday",
+            type: "date",
+            value: birthday
+          });
+        }
+
+        await shopifyAdminGql(metafieldsMutation, { metafields: metafieldsPayload });
       }
     }
 
-    // STEP 2: DELAY - Pause for 1000ms to allow Shopify to index the metafield
+    // STEP 2: DELAY - Pause for 1000ms to allow Shopify to index the metafields
     await delay(1000);
 
     // STEP 3: SECOND API CALL - Trigger Subscription by updating marketing state to SUBSCRIBED

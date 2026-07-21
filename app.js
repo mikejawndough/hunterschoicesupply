@@ -561,6 +561,9 @@ class ShopApp {
       this.newsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = this.newsletterEmail.value.trim().toLowerCase();
+        const firstName = document.getElementById("newsletter-first-name")?.value.trim() || "";
+        const lastName = document.getElementById("newsletter-last-name")?.value.trim() || "";
+        const birthday = document.getElementById("newsletter-birthday")?.value || "";
         
         if (!email || !email.includes("@")) return;
 
@@ -571,7 +574,7 @@ class ShopApp {
           const res = await fetch("/api/generate-welcome-discount", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email, firstName, lastName, birthday })
           });
 
           const data = await res.json();
@@ -586,7 +589,15 @@ class ShopApp {
               Welcome to the dispatch! Use your 1-time code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow); font-family: monospace;">${data.discountCode}</strong> for 10% off your order.
             `;
             this.newsletterFeedback.className = "newsletter-feedback success";
+            
+            // Reset form fields
             this.newsletterEmail.value = "";
+            const fnField = document.getElementById("newsletter-first-name");
+            const lnField = document.getElementById("newsletter-last-name");
+            const bdayField = document.getElementById("newsletter-birthday");
+            if (fnField) fnField.value = "";
+            if (lnField) lnField.value = "";
+            if (bdayField) bdayField.value = "";
           } else {
             throw new Error(data.error || "Unable to generate discount code.");
           }
@@ -624,6 +635,9 @@ class ShopApp {
       this.popupNewsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = this.popupNewsletterEmail.value.trim().toLowerCase();
+        const firstName = document.getElementById("popup-newsletter-first-name")?.value.trim() || "";
+        const lastName = document.getElementById("popup-newsletter-last-name")?.value.trim() || "";
+        const birthday = document.getElementById("popup-newsletter-birthday")?.value || "";
         
         if (!email || !email.includes("@")) return;
 
@@ -634,7 +648,7 @@ class ShopApp {
           const res = await fetch("/api/generate-welcome-discount", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email, firstName, lastName, birthday })
           });
 
           const data = await res.json();
@@ -650,7 +664,15 @@ class ShopApp {
               Welcome to the dispatch! Use your 1-time code <strong style="color:var(--accent-gold); text-shadow:0 0 6px var(--accent-gold-glow); font-family: monospace;">${data.discountCode}</strong> for 10% off your order.
             `;
             this.popupNewsletterFeedback.className = "popup-newsletter-feedback success";
+            
+            // Reset form fields
             this.popupNewsletterEmail.value = "";
+            const fnField = document.getElementById("popup-newsletter-first-name");
+            const lnField = document.getElementById("popup-newsletter-last-name");
+            const bdayField = document.getElementById("popup-newsletter-birthday");
+            if (fnField) fnField.value = "";
+            if (lnField) lnField.value = "";
+            if (bdayField) bdayField.value = "";
           } else {
             throw new Error(data.error || "Unable to generate discount code.");
           }

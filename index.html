@@ -267,8 +267,27 @@
         <p>Subscribe to receive bunker alerts, print drops, and gear discount codes.</p>
       </div>
       <form id="newsletter-form" class="newsletter-form">
-        <input type="email" id="newsletter-email" placeholder="Enter your email coordinates..." required>
-        <button type="submit" class="gold-btn">Subscribe</button>
+        <div class="newsletter-form-row">
+          <div>
+            <label for="newsletter-first-name">First Name</label>
+            <input type="text" id="newsletter-first-name" placeholder="Dean" required>
+          </div>
+          <div>
+            <label for="newsletter-last-name">Last Name</label>
+            <input type="text" id="newsletter-last-name" placeholder="Winchester" required>
+          </div>
+        </div>
+        <div class="newsletter-form-row">
+          <div>
+            <label for="newsletter-email">Email Coordinates</label>
+            <input type="email" id="newsletter-email" placeholder="dean@impala67.com" required>
+          </div>
+          <div>
+            <label for="newsletter-birthday">Birthday</label>
+            <input type="date" id="newsletter-birthday" required>
+          </div>
+        </div>
+        <button type="submit" class="gold-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Subscribe</button>
       </form>
     </div>
     <div id="newsletter-feedback" class="newsletter-feedback"></div>
@@ -348,7 +367,26 @@
       <h3>Join the Hunter Dispatch</h3>
       <p>Subscribe to secure premium bunker alerts, print drops, and a <strong>10% discount coordinates code</strong> instantly!</p>
       <form id="popup-newsletter-form" class="popup-newsletter-form">
-        <input type="email" id="popup-newsletter-email" placeholder="Enter your email coordinates..." required>
+        <div class="newsletter-form-row">
+          <div>
+            <label for="popup-newsletter-first-name">First Name</label>
+            <input type="text" id="popup-newsletter-first-name" placeholder="Sam" required>
+          </div>
+          <div>
+            <label for="popup-newsletter-last-name">Last Name</label>
+            <input type="text" id="popup-newsletter-last-name" placeholder="Winchester" required>
+          </div>
+        </div>
+        <div class="newsletter-form-row">
+          <div>
+            <label for="popup-newsletter-email">Email Coordinates</label>
+            <input type="email" id="popup-newsletter-email" placeholder="sam@stanford.edu" required>
+          </div>
+          <div>
+            <label for="popup-newsletter-birthday">Birthday</label>
+            <input type="date" id="popup-newsletter-birthday" required>
+          </div>
+        </div>
         <button type="submit" class="gold-btn" style="width: 100%; justify-content: center; margin-top: 0.75rem;">Secure Discount Code</button>
       </form>
       <div id="popup-newsletter-feedback" class="popup-newsletter-feedback"></div>
