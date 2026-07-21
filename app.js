@@ -1401,7 +1401,7 @@ class ShopApp {
         quantity,
         imageUrl,
         svgIcon,
-        description: item.customOptions || (item.product ? item.product.description : "")
+        description: item.customOptions || ""
       };
     });
 
