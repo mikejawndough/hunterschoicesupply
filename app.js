@@ -377,12 +377,18 @@ class ShopApp {
     }
 
     // Filter Handlers (Direct & Delegated)
-    const handleFilterClick = (btn) => {
-      if (!btn) return;
+    const handleFilterClick = (e, btn) => {
+      if (e && typeof e.preventDefault === "function") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const targetBtn = btn || (e && e.target ? e.target.closest(".filter-btn") : null);
+      if (!targetBtn) return;
+
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+      targetBtn.classList.add("active");
       
-      this.currentCategory = btn.dataset.category || "all";
+      this.currentCategory = targetBtn.dataset.category || "all";
       this.currentPage = 1;
       this.renderProducts();
     };
@@ -390,13 +396,13 @@ class ShopApp {
     if (this.filterButtonsContainer) {
       this.filterButtonsContainer.addEventListener("click", (e) => {
         const btn = e.target.closest(".filter-btn");
-        if (btn) handleFilterClick(btn);
+        if (btn) handleFilterClick(e, btn);
       });
     }
 
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-btn");
-      if (btn) handleFilterClick(btn);
+      if (btn) handleFilterClick(e, btn);
     });
 
     // Add to cart / View details / EMF hover interaction (Event delegation on product grid)
@@ -797,13 +803,14 @@ class ShopApp {
       return true;
     }
 
-    // Check product title & productType
+    // Check product title, productType, and tags
     const prodName = (prod.name || prod.title || "").toLowerCase();
     const prodType = (prod.productType || prod.stats?.Type || "").toLowerCase();
+    const prodTags = (Array.isArray(prod.tags) ? prod.tags.join(" ") : (prod.tags || "")).toLowerCase();
 
     if (catLower.includes("shirt") || catLower.includes("apparel") || catLower.includes("tee")) {
       return (prodName.includes("tee") || prodName.includes("shirt") || prodType.includes("shirt") || prodType.includes("apparel")) &&
-             !prodName.includes("mug") && !prodName.includes("pin") && !prodName.includes("wrap");
+             !prodName.includes("mug") && !prodName.includes("pin") && !prodName.includes("wrap") && !prodName.includes("paper");
     }
 
     if (catLower.includes("mug") || catLower.includes("drinkware")) {
@@ -811,11 +818,11 @@ class ShopApp {
     }
 
     if (catLower.includes("pin") || catLower.includes("button") || catLower.includes("accessory") || catLower.includes("accessories")) {
-      return prodName.includes("pin") || prodName.includes("button") || prodType.includes("pin") || prodType.includes("button");
+      return prodName.includes("pin") || prodName.includes("button") || prodType.includes("pin") || prodType.includes("button") || prodType.includes("accessories") || prodTags.includes("pin") || prodTags.includes("button");
     }
 
     if (catLower.includes("paper") || catLower.includes("wrap")) {
-      return prodName.includes("wrap") || prodName.includes("paper") || prodType.includes("wrap");
+      return prodName.includes("wrap") || prodName.includes("paper") || prodType.includes("wrap") || prodType.includes("decor") || prodTags.includes("wrap") || prodTags.includes("paper");
     }
 
     if (catLower.includes("lore") || catLower.includes("book")) {
