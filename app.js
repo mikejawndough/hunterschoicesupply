@@ -957,14 +957,14 @@ class ShopApp {
     this.bundleModal = document.getElementById("bundle-modal");
     if (!this.bundleModal) return;
 
-    // Remove open attribute first to prevent InvalidStateError DOMException on showModal()
-    this.bundleModal.removeAttribute("open");
     this.bundleModal.classList.add("open");
-    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 5% !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--border-color) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important;";
+    this.bundleModal.style.cssText = "display: block !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 99999 !important; background: var(--bg-secondary) !important; border: 1px solid var(--accent-gold) !important; padding: 1.5rem !important; border-radius: 12px !important; width: 500px !important; max-width: 92vw !important; max-height: 88vh !important; overflow-y: auto !important; box-shadow: 0 0 40px rgba(0,0,0,0.9), 0 0 25px var(--accent-gold-glow) !important;";
 
     if (typeof this.bundleModal.showModal === "function") {
       try {
-        this.bundleModal.showModal();
+        if (!this.bundleModal.open) {
+          this.bundleModal.showModal();
+        }
       } catch (e) {
         this.bundleModal.setAttribute("open", "");
       }
