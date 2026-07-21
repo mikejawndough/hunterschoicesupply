@@ -1291,15 +1291,31 @@ class ShopApp {
   }
 
   // Cart Management
-  addToCart(id) {
+  addToCart(id, variantId = null, customOptions = null) {
     const product = this.products.find(p => p.id === id || String(p.id) === String(id));
     if (!product) return;
 
-    const existing = this.cart.find(item => item.product && (item.product.id === id || String(item.product.id) === String(id)));
+    // Use variantId if present to create unique cartItem key
+    const cartItemId = variantId ? `${id}-${variantId}` : id;
+
+    const existing = this.cart.find(item => item.cartItemId === cartItemId);
     if (existing) {
       existing.quantity = (existing.quantity || 1) + 1;
     } else {
-      this.cart.push({ product, quantity: 1 });
+      let price = product.price;
+      if (variantId && product.variants) {
+        const vObj = product.variants.find(v => v.id === variantId);
+        if (vObj) price = vObj.price;
+      }
+
+      this.cart.push({
+        cartItemId,
+        product,
+        quantity: 1,
+        variantId,
+        customOptions,
+        priceOverride: price
+      });
     }
 
     this.saveCartToStorage();
@@ -1307,13 +1323,13 @@ class ShopApp {
     this.openCartDrawer();
   }
 
-  updateQuantity(id, change) {
-    const item = this.cart.find(item => item.product.id === id);
+  updateQuantity(cartItemId, change) {
+    const item = this.cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
 
     item.quantity += change;
     if (item.quantity <= 0) {
-      this.removeFromCart(id);
+      this.removeFromCart(cartItemId);
       return;
     }
 
@@ -1321,8 +1337,8 @@ class ShopApp {
     this.updateCartUI();
   }
 
-  removeFromCart(id) {
-    this.cart = this.cart.filter(item => item.product.id !== id);
+  removeFromCart(cartItemId) {
+    this.cart = this.cart.filter(item => item.cartItemId !== cartItemId);
     this.saveCartToStorage();
     this.updateCartUI();
   }
@@ -1395,9 +1411,9 @@ class ShopApp {
       }
 
       return {
-        id,
+        id: item.cartItemId || id,
         name,
-        price: isNaN(price) ? 0 : price,
+        price: item.priceOverride !== undefined ? item.priceOverride : (isNaN(price) ? 0 : price),
         quantity,
         imageUrl,
         svgIcon,
@@ -1518,7 +1534,6 @@ class ShopApp {
     this.updateCartUI();
   }
 
-  // Modals Display
   showDetailsModal(id) {
     const prod = this.products.find(p => p.id === id);
     if (!prod) return;
@@ -1530,6 +1545,25 @@ class ShopApp {
         <span class="journal-value">${val}</span>
       </div>
     `).join("");
+
+    // Build options HTML (e.g. Size, Color dropdowns)
+    let optionsHTML = "";
+    if (prod.options && prod.options.length > 0 && prod.variants && prod.variants.length > 1) {
+      optionsHTML = prod.options.map(opt => {
+        // Skip title options if they are default
+        if (opt.name.toLowerCase() === "title" && opt.values.includes("Default Title")) return "";
+        return `
+          <div class="detail-option-group" style="margin-bottom: 1rem; text-align: left;">
+            <label for="detail-opt-${opt.name.replace(/\s+/g, '-').toLowerCase()}" style="font-family: var(--font-title); color: var(--accent-gold); font-size: 0.85rem; text-transform: uppercase; display: block; margin-bottom: 0.35rem;">
+              Select ${opt.name}
+            </label>
+            <select class="detail-opt-select" id="detail-opt-${opt.name.replace(/\s+/g, '-').toLowerCase()}" data-opt-name="${opt.name}" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem;">
+              ${(opt.values || []).map(val => `<option value="${val}">${val}</option>`).join("")}
+            </select>
+          </div>
+        `;
+      }).join("");
+    }
 
     this.detailContent.innerHTML = `
       <div class="detail-grid">
@@ -1547,6 +1581,9 @@ class ShopApp {
           <h3 class="detail-title font-title">${prod.name}</h3>
           <p class="detail-desc">${prod.description}</p>
           
+          <!-- Variant Selectors -->
+          ${optionsHTML ? `<div class="detail-variants-container" style="margin: 1.25rem 0;">${optionsHTML}</div>` : ""}
+
           <div class="journal-stats">
             <h4 class="journal-stats-title">Winchester Journal Entry</h4>
             ${statsHTML || '<p style="font-size: 0.8rem; font-style: italic; color: var(--text-muted)">No journal entries logged yet.</p>'}
@@ -1556,7 +1593,7 @@ class ShopApp {
           </div>
 
           <div class="detail-price-row">
-            <span class="detail-price">$${prod.price.toFixed(2)}</span>
+            <span class="detail-price" id="detail-price-display">$${prod.price.toFixed(2)}</span>
             <button class="red-btn" id="modal-add-btn" data-id="${prod.id}">Add to Trunk</button>
           </div>
           <div class="pod-info-banner">
@@ -1567,9 +1604,50 @@ class ShopApp {
       </div>
     `;
 
+    // Function to calculate matching variant from selects
+    const updateSelectedVariant = () => {
+      if (!prod.variants || prod.variants.length <= 1) return null;
+      
+      const selects = this.detailContent.querySelectorAll(".detail-opt-select");
+      const selected = {};
+      selects.forEach(sel => {
+        selected[sel.dataset.optName] = sel.value;
+      });
+
+      // Find matching variant
+      const matched = prod.variants.find(v => {
+        return v.selectedOptions.every(opt => {
+          return selected[opt.name] === opt.value;
+        });
+      });
+
+      if (matched) {
+        const display = document.getElementById("detail-price-display");
+        if (display) display.textContent = `$${matched.price.toFixed(2)}`;
+      }
+      return matched;
+    };
+
+    // Attach listeners
+    const selects = this.detailContent.querySelectorAll(".detail-opt-select");
+    selects.forEach(sel => {
+      sel.addEventListener("change", updateSelectedVariant);
+    });
+
+    // Run once to show initial match price
+    updateSelectedVariant();
+
     // Modal add button
     document.getElementById("modal-add-btn").addEventListener("click", () => {
-      this.addToCart(prod.id);
+      const matchedVariant = updateSelectedVariant();
+      const variantId = matchedVariant ? matchedVariant.id : null;
+      
+      let customOptionsText = null;
+      if (matchedVariant && matchedVariant.title && matchedVariant.title !== "Default Title") {
+        customOptionsText = matchedVariant.title; // e.g. "M / Black"
+      }
+
+      this.addToCart(prod.id, variantId, customOptionsText);
       this.detailModal.close();
     });
 
@@ -1678,6 +1756,10 @@ class ShopApp {
               vendor
               handle
               tags
+              options(first: 3) {
+                name
+                values
+              }
               collections(first: 5) {
                 edges {
                   node {
@@ -1685,12 +1767,17 @@ class ShopApp {
                   }
                 }
               }
-              variants(first: 1) {
+              variants(first: 50) {
                 edges {
                   node {
                     id
+                    title
                     price {
                       amount
+                    }
+                    selectedOptions {
+                      name
+                      value
                     }
                   }
                 }
@@ -1736,6 +1823,20 @@ class ShopApp {
       const imageNode = node.images.edges[0]?.node;
       const price = variantNode ? parseFloat(variantNode.price.amount) : 0;
       
+      // Get all variants
+      const variants = node.variants.edges.map(e => ({
+        id: e.node.id,
+        title: e.node.title,
+        price: parseFloat(e.node.price.amount),
+        selectedOptions: e.node.selectedOptions || []
+      }));
+
+      // Get options
+      const options = node.options ? node.options.map(opt => ({
+        name: opt.name,
+        values: opt.values
+      })) : [];
+
       // Get all collection handles this product belongs to
       const productCollections = node.collections.edges.map(e => e.node.handle);
 
@@ -1780,6 +1881,8 @@ class ShopApp {
         price: price,
         category: category,
         collections: productCollections,
+        variants: variants,
+        options: options,
         badge: isCursed ? "Artifact" : (tags.includes("essential") ? "Essential" : "Gear"),
         cursed: isCursed,
         description: node.description,
@@ -1838,7 +1941,7 @@ class ShopApp {
           }
         });
       } else {
-        const mercId = item.product.shopifyVariantId || item.product.variantId || item.product.id;
+        const mercId = item.variantId || item.product.shopifyVariantId || item.product.variantId || item.product.id;
         if (mercId && mercId.startsWith("gid://")) {
           lines.push({
             merchandiseId: mercId,
